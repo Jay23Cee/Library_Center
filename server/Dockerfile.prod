@@ -1,0 +1,12 @@
+FROM golang:alpine AS build
+WORKDIR "/my-app/server"
+COPY go.mod .
+COPY go.sum .
+COPY . .
+RUN go get -d -v
+RUN go build -v
+CMD ["bookapi.exe"]
+
+
+FROM nginx
+COPY --from=build /my-app/server/build /usr/share/nginx/html
