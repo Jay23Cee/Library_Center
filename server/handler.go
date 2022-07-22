@@ -149,7 +149,7 @@ func addbooks(w http.ResponseWriter, r *http.Request) {
 	}
 	collection := client.Database("BookAPI").Collection("book")
 
-	doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"_id", primitive.NewObjectID()}}
+	doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"_id", primitive.NewObjectID()}}
 	result, err := collection.InsertOne(ctx, doc)
 	if err != nil {
 		panic(err)
@@ -193,7 +193,7 @@ func editbook(w http.ResponseWriter, r *http.Request) {
 		ctx,
 		bson.M{"_id": id},
 		bson.D{
-			{"$set", bson.D{{"Title", book.Title}, {"Author", book.Author}}},
+			{"$set", bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}}},
 		},
 	)
 	if err != nil {
