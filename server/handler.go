@@ -43,11 +43,6 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
 
 	mymap := make(map[int]Book)
-	// url := os.Getenv("REACT_APP_GO_URL")
-	// clientOptions := options.Client().
-	// 	ApplyURI(url)
-	// ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	// defer cancel()
 
 	client := makeconnection(w, r)
 

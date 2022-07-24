@@ -3,7 +3,7 @@ RUN apk --no-cache --virtual build-dependencies add \
         python \
         make \
         g++
-FROM golang:buster
+FROM golang:1.18buster
 WORKDIR "/library_center/server"
 COPY /server/go.mod .
 COPY /server/go.sum .
