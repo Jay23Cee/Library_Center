@@ -1,7 +1,0 @@
-version: '2'
-services:
-  web:
-    build: .
-    ports:
-      - "8000:80"
-    env_file: .env

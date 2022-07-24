@@ -35,7 +35,6 @@ func main() {
 	if port == "" {
 		port = ":8080" // Default port if not specified
 	}
-
 	fmt.Print("ACTIVE", port)
 	http.ListenAndServe(port, r)
 
