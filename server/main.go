@@ -13,7 +13,7 @@ import (
 func main() {
 
 	r := chi.NewRouter()
-	
+
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
@@ -31,11 +31,12 @@ func main() {
 	r.Post("/delete", deletebook)
 
 	// Mount the admin sub-router
-	fmt.Print("ACTIVE")
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":3000" // Default port if not specified
+		port = ":8080" // Default port if not specified
 	}
+
+	fmt.Print("ACTIVE", port)
 	http.ListenAndServe(port, r)
 
 }

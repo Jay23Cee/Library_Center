@@ -3,7 +3,7 @@ RUN apk --no-cache --virtual build-dependencies add \
         python \
         make \
         g++
-FROM golang:1.18buster
+FROM golang:buster
 WORKDIR "/library_center/server"
 COPY /server/go.mod .
 COPY /server/go.sum .
@@ -12,6 +12,7 @@ RUN go get -d -v
 RUN go build -v
 ENV REACT_APP_GO_URL=mongodb+srv://mongo:LOsLH6a40mcR0QzB@cluster0.esomu.mongodb.net/?retryWrites=true&w=majority
 EXPOSE "8080"
+ EXPOSE "3000"
 # This allows Heroku bind its PORT the Apps port 
 # since Heroku needs to use its own PORT before the App can be made accessible to the World
 EXPOSE $PORT
