@@ -3,6 +3,7 @@ RUN apk --no-cache --virtual build-dependencies add \
         python \
         make \
         g++
+        
 FROM golang:buster
 WORKDIR "/library_center/server"
 COPY /server/go.mod .
