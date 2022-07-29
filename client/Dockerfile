@@ -1,0 +1,23 @@
+
+FROM node:alpine AS builder
+WORKDIR "/library_center/client"
+COPY package.json ./
+COPY package-lock.json ./
+COPY ./ ./
+ENV REACT_APP_URL="http://localhost:8080"
+RUN npm install
+EXPOSE "8080"
+EXPOSE "3000"
+CMD ["npm","run","dev"]
+
+
+# # nginx state for serving content
+# FROM nginx:alpine
+# # Set working directory to nginx asset directory
+# WORKDIR /usr/share/nginx/html
+# # Remove default nginx static assets
+# RUN rm -rf ./*
+# # Copy static assets from builder stage
+# COPY --from=builder /app/build .
+# # Containers run nginx with global directives and daemon off
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]

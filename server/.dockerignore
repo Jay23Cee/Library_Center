@@ -1,7 +1,5 @@
 node_modules
-Dockerfile
 Dockerfile.web 
 .git
 .gitignore
-.dockerignore
 .env
