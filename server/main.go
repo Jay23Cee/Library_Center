@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -36,6 +37,6 @@ func main() {
 		port = ":8080" // Default port if not specified
 	}
 	fmt.Print("ACTIVE", port)
-	http.ListenAndServe(port, r)
+	log.Fatal(http.ListenAndServe(port, r))
 
 }
