@@ -34,9 +34,9 @@ func main() {
 	// Mount the admin sub-router
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":8080" // Default port if not specified
+		port = "8080" // Default port if not specified
 	}
 	fmt.Print("ACTIVE", port)
-	log.Fatal(http.ListenAndServe(port, r))
+	log.Fatal(http.ListenAndServe(":"+port, r))
 
 }
