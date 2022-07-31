@@ -23,7 +23,7 @@ func main() {
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello"))
+		w.Write([]byte("hello, Welcome to the Library Backend Center"))
 	})
 
 	r.Post("/add", addbooks)
