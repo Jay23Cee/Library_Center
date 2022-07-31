@@ -1,6 +1,6 @@
 
 FROM node:alpine AS builder
-WORKDIR "/library_center/client"
+WORKDIR /client/app
 COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
