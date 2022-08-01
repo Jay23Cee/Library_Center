@@ -26,8 +26,7 @@ func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
-	 url := os.Getenv("REACT_APP_GO_URL")
-
+	url := os.Getenv("REACT_APP_GO_URL")
 	clientOptions := options.Client().ApplyURI(url)
 	ctx := context_withouttime()
 	client, err := mongo.Connect(ctx, clientOptions)
@@ -82,7 +81,6 @@ func deletebook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
 
 	url := os.Getenv("REACT_APP_GO_URL")
-	
 	jsonMap := make(map[string]Book)
 	body, err := ioutil.ReadAll(r.Body)
 	err = json.Unmarshal([]byte(body), &jsonMap)
@@ -119,7 +117,6 @@ func addbooks(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 
 	url := os.Getenv("REACT_APP_GO_URL")
-	
 	jsonMap := make(map[string]Book)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
@@ -173,7 +170,6 @@ func editbook(w http.ResponseWriter, r *http.Request) {
 	// 	panic(err)
 	// }
 	url := os.Getenv("REACT_APP_GO_URL")
-	
 
 	clientOptions := options.Client().
 		ApplyURI(url)

@@ -16,3 +16,4 @@ COPY . .
 # Build the Go app
 RUN go build -o main .
 
+
