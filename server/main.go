@@ -25,10 +25,10 @@ func main() {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("hello, Welcome to the Library Backend Center"))
 	})
-
+	
+	r.Get("/read", getBooks)
 	r.Post("/add", addbooks)
 	r.Post("/edit", editbook)
-	r.Get("/read", getBooks)
 	r.Post("/delete", deletebook)
 
 	// Mount the admin sub-router
