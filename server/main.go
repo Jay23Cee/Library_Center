@@ -22,13 +22,18 @@ func main() {
 
 	r.Use(middleware.Timeout(60 * time.Second))
 
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello, Welcome to the Library Backend Center"))
-	})
+	// r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+	// 	w.Write([]byte("hello"))
+	// })
+	// r.Handle("/", http.StripPrefix("./build", fileServer))
+	// http.Handle("/", http.FileServer(http.Dir("./build")))
+	fileServer := http.FileServer(http.Dir("./build/"))
+	r.Handle("/*", http.StripPrefix("/", fileServer))
+
 	
-	r.Get("/read", getBooks)
 	r.Post("/add", addbooks)
 	r.Post("/edit", editbook)
+	r.Get("/read", getBooks)
 	r.Post("/delete", deletebook)
 
 	// Mount the admin sub-router
