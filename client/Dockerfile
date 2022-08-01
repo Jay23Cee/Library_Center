@@ -4,11 +4,10 @@ WORKDIR /client/app
 COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
-ENV REACT_APP_URL="http://localhost:8080"
+ENV REACT_APP_URL="http://localhost:$PORT"
 RUN npm install
-EXPOSE "8080"
-EXPOSE "3000"
-CMD ["npm","run","dev"]
+RUN npm run --prefix client build
+CMD ["npm","run", "start:prod"]
 
 
 # # nginx state for serving content

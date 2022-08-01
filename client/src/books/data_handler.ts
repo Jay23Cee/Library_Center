@@ -16,7 +16,8 @@ import axios from "axios"
     port = "8080"
    }
    console.log(port)
-    let link =  process.env.baseURL || "http://localhost:"+port
+    let link = "https://librarycenterapp.herokuapp.com"
+    console.log(link)
     try {
        
         const { data } = await axios.get(link+"/read");
@@ -42,7 +43,7 @@ import axios from "axios"
     const headers = {
       'Content-Type': 'text/plain'
     };
-    let link = (process.env.REACT_APP_URL as string);
+    let link = "https://librarycenterapp.herokuapp.com"//(process.env.REACT_APP_URL as string);
     let url = link +`/delete`
     
    const res= axios.post(url,JSON_string,{headers}).then(response=>{
@@ -61,8 +62,9 @@ import axios from "axios"
     const headers = {
         'Content-Type': 'text/plain'
       };
-      let link = (process.env.REACT_APP_URL as string);
-     const res= axios.post(link+`/edit`,JSON_string,{headers}).then(response=>{
+      let link = "https://librarycenterapp.herokuapp.com"//(process.env.REACT_APP_URL as string);
+      let url = link +`/edit`
+     const res= axios.post(url,JSON_string,{headers}).then(response=>{
       console.log("Sucess ========>,")
      }).catch(error=>{
       console.log("Error ========>", error)
@@ -75,7 +77,7 @@ export async function add_book(JSON_string:string, values:Book) {
     const headers = {
         'Content-Type': 'text/plain'
       };
-      let link = (process.env.REACT_APP_URL as string);
+      let link = "https://librarycenterapp.herokuapp.com"//(process.env.REACT_APP_URL as string);
      let url = link+`/add`
 
      const res= await axios.post(url,values,{headers}).then(response=>{
