@@ -7,7 +7,6 @@ COPY ./ ./
 ENV REACT_APP_URL="http://localhost:$PORT"
 RUN npm install
 RUN npm run --prefix /client/app build
-CMD ["npm","run", "start:prod"]
 
 
 # # nginx state for serving content
