@@ -16,7 +16,7 @@ import axios from "axios"
     port = "8080"
    }
    console.log(port)
-    let link = "https://librarycenterapp.herokuapp.com"
+    let link = (process.env.REACT_APP_URL as string);// "https://librarycenterapp.herokuapp.com"
     console.log(link)
     try {
        
@@ -43,7 +43,7 @@ import axios from "axios"
     const headers = {
       'Content-Type': 'text/plain'
     };
-    let link = "https://librarycenterapp.herokuapp.com"//(process.env.REACT_APP_URL as string);
+    let link = (process.env.REACT_APP_URL as string); //"https://librarycenterapp.herokuapp.com"
     let url = link +`/delete`
     
    const res= axios.post(url,JSON_string,{headers}).then(response=>{
@@ -77,7 +77,7 @@ export async function add_book(JSON_string:string, values:Book) {
     const headers = {
         'Content-Type': 'text/plain'
       };
-      let link = "https://librarycenterapp.herokuapp.com"//(process.env.REACT_APP_URL as string);
+      let link =  (process.env.REACT_APP_URL as string); //"https://librarycenterapp.herokuapp.com"//(process.env.REACT_APP_URL as string);
      let url = link+`/add`
 
      const res= await axios.post(url,values,{headers}).then(response=>{
