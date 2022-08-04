@@ -1,0 +1,55 @@
+$devices: (
+    phone: 480px,
+    tablet: 768px,
+    desktop: 992px,
+    large-desktop: 1200px
+);
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.layout-title{
+  color:rgb(255, 255, 255);
+  margin-top: -8vh;
+  margin-left: 30vw;
+  font-size: 2em;
+  
+}
+
+.site-layout-content {
+  min-height: 280px;
+  padding: 24px;
+  background: #fff;
+}
+#components-layout-demo-top .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+
+@media screen and (max-width:650px){ 
+  .ant-menu-title-content {
+    font-size: .7em;
+   
+  }
+  
+    .site-layout-content {
+      padding: 0;
+      overflow-y: auto;
+    }
+  
+  
+    .layout-title{
+        font-size: 1em;
+        
+    }
+  
+}

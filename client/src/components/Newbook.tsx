@@ -14,13 +14,14 @@ const layout = {
 export const NewItem = () =>{
 
   return(
-    <div>
-        <Breadcrumb style={{ margin: '16px 0' }}>
+    
+            <Breadcrumb style={{ margin: '16px 0' }}>
         <Breadcrumb.Item>New</Breadcrumb.Item>
         <Breadcrumb.Item>Library</Breadcrumb.Item>
         <Breadcrumb.Item>Book</Breadcrumb.Item>
       </Breadcrumb>
-    </div>
+
+   
   )
 }
 
