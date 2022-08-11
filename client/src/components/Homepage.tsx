@@ -21,11 +21,11 @@ const Homepage = () => (
       <Menu theme="dark" mode="horizontal" >
      
      
-     <Menu.Item key="1"><Link to="/" >Home</Link></Menu.Item>
+     <Menu.Item key="1"><Link to="/login" >Home</Link></Menu.Item>
   
      <Menu.Item key="2"><Link to="/new">New</Link></Menu.Item>
 
-     <Menu.Item key="3"><Link to="/admin">Admin</Link></Menu.Item>
+     <Menu.Item key="3"><Link to="/">Admin</Link></Menu.Item>
    
 
       </Menu>
@@ -42,18 +42,18 @@ const Homepage = () => (
        */}  <Routes>
 
        <Route path="/New" element={<NewItem/>}/>
-        <Route path="/admin" element={<Bookintro/>}/>
+        <Route path="/" element={<Bookintro/>}/>
        </Routes>
         
       
       <div className="site-layout-content">
       <Routes>
-       <Route path="/admin" element={<BookTable/>}/> 
+       <Route path="/" element={<BookTable/>}/> 
        <Route  path="/guest" element={<GuestTable/>}/> 
        <Route path="/New" element={<Newform/>}/>
      
 
-       <Route path="/" element={<LoginDemo/>}/>
+       <Route path="/login" element={<LoginDemo/>}/>
        </Routes>
        
         </div>
