@@ -16,3 +16,19 @@ export async function User_Login(values:UserLogin){
 
      return res
   }
+
+  export async function User_Signup(values:UserLogin){
+    const headers = {
+        'Content-Type': 'text/plain'
+      };
+      const JSON_string = JSON.stringify(values)
+      let link = (process.env.REACT_APP_URL as string);
+      let url = link +`/signup`
+     const res= axios.post(url,JSON_string,{headers}).then(response=>{
+      console.log("Sucess ========>,")
+     }).catch(error=>{
+      
+     });
+
+     return res
+  }

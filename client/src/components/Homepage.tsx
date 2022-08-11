@@ -8,6 +8,7 @@ import Newform, { NewItem } from './Newbook'
 import { Link, Route , Routes} from 'react-router-dom';
 import  LoginDemo  from './Login';
 import { GuestTable } from './GuestTable';
+import SignUp from './Signup';
 
 
 // ROUTER needs to be improve
@@ -27,6 +28,7 @@ const Homepage = () => (
 
      <Menu.Item key="3"><Link to="/admin">Admin</Link></Menu.Item>
    
+     <Menu.Item key="4"><Link to="/signup">Sign Up</Link></Menu.Item>
 
       </Menu>
      <h3 className='layout-title'>Library Center</h3>
@@ -51,6 +53,7 @@ const Homepage = () => (
        <Route path="/admin" element={<BookTable/>}/> 
        <Route  path="/guest" element={<GuestTable/>}/> 
        <Route path="/New" element={<Newform/>}/>
+       <Route path="/signup" element={<SignUp/>}/>
      
 
        <Route path="/" element={<LoginDemo/>}/>

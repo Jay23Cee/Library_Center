@@ -48,6 +48,7 @@ useEffect(()=>{
 
   return (
     <section>
+      <h1 className="LogIn-Title">Log In</h1>
     <p ref={errRef} className={errMsg ? "errmsg":"offscreen"} aria-live="assertive">{errMsg}</p>
     <Form
       name="basic"
