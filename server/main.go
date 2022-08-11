@@ -36,7 +36,6 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./build/"))
 	r.Handle("/*", http.StripPrefix("/", fileServer))
 
-	r.Get("/read", getBooks)
 	// Protected routes
 	// r.Group(func(r chi.Router) {
 	// 	// Seek, verify and validate JWT tokens
@@ -63,35 +62,15 @@ func main() {
 
 
 		r.Post("/add", addbooks)
-
-
-
 		r.Get("/read", getBooks)
-
-
-
-		r.Get("/read", getBooks)
-	
-
-
 		r.Post("/edit", editbook)
-	
-
-
 		r.Post("/delete", deletebook)
-
+		r.Post("/login", login)
+		r.Post("/signup", signup)
 
 	// r.Group(func(r chi.Router) {
 	// 	r.Get("/public", public)
 	// })
-
-
-		r.Post("/login", login)
-
-
-
-		r.Post("/signup", signup)
-
 
 	// Mount the admin sub-router
 	port := os.Getenv("PORT")
