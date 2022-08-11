@@ -51,12 +51,12 @@ func main() {
 		})
 	})
 
-	// Public routes
-	r.Group(func(r chi.Router) {
-		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("welcome anonymous"))
-		})
-	})
+	// // Public routes
+	// r.Group(func(r chi.Router) {
+	// 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+	// 		w.Write([]byte("welcome anonymous"))
+	// 	})
+	// })
 
 	r.Group(func(r chi.Router) {
 		r.Post("/add", addbooks)
