@@ -38,21 +38,21 @@ func main() {
 
 	r.Get("/read", getBooks)
 	// Protected routes
-	r.Group(func(r chi.Router) {
-		// Seek, verify and validate JWT tokens
-		r.Use(jwtauth.Verifier(tokenAuth))
+	// r.Group(func(r chi.Router) {
+	// 	// Seek, verify and validate JWT tokens
+	// 	r.Use(jwtauth.Verifier(tokenAuth))
 
-		// Handle valid / invalid tokens. In this example, we use
-		// the provided authenticator middleware, but you can write your
-		// own very easily, look at the Authenticator method in jwtauth.go
-		// and tweak it, its not scary.
-		r.Use(jwtauth.Authenticator)
+	// 	// Handle valid / invalid tokens. In this example, we use
+	// 	// the provided authenticator middleware, but you can write your
+	// 	// own very easily, look at the Authenticator method in jwtauth.go
+	// 	// and tweak it, its not scary.
+	// 	r.Use(jwtauth.Authenticator)
 
-		r.Get("/admin", func(w http.ResponseWriter, r *http.Request) {
-			_, claims, _ := jwtauth.FromContext(r.Context())
-			w.Write([]byte(fmt.Sprintf("protected area. hi %v", claims["user_id"])))
-		})
-	})
+	// 	r.Get("/admin", func(w http.ResponseWriter, r *http.Request) {
+	// 		_, claims, _ := jwtauth.FromContext(r.Context())
+	// 		w.Write([]byte(fmt.Sprintf("protected area. hi %v", claims["user_id"])))
+	// 	})
+	// })
 
 	// // Public routes
 	// r.Group(func(r chi.Router) {
@@ -61,37 +61,37 @@ func main() {
 	// 	})
 	// })
 
-	r.Group(func(r chi.Router) {
+
 		r.Post("/add", addbooks)
-	})
 
-	r.Group(func(r chi.Router) {
+
+
 		r.Get("/read", getBooks)
-	})
 
-	r.Group(func(r chi.Router) {
+
+
 		r.Get("/read", getBooks)
-	})
+	
 
-	r.Group(func(r chi.Router) {
+
 		r.Post("/edit", editbook)
-	})
+	
 
-	r.Group(func(r chi.Router) {
+
 		r.Post("/delete", deletebook)
-	})
+
 
 	// r.Group(func(r chi.Router) {
 	// 	r.Get("/public", public)
 	// })
 
-	r.Group(func(r chi.Router) {
-		r.Post("/login", login)
-	})
 
-	r.Group(func(r chi.Router) {
+		r.Post("/login", login)
+
+
+
 		r.Post("/signup", signup)
-	})
+
 
 	// Mount the admin sub-router
 	port := os.Getenv("PORT")
