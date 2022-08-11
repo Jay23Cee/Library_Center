@@ -77,7 +77,7 @@ export async function add_book(JSON_string:string, values:Book) {
      let url = link+`/add`
 
      const res= await axios.post(url,values,{headers}).then(response=>{
-       console.log("Sucess ========>,")
+       console.log("Sucess ========>,",JSON_string)
        
      }).catch(error=>{
       console.log("Error ========>", error)

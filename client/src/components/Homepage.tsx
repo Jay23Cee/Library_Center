@@ -5,7 +5,10 @@ import 'antd/dist/antd.min.css';
 import BookTable, { Bookintro } from './BookTable'
 
 import Newform, { NewItem } from './Newbook'
-import { Link, Route } from 'react-router-dom';
+import { Link, Route , Routes} from 'react-router-dom';
+import  LoginDemo  from './Login';
+import { GuestTable } from './GuestTable';
+
 
 // ROUTER needs to be improve
 const { Header, Content, Footer } = Layout;
@@ -34,14 +37,22 @@ const Homepage = () => (
         <Breadcrumb.Item>List</Breadcrumb.Item>
         <Breadcrumb.Item>App</Breadcrumb.Item>
       </Breadcrumb>
-       */}
-       <Route path="/New" component={NewItem}/>
-        <Route exact path="/" component={Bookintro}/>
+       */}  <Routes>
+
+       <Route path="/New" element={<NewItem/>}/>
+        <Route path="/admin" element={<Bookintro/>}/>
+       </Routes>
         
       
       <div className="site-layout-content">
-       <Route exact path="/" component={BookTable}/> 
-       <Route path="/New" component={Newform}/>
+      <Routes>
+       <Route path="/admin" element={<BookTable/>}/> 
+       <Route  path="/guest" element={<GuestTable/>}/> 
+       <Route path="/New" element={<Newform/>}/>
+     
+
+       <Route path="/" element={<LoginDemo/>}/>
+       </Routes>
        
         </div>
     </Content>

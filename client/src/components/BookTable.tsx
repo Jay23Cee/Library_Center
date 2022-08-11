@@ -15,9 +15,9 @@ export interface BookTableProps{
 
 }
 
-type Props = BookTableProps & LinkStateProps & LinkDispatchProps;
 
-export const BookTable: React.FC<Props> = () =>{
+
+export const BookTable: React.FC<{}> = () =>{
 
  const  originData: Book[] =[];
     

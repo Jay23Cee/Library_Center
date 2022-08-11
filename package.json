@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "react-highlight-words": "^0.18.0"
+    "react-highlight-words": "^0.18.0",
+    "react-router-dom": "^6.3.0"
   }
 }

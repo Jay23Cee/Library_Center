@@ -1,15 +1,15 @@
 import React from 'react';
 import Homepage from './components/Homepage'
-import { BrowserRouter, Link, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 
 function App() {
   
   return (
   
     <div >
-            <BrowserRouter>
+            <Router>
      <Homepage/>
-  </BrowserRouter>
+  </Router>
     </div>
 
   );

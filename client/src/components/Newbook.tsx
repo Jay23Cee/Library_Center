@@ -4,6 +4,7 @@ import {message} from "antd"
 import {Book} from '../books/books';
 import {Link} from "react-router-dom"; 
 import { add_book } from '../books/data_handler';
+import { formatTimeStr } from 'antd/lib/statistic/utils';
 
 
 const layout = {
@@ -54,7 +55,8 @@ const NewBook=()=>{
 
      const [form] = Form.useForm()
 
-      const onFinish = async(values: Book) => {      
+      const onFinish = async(values: Book) => {     
+       
         const JSON_string = JSON.stringify(values)
         // this.props.startNewBook(values)
         console.log(JSON_string)
