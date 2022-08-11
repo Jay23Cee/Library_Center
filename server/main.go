@@ -22,13 +22,9 @@ func main() {
 
 	r.Use(middleware.Timeout(60 * time.Second))
 
-	// r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	w.Write([]byte("hello"))
-	// })
-	// r.Handle("/", http.StripPrefix("./build", fileServer))
-	// http.Handle("/", http.FileServer(http.Dir("./build")))
-	// fileServer := http.FileServer(http.Dir("./build/"))
-	// r.Handle("/*", http.StripPrefix("/", fileServer))
+
+	fileServer := http.FileServer(http.Dir("./build/"))
+	r.Handle("/*", http.StripPrefix("/", fileServer))
 
 	r.Post("/add", addbooks)
 	r.Post("/edit", editbook)
