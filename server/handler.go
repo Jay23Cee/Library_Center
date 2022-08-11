@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -46,10 +46,10 @@ func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	clientOptions := options.Client().ApplyURI(url)
@@ -103,10 +103,10 @@ func deletebook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	jsonMap := make(map[string]Book)
@@ -145,10 +145,10 @@ func addbooks(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	err = godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err = godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	jsonMap := make(map[string]Book)
@@ -241,10 +241,11 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	// load
-	err = godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err = godotenv.Load()
+
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
@@ -310,10 +311,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(body)
 	// load
-	err = godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err = godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
