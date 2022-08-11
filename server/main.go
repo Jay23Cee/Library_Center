@@ -9,19 +9,18 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/jwtauth/v5"
 )
 
-var tokenAuth *jwtauth.JWTAuth
+// var tokenAuth *jwtauth.JWTAuth
 
-func init() {
-	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
+// func init() {
+// 	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
 
-	// For debugging/example purposes, we generate and print
-	// a sample jwt token with claims `user_id:123` here:
-	_, tokenString, _ := tokenAuth.Encode(map[string]interface{}{"user_id": 123})
-	fmt.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
-}
+// 	// For debugging/example purposes, we generate and print
+// 	// a sample jwt token with claims `user_id:123` here:
+// 	_, tokenString, _ := tokenAuth.Encode(map[string]interface{}{"user_id": 123})
+// 	fmt.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
+// }
 
 func main() {
 
@@ -60,13 +59,12 @@ func main() {
 	// 	})
 	// })
 
-
-		r.Post("/add", addbooks)
-		r.Get("/read", getBooks)
-		r.Post("/edit", editbook)
-		r.Post("/delete", deletebook)
-		r.Post("/login", login)
-		r.Post("/signup", signup)
+	r.Post("/add", addbooks)
+	r.Get("/read", getBooks)
+	r.Post("/edit", editbook)
+	r.Post("/delete", deletebook)
+	r.Post("/login", login)
+	r.Post("/signup", signup)
 
 	// r.Group(func(r chi.Router) {
 	// 	r.Get("/public", public)
