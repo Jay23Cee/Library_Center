@@ -33,7 +33,8 @@ func main() {
 	r.Use(middleware.Recoverer)
 
 	r.Use(middleware.Timeout(60 * time.Second))
-
+	fileServer := http.FileServer(http.Dir("./build/"))
+	r.Handle("/*", http.StripPrefix("/", fileServer))
 	// Protected routes
 	r.Group(func(r chi.Router) {
 		// Seek, verify and validate JWT tokens
