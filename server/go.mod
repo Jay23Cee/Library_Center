@@ -9,14 +9,8 @@ require (
 )
 
 require (
-	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.0-20210816181553-5444fa50b93d // indirect
-	github.com/goccy/go-json v0.7.6 // indirect
-	github.com/lestrrat-go/backoff/v2 v2.0.8 // indirect
-	github.com/lestrrat-go/blackmagic v1.0.0 // indirect
-	github.com/lestrrat-go/httpcc v1.0.0 // indirect
-	github.com/lestrrat-go/iter v1.0.1 // indirect
-	github.com/lestrrat-go/jwx v1.2.6 // indirect
-	github.com/lestrrat-go/option v1.0.0 // indirect
+	github.com/stretchr/testify v1.7.0 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
 
 require (
@@ -33,7 +27,4 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 )
 
-require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/go-chi/jwtauth/v5 v5.0.2
-)
+require github.com/dgrijalva/jwt-go v3.2.0+incompatible
