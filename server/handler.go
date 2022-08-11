@@ -145,10 +145,10 @@ func addbooks(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	err = godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err = godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	jsonMap := make(map[string]Book)
@@ -241,10 +241,10 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	// load
-	err = godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err = godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
@@ -310,10 +310,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(body)
 	// load
-	err = godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err = godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
