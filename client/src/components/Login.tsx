@@ -7,9 +7,12 @@ import { add_book } from '../books/data_handler';
 import { UserLogin } from '../users/users';
 import { User_Login } from '../users/user_handler';
 import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginFailure, loginStart, loginSuccess } from '../redux/userSlice';
 
 
 const LoginDemo: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const userRef = useRef<HTMLDivElement>(null);
   const errRef = useRef<HTMLDivElement>(null);
@@ -25,19 +28,22 @@ useEffect(()=>{
 },[user,pwd])
 
   const onFinish = async (values: UserLogin) => {
+       dispatch(loginStart())
     try {
-      
-   
-    console.log('Success:', values);
+
+
+  
+    dispatch(loginSuccess(values.users.Email))
     // this.props.startNewBook(values)
-    console.log(values)
+
     var res = await User_Login(values)
-      console.log("this is the res in login")
+      console.log("this is the res in login", res)
     navigate("/admin")
   } catch (error) {
+    dispatch(loginFailure())
       setErrMsg("Email or Password are not correct")
   }
-   
+
 
 
   };

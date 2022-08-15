@@ -27,4 +27,8 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 )
 
-require github.com/dgrijalva/jwt-go v3.2.0+incompatible
+require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/go-chi/chi v1.5.4
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+)

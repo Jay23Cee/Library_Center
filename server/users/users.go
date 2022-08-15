@@ -1,16 +1,24 @@
 package users
 
-import (
-	"errors"
-	"fmt"
-
-	"golang.org/x/crypto/bcrypt"
-)
-
-type User struct {
+type SignupRequest struct {
+	Name     string `bson:"Name,omitempty"`
 	Email    string `bson:"Email,omitempty"`
 	Password string `bson:"Password,omitempty"`
+}
+
+
+type Userlogin struct {
+	Email    string `bson:"Email,omitempty"`
+	Password string `json:"-" bson:"Password"`
 	Remember bool   `bson:"Remember"`
+	ID       string `json:"_id,omitempty" bson:"_id,omitempty"`
+}
+
+type Users struct {
+	Email    string `bson:"Email,omitempty"`
+	Password string `json:"Password" bson:"Password"`
+	Remember bool   `bson:"Remember"`
+	ID       string `json:"_id,omitempty" bson:"_id,omitempty"`
 }
 
 type authUser struct {
@@ -18,37 +26,6 @@ type authUser struct {
 	PasswordHash string `bson:"Password,omitempty"`
 }
 
-var authUserDB = map[string]authUser{} // email => authUser{email,hash}
 
-type UserService struct {
-}
 
-func (UserService) createUser(newUser User) error {
-	_, ok := authUserDB[newUser.Email]
-	if !ok {
-		return errors.New("User already exist")
-	}
-	passwordHash, err := HashPassword(newUser.Password)
-	if err != nil {
-		return err
-	}
-	newAuthUser := authUser{
-		Email:        newUser.Email,
-		PasswordHash: passwordHash,
-	}
-	authUserDB[newAuthUser.Email] = newAuthUser
-	return nil
-}
 
-func HashPassword(password string) (string, error) {
-	hashedpassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return "", fmt.Errorf("failed to hash password: %w", err)
-	}
-	return string(hashedpassword), nil
-}
-
-var DefaultUserService userService
-
-type userService struct {
-}

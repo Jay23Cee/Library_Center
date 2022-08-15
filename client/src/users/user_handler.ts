@@ -17,6 +17,22 @@ export async function User_Login(values:UserLogin){
      return res
   }
 
+  export async function User_Logout(){
+
+      let link = (process.env.REACT_APP_URL as string);
+      console.log(link)
+      try {
+         
+          const res = await axios.get(link+"/logout");
+             
+    }catch (error) {
+        throw error
+      
+    }
+  }
+
+  
+
   export async function User_Signup(values:UserLogin){
     const headers = {
         'Content-Type': 'text/plain'

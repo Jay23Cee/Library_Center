@@ -3,57 +3,61 @@ import { Table, Input, InputNumber, Popconfirm, Form, Typography, Button,Space, 
 import {Book} from '../books/books';
 import {  delete_book, edit_book, getbooks } from  '../books/data_handler';
 import type { ColumnsType, ColumnType,TableProps } from 'antd/es/table';
-
+import { useSelector } from 'react-redux';
 
 
 export const GuestTable: React.FC<{}> = () =>{
+ 
 
- const  originData: Book[] =[];
-    
+
+  const  originData: Book[] =[];
+
+
     const EditableTable = () => {
+
       const [form] = Form.useForm();
       const [data, setData] = useState(originData);
       const [editingKey, setEditingKey] = useState('');
       const [searchText, setSearchText] = useState('');
       const [searchedColumn, setSearchedColumn] = useState('');
       const searchInput = useRef<InputRef>(null);
- 
-      
+
+
      useEffect(function effectFunction() {
         async function fetchBooks() {
            var data = await getbooks()
-           setData(data); 
-          
+           setData(data);
+
         }
         fetchBooks();
     }, []);
 
       const isEditing = (record: Book) => record.ID === editingKey;
       const isDeleting  = (record: Book) => record.ID === editingKey;
-    
-  
+
+
       const onEdit = (record: Partial<Book> & { ID: React.Key }) => {
         form.setFieldsValue({ Title: '', Author: '', Date: '', ...record });
         setEditingKey(record.ID);
-       
+
       };
-    
-    
-    
+
+
+
       const onDelete =async (record: Partial<Book> & { ID: React.Key }) => {
         setEditingKey(record.ID);
-      
+
         try {
           const row = (await form.validateFields()) as Book;
-    
+
           const newData = [...data];
           const index = newData.findIndex(item =>record.ID === item.ID);
 
           if (index > -1) {
-          
+
             const temp_book = {"book": newData[index]}
             const JSON_string = JSON.stringify(temp_book)
-            
+
            delete_book(JSON_string)
 
            const update= await getbooks()
@@ -61,7 +65,7 @@ export const GuestTable: React.FC<{}> = () =>{
            setData(update)
           // action.startEditBook(newData[index]);
            setEditingKey('');
-            
+
           } else {
             newData.push(row);
 
@@ -69,30 +73,30 @@ export const GuestTable: React.FC<{}> = () =>{
            setData(update)
            setData(update)
             setEditingKey('');
-           
+
           }
-      
+
         } catch (errInfo) {
           console.log('Validate Failed:', errInfo);
         }
-       
+
       };
-    
-     
-    
+
+
+
       const cancel = () => {
         setEditingKey('');
       };
-    
-    
-    
+
+
+
       const save = async (id: React.Key) => {
         try {
           const row = (await form.validateFields()) as Book;
-    
+
           const newData = [...data];
           const index = newData.findIndex(item => id === item.ID);
-      
+
           if (index > -1) {
             const item = newData[index];
             newData.splice(index, 1, {
@@ -101,13 +105,13 @@ export const GuestTable: React.FC<{}> = () =>{
             });
             const temp_book = {"book": newData[index]}
             const JSON_string = JSON.stringify(temp_book)
-            
-       
+
+
             edit_book(JSON_string)
             setData(newData);
             setEditingKey('')
           } else {
-            newData.push(row); 
+            newData.push(row);
             setData(newData);
             setEditingKey('');
           }
@@ -116,7 +120,7 @@ export const GuestTable: React.FC<{}> = () =>{
         }
       };
 
-    
+
       /**************************
        ******* Columns **********
        ******** of the *********
@@ -156,15 +160,15 @@ export const GuestTable: React.FC<{}> = () =>{
           editable: true,
         },
 
-    
+
       ];
-    
+
       const mergedColumns = columns.map(col => {
-          
+
           if (!col.editable) {
             return col;
           }
-          
+
           return {
             ...col,
             onCell: (record: Book) => ({
@@ -189,8 +193,8 @@ export const GuestTable: React.FC<{}> = () =>{
             }}
             bordered
             dataSource={data}
-            
-             
+
+
             columns={mergedColumns}
             rowClassName="editable-row"
             pagination={{
@@ -200,11 +204,11 @@ export const GuestTable: React.FC<{}> = () =>{
         </Form>
       );
     };
-    
+
 
     return (
       <div>
-        <EditableTable/>    
+        <EditableTable/>
       </div>
     );
   }
@@ -259,7 +263,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 
   return (
-    <td {...restProps}>
+  <td {...restProps}>
       {editing ? (
         <Form.Item
           name={dataIndex}
@@ -292,11 +296,11 @@ const onChange: TableProps<Book>['onChange'] = (pagination, filters, sorter, ext
 export const Bookintro = () =>{
 
   return(
-    
+
     <Breadcrumb style={{ margin: '16px 0' }}>
     <Breadcrumb.Item>Welcome to Library Center</Breadcrumb.Item>
     </Breadcrumb>
-   
+
   )
 }
 
