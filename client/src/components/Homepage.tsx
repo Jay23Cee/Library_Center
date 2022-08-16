@@ -11,7 +11,8 @@ import { GuestTable } from './GuestTable';
 import SignUp from './Signup';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../redux/userSlice';
-import { User_Logout } from '../users/user_handler';
+import { User_Logout } from '../controllers/user_handler';
+import NewBook from './Newbook';
 
 
 // ROUTER needs to be improve
@@ -45,9 +46,8 @@ return (
 
 
 {!user &&<Menu.Item key="1"><Link to="/" >Login</Link></Menu.Item>}
+{user &&<Menu.Item key="2"><Link to="/new">New</Link></Menu.Item>}
 
-
-{user && <Menu.Item key="2"><Link to="/new">New</Link></Menu.Item>}
 
 {user && <Menu.Item key="3"><Link to="/admin">Main</Link></Menu.Item>}
 
@@ -82,6 +82,7 @@ return (
 
 
 <Route path="/" element={<LoginDemo/>}/>
+
 </Routes>
 
 </div>

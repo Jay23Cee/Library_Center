@@ -1,4 +1,4 @@
-package main
+package book
 
 import (
 	"context"
@@ -9,7 +9,6 @@ import (
 	"os"
 	"time"
 
-	// "github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -24,18 +23,26 @@ func getURL() string {
 	return url
 }
 
-
-func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-
-	// Here get the login URL.
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
-
+func getLink() string {
 	// err := godotenv.Load()
 	// if err != nil {
 	// 	panic(err)
 	// }
+	link := os.Getenv("REACT_APP_CLIENT_URL")
+	// Here get the login URL.
+
+	return link
+}
+
+func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
+
+	link := getLink()
+	// Here get the login URL.
+
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	clientOptions := options.Client().ApplyURI(url)
@@ -50,9 +57,12 @@ func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
 }
 
 func GetBooks(w http.ResponseWriter, r *http.Request) {
+
 	mymap := make(map[int]Book)
 
 	client := makeconnection(w, r)
+
+	// users.GetUser(w, r)
 
 	col := client.Database("BookAPI").Collection("book")
 	var results []Book
@@ -70,7 +80,6 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 	count := 0
 
 	for _, result := range results {
-		fmt.Println(result.ID)
 		mymap[count] = result
 		count = count + 1
 	}
@@ -84,14 +93,14 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
 
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	link := getLink()
+	// Here get the login URL.
+
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	jsonMap := make(map[string]Book)
@@ -123,19 +132,28 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 }
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
+
+	link := getLink()
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	url := os.Getenv("REACT_APP_GO_URL")
+	clientOptions := options.Client().ApplyURI(url)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		panic(err)
+	}
+
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		panic(err)
 	}
-	// err = godotenv.Load()
-	// if err != nil {
-	// 	panic(err)
-	// }
 
-	url := os.Getenv("REACT_APP_GO_URL")
 	jsonMap := make(map[string]Book)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
@@ -146,16 +164,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	// err = godotenv.Load(".env")
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	clientOptions := options.Client().
-		ApplyURI(url)
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 
 		panic(err)
@@ -171,19 +180,19 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
+	link := getLink()
+	w.Header().Set("Access-Control-Allow-Origin", link)
+
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	jsonMap := make(map[string]Book)
 	body, err := ioutil.ReadAll(r.Body)
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	var book Book
 	book = jsonMap["book"]
 
-	// err = godotenv.Load(".env")
-	// if err != nil {
-	// 	panic(err)
-	// }
 	url := os.Getenv("REACT_APP_GO_URL")
 
 	clientOptions := options.Client().
@@ -211,8 +220,4 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("Updated %v Documents!\n", result.ModifiedCount)
 
-}
-
-func public(w http.ResponseWriter, r *http.Request) {
-	return
 }

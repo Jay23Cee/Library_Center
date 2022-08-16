@@ -24,18 +24,20 @@ func makecookie(w http.ResponseWriter, r *http.Request, result Users) {
 		return
 	}
 
-	cookie := &http.Cookie{
+	cookie := http.Cookie{
 		Name:     "Token",
 		Value:    tokenString,
 		Expires:  time.Now().Add(time.Minute * 5),
+		Path:     "/",
 		HttpOnly: true,
-		Path:     "/", //
+		Secure:   false,
+		
 	}
 
 	// Finally, we set the client cookie for "token" as the JWT we just generated
 	// we also set an expiry time which is the same as the token itself
-	http.SetCookie(w, cookie)
-	r.AddCookie(cookie)
+	http.SetCookie(w, &cookie)
+	r.AddCookie(&cookie)
 }
 
 func validateJWT(next func(w http.ResponseWriter, r *http.Request)) http.Handler {
@@ -67,4 +69,3 @@ func validateJWT(next func(w http.ResponseWriter, r *http.Request)) http.Handler
 	})
 
 }
-

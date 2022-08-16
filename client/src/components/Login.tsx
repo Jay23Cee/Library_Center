@@ -3,9 +3,9 @@ import form from 'antd/lib/form';
 import React from 'react';
 import {useRef, useState,useEffect} from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { add_book } from '../books/data_handler';
-import { UserLogin } from '../users/users';
-import { User_Login } from '../users/user_handler';
+import { add_book } from '../controllers/book_handler';
+import { UserLogin } from '../models/users';
+import { User_Login } from '../controllers/user_handler';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginFailure, loginStart, loginSuccess } from '../redux/userSlice';
@@ -68,7 +68,14 @@ useEffect(()=>{
       <Form.Item
         label="Email"
         name={['users', 'Email']}
-        rules={[{ required: true, message: 'Please input your Email!' }]}
+        rules={[
+          {
+            type: 'email',
+            message: 'The input is not valid E-mail!',
+          },
+          { required: true, message: 'Please input your Email!', 
+        },
+        ]}
         >
         <Input />
       </Form.Item>
@@ -76,6 +83,7 @@ useEffect(()=>{
       <Form.Item
         label="Password"
         name={['users', 'Password']}
+        
         rules={[{ required: true, message: 'Please input your password!' }]}
         >
         <Input.Password />

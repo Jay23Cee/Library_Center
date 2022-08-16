@@ -1,9 +1,9 @@
 import { Form, Input, Menu, Breadcrumb, Button } from 'antd';
 import React from 'react';
 import {message} from "antd"
-import {Book} from '../books/books';
+import {Book} from '../models/books';
 import {Link} from "react-router-dom";
-import { add_book } from '../books/data_handler';
+import { add_book } from '../controllers/book_handler';
 import { formatTimeStr } from 'antd/lib/statistic/utils';
 import { useSelector } from 'react-redux';
 
@@ -62,9 +62,14 @@ const NewBook=()=>{
         const JSON_string = JSON.stringify(values)
         // this.props.startNewBook(values)
         console.log(JSON_string)
-        await add_book(JSON_string, values)
+        try {
+           await add_book(JSON_string, values)
         message.success("Book has been added")
         form.resetFields();
+        } catch (error) {
+          console.log(error)
+        }
+       
       }
 
 
@@ -92,6 +97,7 @@ const NewBook=()=>{
         </Button>
       </Form.Item>
     </Form>    }
+ 
   </div>
 
     );

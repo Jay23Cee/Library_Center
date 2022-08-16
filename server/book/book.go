@@ -1,4 +1,4 @@
-package main
+package book
 
 type Book struct {
 	Title     string `bson:"Title,omitempty"`

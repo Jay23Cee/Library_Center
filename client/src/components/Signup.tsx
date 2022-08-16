@@ -15,8 +15,8 @@ import {
   Upload,
 } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { UserSignUp } from '../users/users';
-import { User_Signup } from '../users/user_handler';
+import { UserSignUp } from '../models/users';
+import { User_Signup } from '../controllers/user_handler';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -24,6 +24,21 @@ const { TextArea } = Input;
 const SignUp = () => {
   const navigate = useNavigate();
 
+
+ const  validateEmail=(email: string)=>{
+    const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+    const result = pattern.test(email);
+    if(result===true){
+      // this.setState({
+      //   emailError:false,
+      //   email:email
+      // })
+    } else{
+      // this.setState({
+      //   emailError:true
+      // })
+    }
+  }
   const onFinish = async (values: UserSignUp) => {
     try {
       
@@ -56,11 +71,24 @@ const SignUp = () => {
         <Form.Item label="Name" name={['users', 'Name']}>
           <Input />
         </Form.Item>
-        <Form.Item label="Email" name={['users', 'Email']}>
+        <Form.Item 
+        label="Email" 
+        name={['users', 'Email']}   
+        rules={[
+          {
+            type: 'email',
+            message: 'The input is not valid E-mail!',
+          },
+          { required: true, message: 'Please input your Email!', 
+        },
+        ]}
+     
+
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item label="Password" name={['users', 'Password']}>
+        <Form.Item label="Password" name={['users', 'Password'] }>
           <Input />
         </Form.Item>
        

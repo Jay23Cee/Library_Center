@@ -10,12 +10,23 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	// "github.com/joho/godotenv"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+func getLink() string {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+	link := os.Getenv("REACT_APP_CLIENT_URL")
+	// Here get the login URL.
+
+	return link
+}
 
 func getKey() []byte {
 	key := os.Getenv("REACT_APP_GO_SECRET")
@@ -76,24 +87,19 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write([]byte(e))
 
-
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	link := getLink()
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		panic(err)
 	}
-
-	// // load
-	// err = godotenv.Load()
-	// if err != nil {
-	// 	panic(err)
-	// }
 
 	// get
 	url := getURL()
@@ -148,13 +154,14 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	makecookie(w, r, result)
 
-	GetUser(w, r)
 	fmt.Fprintf(w, "\nsucess")
-
+	return
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	link := getLink()
+	w.Header().Set("Access-Control-Allow-Origin", link)
+
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
 	// For JWT, log out is easy. Just destroy the cookie
@@ -179,10 +186,10 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	// // load
-	// err = godotenv.Load()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	err = godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
@@ -196,17 +203,12 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Fprintf(w, "\nThis is body  %v", &jsonMap)
+
 	users := jsonMap["users"]
 
 	if err != nil {
 		panic(err)
 	}
-
-	// err = godotenv.Load(".env")
-	// if err != nil {
-	// 	panic(err)
-	// }
 
 	clientOptions := options.Client().
 		ApplyURI(url)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect ,useRef,} from 'react';
 import { Table, Input, InputNumber, Popconfirm, Form, Typography, Button,Space, InputRef, Breadcrumb} from 'antd';
-import {Book} from '../books/books';
-import {  delete_book, edit_book, getbooks } from  '../books/data_handler';
+import {Book} from '../models/books';
+import {  delete_book, edit_book, getbooks } from  '../controllers/book_handler';
 import type { ColumnsType, ColumnType,TableProps } from 'antd/es/table';
 import { useSelector } from 'react-redux';
 
