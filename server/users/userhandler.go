@@ -150,7 +150,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// makecookie(w, r, result)
+	makecookie(w, r, result)
 
 	fmt.Fprintf(w, "\nsucess")
 	return
