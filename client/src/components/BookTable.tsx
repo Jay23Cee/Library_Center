@@ -4,7 +4,7 @@ import {Book} from '../models/books';
 import {  delete_book, edit_book, getbooks } from  '../controllers/book_handler';
 import type { ColumnsType, ColumnType,TableProps } from 'antd/es/table';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { loginSuccess, logOut } from '../redux/userSlice';
 import { Check_Login } from '../controllers/user_handler';
 
@@ -23,6 +23,7 @@ export interface BookTableProps{
 export const BookTable: React.FC<{}> = () =>{
 const user  = useSelector((state) => state.user.currentUser);
 const dispatch = useDispatch();
+const navigate = useNavigate();
 
  const  originData: Book[] =[];
 
@@ -43,6 +44,7 @@ const dispatch = useDispatch();
             dispatch(loginSuccess(token.Email))
           }else{
             dispatch(logOut())
+            navigate("/")
             
             
           }
@@ -57,7 +59,7 @@ const dispatch = useDispatch();
 
      useEffect(function effectFunction() {
         async function fetchBooks() {
-        // await GetCookie()
+         await GetCookie()
            var data = await getbooks()
            setData(data);
 

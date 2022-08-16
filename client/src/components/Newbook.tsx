@@ -2,7 +2,7 @@ import { Form, Input, Menu, Breadcrumb, Button } from 'antd';
 import React, { useEffect } from 'react';
 import {message} from "antd"
 import {Book} from '../models/books';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { add_book } from '../controllers/book_handler';
 import { formatTimeStr } from 'antd/lib/statistic/utils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,7 +57,7 @@ const validateMessages = {
 
 const NewBook=()=>{
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   async function GetCookie() {
     try {
      
@@ -66,6 +66,7 @@ const NewBook=()=>{
         dispatch(loginSuccess(token.Email))
       }else{
         dispatch(logOut())
+        navigate("/")
       }
       
 
