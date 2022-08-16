@@ -31,7 +31,6 @@ func makecookie(w http.ResponseWriter, r *http.Request, result Users) {
 		Path:     "/",
 		HttpOnly: true,
 		Secure:   false,
-		
 	}
 
 	// Finally, we set the client cookie for "token" as the JWT we just generated

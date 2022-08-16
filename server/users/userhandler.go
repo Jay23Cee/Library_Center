@@ -10,17 +10,22 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+func devops() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func getLink() string {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	devops()
 	link := os.Getenv("REACT_APP_CLIENT_URL")
 	// Here get the login URL.
 
@@ -38,10 +43,26 @@ func getURL() string {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
+	devops()
+	var user Userlogin
+	link := getLink()
+	// Here get the login URL.
+
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	cookieName := "Token"
 	cookie, err := r.Cookie(cookieName)
 	if err != nil {
-		fmt.Printf("Get cookie %s error: %v\n", cookieName, err)
+
+		e, err := json.Marshal(user)
+		if err != nil {
+			panic(err)
+		}
+		w.Write([]byte(e))
+		return
 	} else {
 		fmt.Printf("Get cookie %s=%s\n", cookieName, cookie.Value)
 	}
@@ -59,7 +80,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	claims := token.Claims.(*jwt.StandardClaims)
 
-	var user Users
 	url := getURL()
 	clientOptions := options.Client().ApplyURI(url)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -157,6 +177,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 
@@ -183,11 +204,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	// // load
-	// err = godotenv.Load()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	devops()
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")

@@ -33,11 +33,11 @@ useEffect(()=>{
 
 
   
-    dispatch(loginSuccess(values.users.Email))
-    // this.props.startNewBook(values)
-
-    var res = await User_Login(values)
-      console.log("this is the res in login", res)
+      // this.props.startNewBook(values)
+      
+      await User_Login(values)
+      dispatch(loginSuccess(values.users.Email))
+      
     navigate("/admin")
   } catch (error) {
     dispatch(loginFailure())

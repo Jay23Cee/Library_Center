@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UserLogin } from "../models/users";
+import { UserLogin, UsersLogin } from "../models/users";
 
 export async function User_Login(values:UserLogin){
     const headers = {
@@ -48,4 +48,22 @@ export async function User_Login(values:UserLogin){
      });
 
      return res
+  }
+
+  export async function Check_Login(){
+    const headers = {
+        'Content-Type': 'text/plain',
+        
+      };
+      let link = (process.env.REACT_APP_URL as string);
+      
+      let url = link +`/user`
+      const {data} = await axios.get(url,{'withCredentials': true ,headers});
+  
+      let User = JSON.stringify(data)
+      let parse:UserLogin = JSON.parse(User)
+    //  var len =  Object.keys(data).length
+      console.log(parse)
+
+     return Promise.resolve(parse);
   }

@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,11 +23,15 @@ func getURL() string {
 	return url
 }
 
+func devops() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func getLink() string {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	devops()
 	link := os.Getenv("REACT_APP_CLIENT_URL")
 	// Here get the login URL.
 
@@ -35,7 +39,7 @@ func getLink() string {
 }
 
 func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-
+	devops()
 	link := getLink()
 	// Here get the login URL.
 
@@ -93,7 +97,7 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-
+	devops()
 	link := getLink()
 	// Here get the login URL.
 
@@ -132,7 +136,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 }
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
-
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -180,6 +184,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func Editbook(w http.ResponseWriter, r *http.Request) {
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 

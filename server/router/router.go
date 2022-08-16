@@ -13,7 +13,6 @@ import (
 func Connect_router() *chi.Mux {
 	r := chi.NewRouter()
 
-
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
@@ -30,7 +29,7 @@ func Connect_router() *chi.Mux {
 	r.Post("/delete", book.Deletebook)
 	r.Post("/login", users.Login)
 	r.Post("/signup", users.Signup)
-	r.Post("/user", users.GetUser)
+	r.Get("/user", users.GetUser)
 	r.Get("/logout", users.Logout)
 
 	return r

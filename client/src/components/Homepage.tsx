@@ -1,5 +1,5 @@
 import { Layout, Menu, Breadcrumb } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../App.scss'
 import 'antd/dist/antd.min.css';
 import BookTable, { Bookintro } from './BookTable'
@@ -10,10 +10,10 @@ import LoginDemo from './Login';
 import { GuestTable } from './GuestTable';
 import SignUp from './Signup';
 import { useDispatch, useSelector } from 'react-redux';
-import { logOut } from '../redux/userSlice';
-import { User_Logout } from '../controllers/user_handler';
+import { loginSuccess, logOut } from '../redux/userSlice';
+import { Check_Login, User_Login, User_Logout } from '../controllers/user_handler';
 import NewBook from './Newbook';
-
+import { UserLogin } from '../models/users';
 
 // ROUTER needs to be improve
 const { Header, Content, Footer } = Layout;
@@ -22,8 +22,33 @@ const Homepage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    async function GetCookie() {
+      try {
+       
+        var token = await Check_Login()
+        if (token.Email){
+          dispatch(loginSuccess(token.Email))
+        }
+        
+
+
+        
+      } catch (error) {
+          console.error(error)
+      }
+    }
+
+    
 const user = useSelector((state) => state.user.currentUser);
 console.log(user)
+
+useEffect(function effectFunction() {
+  async function fetchUser() {
+    await GetCookie()
+
+  }
+  fetchUser();
+}, []);
 
 const logout = async () => {
     // if used in more components, this should be in context 

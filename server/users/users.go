@@ -6,7 +6,6 @@ type SignupRequest struct {
 	Password string `bson:"Password,omitempty"`
 }
 
-
 type Userlogin struct {
 	Email    string `bson:"Email,omitempty"`
 	Password string `json:"-" bson:"Password"`
@@ -25,7 +24,3 @@ type authUser struct {
 	Email        string `bson:"Email,omitempty"`
 	PasswordHash string `bson:"Password,omitempty"`
 }
-
-
-
-
