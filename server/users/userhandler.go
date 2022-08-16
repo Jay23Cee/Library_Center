@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,10 +17,10 @@ import (
 )
 
 func getLink() string {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 	link := os.Getenv("REACT_APP_CLIENT_URL")
 	// Here get the login URL.
 
@@ -86,7 +85,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	w.Write([]byte(e))
-
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -186,10 +184,10 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	// // load
-	err = godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
+	// err = godotenv.Load()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
