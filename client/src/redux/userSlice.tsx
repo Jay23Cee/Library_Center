@@ -2,6 +2,7 @@
 
          const initialState = {
             currentUser: null,
+            login:false,
             loading: false,
             error: false,
          }
@@ -12,18 +13,22 @@
             reducers: {
                 loginStart: (state) => {
                     state.loading = true;
+                    state.login = false;
                 },
                 loginSuccess: (state, action) => {
                     state.currentUser = action.payload;
                     state.loading = false
+                    state.login = true
                 },
                 loginFailure: (state) => {
                     state.error = true;
                     state.loading = false
+                    state.login = false
                 },
                 logOut:(state) =>{
                     state.loading=true;
                     state.currentUser = null
+                    state.login=false
                 }
             }
          })

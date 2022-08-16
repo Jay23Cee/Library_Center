@@ -180,18 +180,20 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
-
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	// For JWT, log out is easy. Just destroy the cookie
 
 	// see https://golang.org/pkg/net/http/#Cookie
 	// Setting MaxAge<0 means delete cookie now.
 
 	c := http.Cookie{
-		Name:   "token",
+		Name: "Token",
+
 		MaxAge: -1}
 	http.SetCookie(w, &c)
+	r.AddCookie(&c)
 
 	w.Write([]byte("Old cookie deleted. Logged out!\n"))
 }
@@ -248,19 +250,5 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	fmt.Fprintf(w, "\nBook has been added %v", result)
-
-}
-func createJWTToken() (string, error) {
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-
-	claims["exp"] = time.Now().Add(time.Hour).Unix()
-	SECRET := getKey()
-	tokenStr, err := token.SignedString(SECRET)
-	if err != nil {
-		return "", err
-	}
-
-	return tokenStr, nil
 
 }

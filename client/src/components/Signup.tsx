@@ -47,7 +47,7 @@ const SignUp = () => {
     // this.props.startNewBook(values)
     console.log(values)
     var res = await User_Signup(values)
-      console.log("this is the res in login")
+      console.log("this is the res in login", res)
     navigate("/")
   } catch (error) {
       console.log(error)

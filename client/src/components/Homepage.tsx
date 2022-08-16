@@ -29,6 +29,8 @@ const Homepage = () => {
         var token = await Check_Login()
         if (token.Email){
           dispatch(loginSuccess(token.Email))
+        }else{
+          dispatch(logOut())
         }
         
 
@@ -45,7 +47,7 @@ console.log(user)
 
 useEffect(function effectFunction() {
   async function fetchUser() {
-    await GetCookie()
+   await GetCookie()
 
   }
   fetchUser();
@@ -73,12 +75,11 @@ return (
 
 
 {!user &&<Menu.Item key="1"><Link to="/" >Login</Link></Menu.Item>}
-{user &&<Menu.Item key="2"><Link to="/new">New</Link></Menu.Item>}
-
-
-{user && <Menu.Item key="3"><Link to="/admin">Main</Link></Menu.Item>}
-
 {!user && <Menu.Item key="4"><Link to="/signup">Sign Up</Link></Menu.Item>}
+
+
+{user &&<Menu.Item key="2"><Link to="/new">New</Link></Menu.Item>}
+{user &&<Menu.Item key="3"><Link to="/admin">Main</Link></Menu.Item>}
 {user && <Menu.Item key="5"><span onClick={logout}>Logout</span></Menu.Item>}
 
 
@@ -105,9 +106,9 @@ return (
 <Routes>
 
 
-<Route path="/admin" element={  <ProtectedRoutes><BookTable/></ProtectedRoutes>}/>
-<Route path="/guest" element={<ProtectedRoutes><GuestTable/></ProtectedRoutes>}/>
-<Route path="/New" element={<ProtectedRoutes><Newform/></ProtectedRoutes>}/>
+<Route path="/admin" element={ <BookTable/>}/>
+<Route path="/guest" element={<GuestTable/>}/>
+<Route path="/New" element={<Newform/>}/>
 <Route path="/signup" element={<SignUp/>}/>
 <Route path="/" element={<LoginDemo/>}/>
 

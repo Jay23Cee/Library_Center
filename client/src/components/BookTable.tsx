@@ -3,8 +3,10 @@ import { Table, Input, InputNumber, Popconfirm, Form, Typography, Button,Space, 
 import {Book} from '../models/books';
 import {  delete_book, edit_book, getbooks } from  '../controllers/book_handler';
 import type { ColumnsType, ColumnType,TableProps } from 'antd/es/table';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { loginSuccess, logOut } from '../redux/userSlice';
+import { Check_Login } from '../controllers/user_handler';
 
 export interface BookTableProps{
   Title: string;
@@ -20,7 +22,8 @@ export interface BookTableProps{
 
 export const BookTable: React.FC<{}> = () =>{
 const user  = useSelector((state) => state.user.currentUser);
-console.log(user,' from book table')
+const dispatch = useDispatch();
+
  const  originData: Book[] =[];
 
     const EditableTable = () => {
@@ -32,8 +35,29 @@ console.log(user,' from book table')
       const searchInput = useRef<InputRef>(null);
 
 
+      async function GetCookie() {
+        try {
+         
+          var token = await Check_Login()
+          if (token.Email){
+            dispatch(loginSuccess(token.Email))
+          }else{
+            dispatch(logOut())
+            
+            
+          }
+          
+  
+  
+          
+        } catch (error) {
+            console.error(error)
+        }
+      }
+
      useEffect(function effectFunction() {
         async function fetchBooks() {
+        // await GetCookie()
            var data = await getbooks()
            setData(data);
 
@@ -345,3 +369,7 @@ export const Bookintro = () =>{
 
 
 export default BookTable
+function dispatch(arg0: any) {
+  throw new Error('Function not implemented.');
+}
+

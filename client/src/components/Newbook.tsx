@@ -1,11 +1,13 @@
 import { Form, Input, Menu, Breadcrumb, Button } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {message} from "antd"
 import {Book} from '../models/books';
 import {Link} from "react-router-dom";
 import { add_book } from '../controllers/book_handler';
 import { formatTimeStr } from 'antd/lib/statistic/utils';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess, logOut } from '../redux/userSlice';
+import { Check_Login } from '../controllers/user_handler';
 
 
 const layout = {
@@ -54,6 +56,34 @@ const validateMessages = {
 
 
 const NewBook=()=>{
+  const dispatch = useDispatch();
+
+  async function GetCookie() {
+    try {
+     
+      var token = await Check_Login()
+      if (token.Email){
+        dispatch(loginSuccess(token.Email))
+      }else{
+        dispatch(logOut())
+      }
+      
+
+
+      
+    } catch (error) {
+        console.error(error)
+    }
+  }
+
+  useEffect(function effectFunction() {
+    async function fetchUser() {
+     await GetCookie()
+    }
+    fetchUser();
+}, []);
+
+
   const user = useSelector((state) => state.user.currentUser);
      const [form] = Form.useForm()
 
@@ -104,3 +134,7 @@ const NewBook=()=>{
   }
 
 export default NewBook
+
+function dispatch(arg0: { payload: any; type: string; }) {
+  throw new Error('Function not implemented.');
+}
