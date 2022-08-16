@@ -14,6 +14,7 @@ import { loginSuccess, logOut } from '../redux/userSlice';
 import { Check_Login, User_Login, User_Logout } from '../controllers/user_handler';
 import NewBook from './Newbook';
 import { UserLogin } from '../models/users';
+import ProtectedRoutes from '../ProtectedRoutes';
 
 // ROUTER needs to be improve
 const { Header, Content, Footer } = Layout;
@@ -70,6 +71,7 @@ return (
 <Menu theme="dark" mode="horizontal" >
 
 
+
 {!user &&<Menu.Item key="1"><Link to="/" >Login</Link></Menu.Item>}
 {user &&<Menu.Item key="2"><Link to="/new">New</Link></Menu.Item>}
 
@@ -78,6 +80,7 @@ return (
 
 {!user && <Menu.Item key="4"><Link to="/signup">Sign Up</Link></Menu.Item>}
 {user && <Menu.Item key="5"><span onClick={logout}>Logout</span></Menu.Item>}
+
 
 
 </Menu>
@@ -100,12 +103,12 @@ return (
 
 <div className="site-layout-content">
 <Routes>
-<Route path="/admin" element={<BookTable/>}/>
-<Route path="/guest" element={<GuestTable/>}/>
-<Route path="/New" element={<Newform/>}/>
+
+
+<Route path="/admin" element={  <ProtectedRoutes><BookTable/></ProtectedRoutes>}/>
+<Route path="/guest" element={<ProtectedRoutes><GuestTable/></ProtectedRoutes>}/>
+<Route path="/New" element={<ProtectedRoutes><Newform/></ProtectedRoutes>}/>
 <Route path="/signup" element={<SignUp/>}/>
-
-
 <Route path="/" element={<LoginDemo/>}/>
 
 </Routes>

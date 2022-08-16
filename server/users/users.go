@@ -10,7 +10,7 @@ type Userlogin struct {
 	Email    string `bson:"Email,omitempty"`
 	Password string `json:"-" bson:"Password"`
 	Remember bool   `bson:"Remember"`
-	ID       string `json:"_id,omitempty" bson:"_id,omitempty"`
+	ID       string `json:"-" bson:"_id,omitempty"`
 }
 
 type Users struct {

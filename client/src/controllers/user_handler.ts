@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UserLogin, UsersLogin } from "../models/users";
+import { UserLogin } from "../models/users";
 
 export async function User_Login(values:UserLogin){
     const headers = {
