@@ -19,8 +19,8 @@ import axios from "axios"
     let link = (process.env.REACT_APP_URL as string);
     console.log(link)
     try {
-       
-        const { data } = await axios.get(link+"/read", headers);
+      let url = link +`/api/read`
+        const { data } = await axios.get(url, headers);
         var len =  Object.keys(data).length
        
         for (let i = 0; i < len; i++) {
@@ -45,7 +45,7 @@ import axios from "axios"
       
     };
     let link = (process.env.REACT_APP_URL as string); 
-    let url = link +`/delete`
+    let url = link +`/api/delete`
     
    const res= axios.post(url,JSON_string,{'withCredentials': true ,headers}).then(response=>{
     console.log("Sucess ========>,", response.data)
@@ -64,7 +64,7 @@ import axios from "axios"
         'Content-Type': 'text/plain',
       };
       let link = (process.env.REACT_APP_URL as string);
-      let url = link +`/edit`
+      let url = link +`/api/edit`
      const res= axios.post(url,JSON_string,{'withCredentials': true ,headers}).then(response=>{
       console.log("Sucess ========>,")
      }).catch(error=>{
@@ -79,7 +79,7 @@ export async function add_book(JSON_string:string, values:Book) {
    'Content-Type': 'text/plain',
   };
       let link =  (process.env.REACT_APP_URL as string); 
-     let url = link+`/add`
+     let url = link+`/api/add`
 
      const res= await axios.post(url,values, { 'withCredentials': true ,headers}).then(response=>{
        console.log("Sucess ========>,",JSON_string)

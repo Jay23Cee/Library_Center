@@ -22,14 +22,14 @@ func Connect_router() *chi.Mux {
 	fileServer := http.FileServer(http.Dir("./build/"))
 	r.Handle("/*", http.StripPrefix("/", fileServer))
 
-	r.Post("/add", api.Addbooks)
-	r.Post("/edit", api.Editbook)
-	r.Get("/read", api.GetBooks)
-	r.Post("/delete", api.Deletebook)
-	r.Post("/login", api.Login)
-	r.Post("/signup", api.Signup)
-	r.Get("/user", api.GetUser)
-	r.Get("/logout", api.Logout)
+	r.Post("/api/add", api.Addbooks)
+	r.Post("/api/edit", api.Editbook)
+	r.Get("/api/read", api.GetBooks)
+	r.Post("/api/delete", api.Deletebook)
+	r.Post("/api/login", api.Login)
+	r.Post("/api/signup", api.Signup)
+	r.Get("/api/user", api.GetUser)
+	r.Get("/api/logout", api.Logout)
 
 	return r
 }

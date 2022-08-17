@@ -7,7 +7,7 @@ export async function User_Login(values: UserLogin) {
   };
   const JSON_string = JSON.stringify(values);
   let link = process.env.REACT_APP_URL as string;
-  let url = link + `/login`;
+  let url = link + `/api/login`;
   const res = axios
     .post(url, JSON_string, { withCredentials: true, headers })
     .then((response) => {
@@ -27,7 +27,7 @@ export async function User_Logout() {
 
   let link = process.env.REACT_APP_URL as string;
 
-  let url = link + `/logout`;
+  let url = link + `/api/logout`;
 
   try {
     const res = await axios.get(url, { withCredentials: true, headers });
@@ -43,7 +43,7 @@ export async function User_Signup(values: UserLogin) {
   };
   const JSON_string = JSON.stringify(values);
   let link = process.env.REACT_APP_URL as string;
-  let url = link + `/signup`;
+  let url = link + `/api/signup`;
   const res = axios
     .post(url, JSON_string, { headers })
     .then((response) => {
@@ -63,11 +63,11 @@ export async function Check_Login() {
   };
   let link = process.env.REACT_APP_URL as string;
 
-  let url = link + `/user`;
+  let url = link + `/api/user`;
   const { data } = await axios.get(url, { withCredentials: true, headers });
-
+  console.log(data)
   let User = JSON.stringify(data);
   let parse: UserLogin = JSON.parse(User);
-
+console.log(parse)
   return Promise.resolve(parse);
 }
