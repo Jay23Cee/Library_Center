@@ -10,6 +10,7 @@ import { loginSuccess, logOut } from '../redux/userSlice';
 import { Check_Login } from '../controllers/user_handler';
 
 
+
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -58,28 +59,11 @@ const validateMessages = {
 const NewBook=()=>{
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  async function GetCookie() {
-    try {
-     
-      var token = await Check_Login()
-      if (token.Email){
-        dispatch(loginSuccess(token.Email))
-      }else{
-        dispatch(logOut())
-        navigate("/")
-      }
-      
 
-
-      
-    } catch (error) {
-        console.error(error)
-    }
-  }
 
   useEffect(function effectFunction() {
     async function fetchUser() {
-     await GetCookie()
+    
     }
     fetchUser();
 }, []);

@@ -8,6 +8,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { loginSuccess, logOut } from '../redux/userSlice';
 import { Check_Login } from '../controllers/user_handler';
 
+
 export interface BookTableProps{
   Title: string;
   Author: string;
@@ -36,30 +37,11 @@ const navigate = useNavigate();
       const searchInput = useRef<InputRef>(null);
 
 
-      async function GetCookie() {
-        try {
-         
-          var token = await Check_Login()
-          if (token.Email){
-            dispatch(loginSuccess(token.Email))
-          }else{
-            dispatch(logOut())
-            navigate("/")
-            
-            
-          }
-          
-  
-  
-          
-        } catch (error) {
-            console.error(error)
-        }
-      }
+
 
      useEffect(function effectFunction() {
         async function fetchBooks() {
-         await GetCookie()
+         
            var data = await getbooks()
            setData(data);
 
