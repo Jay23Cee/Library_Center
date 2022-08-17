@@ -1,7 +1,8 @@
 package utils
 
 import (
-	"bookapi/components"
+	"bookapi/models"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -13,7 +14,7 @@ func getKey() []byte {
 	key := os.Getenv("REACT_APP_GO_SECRET")
 	return []byte(key)
 }
-func Makecookie(w http.ResponseWriter, r *http.Request, result components.Users) {
+func Makecookie(w http.ResponseWriter, r *http.Request, result models.Users) {
 	claims := jwt.StandardClaims{
 		Issuer:    result.ID,
 		ExpiresAt: time.Now().Add(time.Minute * 5).Unix(), //1 day
@@ -72,5 +73,37 @@ func validateJWT(next func(w http.ResponseWriter, r *http.Request)) http.Handler
 			w.Write([]byte("not authorized"))
 		}
 	})
+
+}
+
+func Getcookie(w http.ResponseWriter, r *http.Request) (*jwt.Token, error) {
+	// var user models.Userlogin
+	cookieName := "Token"
+	cookie, err := r.Cookie(cookieName)
+	if err != nil {
+
+		// e, err := json.Marshal(user)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		// Token doesn't exist and there's no error
+		//	w.Write([]byte(e))
+		return nil, nil
+	} else {
+		fmt.Printf("Get cookie %s=%s\n", cookieName, cookie.Value)
+	}
+
+	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		jwtKey := getKey()
+		return jwtKey, nil
+	})
+
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		fmt.Fprintf(w, "Unauthenticated")
+
+	}
+
+	return token, nil
 
 }

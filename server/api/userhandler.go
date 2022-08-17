@@ -1,7 +1,7 @@
 package api
 
 import (
-	"bookapi/components"
+	"bookapi/models"
 	"bookapi/utils"
 	"context"
 	"encoding/json"
@@ -46,7 +46,7 @@ func getURL() string {
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	devops()
-	var user components.Userlogin
+	var user models.Userlogin
 	link := getLink()
 	// Here get the login URL.
 
@@ -55,31 +55,13 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	cookieName := "Token"
-	cookie, err := r.Cookie(cookieName)
-	if err != nil {
-
-		e, err := json.Marshal(user)
-		if err != nil {
-			panic(err)
-		}
-		w.Write([]byte(e))
+	token, err := utils.Getcookie(w, r)
+	if  err !=nil{
+		panic(err)
+	}
+	if token ==nil{
 		return
-	} else {
-		fmt.Printf("Get cookie %s=%s\n", cookieName, cookie.Value)
 	}
-
-	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
-		jwtKey := getKey()
-		return jwtKey, nil
-	})
-
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		fmt.Fprintf(w, "Unauthenticated")
-
-	}
-
 	claims := token.Claims.(*jwt.StandardClaims)
 
 	url := getURL()
@@ -124,7 +106,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// get
 	url := getURL()
 
-	jsonMap := make(map[string]components.Users)
+	jsonMap := make(map[string]models.Users)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	if err != nil {
@@ -146,7 +128,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	collection := client.Database("BookAPI").Collection("users")
-	user := &components.Users{
+	user := &models.Users{
 
 		Email:    JSONusers.Email,
 		Password: JSONusers.Password,
@@ -154,7 +136,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	doc := bson.D{{"Email", user.Email}}
 
-	var result components.Users
+	var result models.Users
 	err = collection.FindOne(context.TODO(), doc).Decode(&result)
 
 	if err != nil {
@@ -216,7 +198,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "error")
 	}
 
-	jsonMap := make(map[string]components.SignupRequest)
+	jsonMap := make(map[string]models.SignupRequest)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	if err != nil {
@@ -241,7 +223,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	collection := client.Database("BookAPI").Collection("users")
 
 	hash, err := utils.HashPassword(users.Password)
-	user := &components.SignupRequest{
+	user := &models.SignupRequest{
 		Name:     users.Name,
 		Email:    users.Email,
 		Password: string(hash),

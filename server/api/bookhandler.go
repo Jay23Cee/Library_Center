@@ -1,7 +1,7 @@
 package api
 
 import (
-	"bookapi/components"
+	"bookapi/models"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -43,14 +43,14 @@ func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
 
 func GetBooks(w http.ResponseWriter, r *http.Request) {
 
-	mymap := make(map[int]components.Book)
+	mymap := make(map[int]models.Book)
 
 	client := makeconnection(w, r)
 
 	// users.GetUser(w, r)
 
 	col := client.Database("BookAPI").Collection("book")
-	var results []components.Book
+	var results []models.Book
 
 	// Get a MongoDB document using the FindOne() method
 	cursor, err := col.Find(context.TODO(), bson.D{})
@@ -88,10 +88,10 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	url := os.Getenv("REACT_APP_GO_URL")
-	jsonMap := make(map[string]components.Book)
+	jsonMap := make(map[string]models.Book)
 	body, err := ioutil.ReadAll(r.Body)
 	err = json.Unmarshal([]byte(body), &jsonMap)
-	var temp components.Book
+	var temp models.Book
 	temp = jsonMap["book"]
 
 	clientOptions := options.Client().ApplyURI(url)
@@ -139,7 +139,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	jsonMap := make(map[string]components.Book)
+	jsonMap := make(map[string]models.Book)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	book := jsonMap["book"]
@@ -173,10 +173,10 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	jsonMap := make(map[string]components.Book)
+	jsonMap := make(map[string]models.Book)
 	body, err := ioutil.ReadAll(r.Body)
 	err = json.Unmarshal([]byte(body), &jsonMap)
-	var book components.Book
+	var book models.Book
 	book = jsonMap["book"]
 
 	url := os.Getenv("REACT_APP_GO_URL")
