@@ -1,13 +1,19 @@
-package users
+package utils
 
 import (
+	"bookapi/components"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
-func makecookie(w http.ResponseWriter, r *http.Request, result Users) {
+func getKey() []byte {
+	key := os.Getenv("REACT_APP_GO_SECRET")
+	return []byte(key)
+}
+func Makecookie(w http.ResponseWriter, r *http.Request, result components.Users) {
 	claims := jwt.StandardClaims{
 		Issuer:    result.ID,
 		ExpiresAt: time.Now().Add(time.Minute * 5).Unix(), //1 day

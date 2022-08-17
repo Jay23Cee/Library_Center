@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bookapi/router"
+	
 	"fmt"
 	"log"
 	"net/http"
@@ -13,7 +13,7 @@ func main() {
 }
 
 func setconnection() {
-	r := router.Connect_router()
+	r := Connect_router()
 	// Mount the admin sub-router
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -1,4 +1,4 @@
-package users
+package components
 
 type SignupRequest struct {
 	Name     string `bson:"Name,omitempty"`

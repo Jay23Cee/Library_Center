@@ -1,8 +1,7 @@
-package router
+package main
 
 import (
-	"bookapi/book"
-	"bookapi/users"
+	"bookapi/api"
 	"net/http"
 	"time"
 
@@ -23,14 +22,14 @@ func Connect_router() *chi.Mux {
 	fileServer := http.FileServer(http.Dir("./build/"))
 	r.Handle("/*", http.StripPrefix("/", fileServer))
 
-	r.Post("/add", book.Addbooks)
-	r.Post("/edit", book.Editbook)
-	r.Get("/read", book.GetBooks)
-	r.Post("/delete", book.Deletebook)
-	r.Post("/login", users.Login)
-	r.Post("/signup", users.Signup)
-	r.Get("/user", users.GetUser)
-	r.Get("/logout", users.Logout)
+	r.Post("/add", api.Addbooks)
+	r.Post("/edit", api.Editbook)
+	r.Get("/read", api.GetBooks)
+	r.Post("/delete", api.Deletebook)
+	r.Post("/login", api.Login)
+	r.Post("/signup", api.Signup)
+	r.Get("/user", api.GetUser)
+	r.Get("/logout", api.Logout)
 
 	return r
 }

@@ -1,6 +1,8 @@
-package users
+package api
 
 import (
+	"bookapi/components"
+	"bookapi/utils"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -44,7 +46,7 @@ func getURL() string {
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	devops()
-	var user Userlogin
+	var user components.Userlogin
 	link := getLink()
 	// Here get the login URL.
 
@@ -122,7 +124,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// get
 	url := getURL()
 
-	jsonMap := make(map[string]Users)
+	jsonMap := make(map[string]components.Users)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	if err != nil {
@@ -144,7 +146,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	collection := client.Database("BookAPI").Collection("users")
-	user := &Users{
+	user := &components.Users{
 
 		Email:    JSONusers.Email,
 		Password: JSONusers.Password,
@@ -152,7 +154,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	doc := bson.D{{"Email", user.Email}}
 
-	var result Users
+	var result components.Users
 	err = collection.FindOne(context.TODO(), doc).Decode(&result)
 
 	if err != nil {
@@ -161,7 +163,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = CheckPassword(user.Password, result.Password)
+	err = utils.CheckPassword(user.Password, result.Password)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -170,7 +172,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	makecookie(w, r, result)
+	utils.Makecookie(w, r, result)
 
 	fmt.Fprintf(w, "\nsucess")
 	return
@@ -214,7 +216,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "error")
 	}
 
-	jsonMap := make(map[string]SignupRequest)
+	jsonMap := make(map[string]components.SignupRequest)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	if err != nil {
@@ -238,8 +240,8 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	}
 	collection := client.Database("BookAPI").Collection("users")
 
-	hash, err := HashPassword(users.Password)
-	user := &SignupRequest{
+	hash, err := utils.HashPassword(users.Password)
+	user := &components.SignupRequest{
 		Name:     users.Name,
 		Email:    users.Email,
 		Password: string(hash),

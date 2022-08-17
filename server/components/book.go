@@ -1,4 +1,4 @@
-package book
+package components
 
 type Book struct {
 	Title     string `bson:"Title,omitempty"`

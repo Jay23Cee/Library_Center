@@ -1,6 +1,7 @@
-package book
+package api
 
 import (
+	"bookapi/components"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -8,7 +9,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"github.com/joho/godotenv"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,26 +18,6 @@ import (
 
 // Create a struct that will be encoded to a JWT.
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
-
-func getURL() string {
-	url := os.Getenv("REACT_APP_GO_URL")
-	return url
-}
-
-func devops() {
-	err := godotenv.Load()
-	if err != nil {
-		panic(err)
-	}
-}
-
-func getLink() string {
-	devops()
-	link := os.Getenv("REACT_APP_CLIENT_URL")
-	// Here get the login URL.
-
-	return link
-}
 
 func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
 	devops()
@@ -62,14 +43,14 @@ func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
 
 func GetBooks(w http.ResponseWriter, r *http.Request) {
 
-	mymap := make(map[int]Book)
+	mymap := make(map[int]components.Book)
 
 	client := makeconnection(w, r)
 
 	// users.GetUser(w, r)
 
 	col := client.Database("BookAPI").Collection("book")
-	var results []Book
+	var results []components.Book
 
 	// Get a MongoDB document using the FindOne() method
 	cursor, err := col.Find(context.TODO(), bson.D{})
@@ -107,10 +88,10 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	url := os.Getenv("REACT_APP_GO_URL")
-	jsonMap := make(map[string]Book)
+	jsonMap := make(map[string]components.Book)
 	body, err := ioutil.ReadAll(r.Body)
 	err = json.Unmarshal([]byte(body), &jsonMap)
-	var temp Book
+	var temp components.Book
 	temp = jsonMap["book"]
 
 	clientOptions := options.Client().ApplyURI(url)
@@ -158,7 +139,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	jsonMap := make(map[string]Book)
+	jsonMap := make(map[string]components.Book)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	book := jsonMap["book"]
@@ -192,10 +173,10 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	jsonMap := make(map[string]Book)
+	jsonMap := make(map[string]components.Book)
 	body, err := ioutil.ReadAll(r.Body)
 	err = json.Unmarshal([]byte(body), &jsonMap)
-	var book Book
+	var book components.Book
 	book = jsonMap["book"]
 
 	url := os.Getenv("REACT_APP_GO_URL")
