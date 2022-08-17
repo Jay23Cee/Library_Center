@@ -27,7 +27,7 @@ func devops() {
 }
 
 func getLink() string {
-	devops()
+	//devops()
 	link := os.Getenv("REACT_APP_CLIENT_URL")
 	// Here get the login URL.
 
@@ -45,7 +45,7 @@ func getURL() string {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops()
 	var user models.Userlogin
 	link := getLink()
 	// Here get the login URL.
@@ -56,10 +56,10 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	token, err := utils.Getcookie(w, r)
-	if  err !=nil{
+	if err != nil {
 		panic(err)
 	}
-	if token ==nil{
+	if token == nil {
 		return
 	}
 	claims := token.Claims.(*jwt.StandardClaims)
@@ -161,7 +161,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -190,7 +190,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	devops()
+	//devops()
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
