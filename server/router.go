@@ -3,7 +3,6 @@ package main
 import (
 	"bookapi/api"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/go-chi/chi/middleware"
