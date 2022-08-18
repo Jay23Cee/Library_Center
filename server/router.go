@@ -2,6 +2,7 @@ package main
 
 import (
 	"bookapi/api"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -21,17 +22,23 @@ func Connect_router() *chi.Mux {
 
 	fileServer := http.FileServer(http.Dir("./build/"))
 	r.Handle("/*", http.StripPrefix("/", fileServer))
-	// fileServer := http.FileServer(http.Dir("./ui/static/"))
-	// r.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
-	r.Post("/api/add", api.Addbooks)
-	r.Post("/api/edit", api.Editbook)
-	r.Get("/api/read", api.GetBooks)
-	r.Post("/api/delete", api.Deletebook)
-	r.Post("/api/login", api.Login)
-	r.Post("/api/signup", api.Signup)
-	r.Get("/api/user", api.GetUser)
-	r.Get("/api/logout", api.Logout)
+	r.NotFound(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("not found", r.URL.Path)
+		w.WriteHeader(http.StatusNotFound)
+	}))
+
+	r.Post("/signup", api.Signup)
+	r.Get("/user", api.GetUser)
+	r.Get("/logout", api.Logout)
+	r.Post("/login", api.Login)
+
+	r.Route("/api", func(r chi.Router) {
+		r.Post("/add", api.Addbooks)
+		r.Post("/edit", api.Editbook)
+		r.Get("/read", api.GetBooks)
+		r.Post("/delete", api.Deletebook)
+	})
 
 	return r
 }
