@@ -5,7 +5,7 @@ import "antd/dist/antd.min.css";
 import BookTable, { Bookintro } from "./BookTable";
 
 import Newform, { NewItem } from "./Newbook";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Router, Routes, useNavigate } from "react-router-dom";
 import LoginDemo from "./Login";
 import { GuestTable } from "./GuestTable";
 import SignUp from "./Signup";
@@ -20,7 +20,6 @@ import NewBook from "./Newbook";
 import { UserLogin } from "../models/users";
 import ProtectedRoutes from "../ProtectedRoutes";
 
-
 // ROUTER needs to be improve
 const { Header, Content, Footer } = Layout;
 const Homepage = () => {
@@ -34,7 +33,7 @@ const Homepage = () => {
         dispatch(loginSuccess(token.Email));
       } else {
         dispatch(logOut());
-        navigate("/")
+        navigate("/");
       }
     } catch (error) {
       console.error(error);
@@ -60,6 +59,7 @@ const Homepage = () => {
     }
     dispatch(logOut());
     navigate("/");
+    return;
   };
 
   return (
@@ -109,6 +109,7 @@ const Homepage = () => {
             <Route path="/admin" element={<Bookintro />} />
           </Routes>
           <div className="site-layout-content">
+        
             <Routes>
               <Route path="/admin" element={<BookTable />} />
               <Route path="/guest" element={<GuestTable />} />
