@@ -20,8 +20,8 @@ func Connect_router() *chi.Mux {
 
 	r.Use(middleware.Timeout(60 * time.Second))
 
-	// fileServer := http.FileServer(http.Dir("./build/"))
-	// r.Handle("/*", http.StripPrefix("/*", fileServer))
+	fileServer := http.FileServer(http.Dir("./build/"))
+	r.Handle("/*", http.StripPrefix("/", fileServer))
 	// fileServer := http.FileServer(http.Dir("./ui/static/"))
 	// r.Handle("/static/*", http.StripPrefix("/static", fileServer))
 	FileServer(r)
