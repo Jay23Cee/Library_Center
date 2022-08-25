@@ -2,7 +2,7 @@ package main
 
 import (
 	"bookapi/api"
-	"fmt"
+
 	"net/http"
 	"time"
 
@@ -24,14 +24,18 @@ func Connect_router() *chi.Mux {
 	r.Handle("/*", http.StripPrefix("/", fileServer))
 
 	r.NotFound(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("not found", r.URL.Path)
+
 		w.WriteHeader(http.StatusNotFound)
 	}))
 
 	r.Post("/signup", api.Signup)
 	r.Get("/user", api.GetUser)
+	r.Get("/user/{user_id}", api.GetUser)
 	r.Get("/logout", api.Logout)
 	r.Post("/login", api.Login)
+
+	r.Post("/private/login", api.Private_Login)
+	r.Post("/private/signup", api.Private_Signup)
 
 	r.Route("/api", func(r chi.Router) {
 		r.Post("/add", api.Addbooks)

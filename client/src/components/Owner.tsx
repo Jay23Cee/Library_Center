@@ -17,9 +17,9 @@ const layout = {
 export const NewItem = () => {
   return (
     <Breadcrumb style={{ margin: "16px 0" }}>
-      <Breadcrumb.Item>New</Breadcrumb.Item>
-      <Breadcrumb.Item>Library</Breadcrumb.Item>
-      <Breadcrumb.Item>Book</Breadcrumb.Item>
+      <Breadcrumb.Item>OWNER</Breadcrumb.Item>
+      <Breadcrumb.Item></Breadcrumb.Item>
+      <Breadcrumb.Item></Breadcrumb.Item>
     </Breadcrumb>
   );
 };
@@ -46,20 +46,18 @@ const validateMessages = {
   },
 };
 
-const NewBook = () => {
-
+const Owner = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   useEffect(function effectFunction() {
     async function fetchUser() {}
     fetchUser();
   }, []);
-  
+
   const user = useSelector((state) => state.user.currentUser);
-  console.log(user)
   const [form] = Form.useForm();
-  
+
   const onFinish = async (values: Book) => {
     const JSON_string = JSON.stringify(values);
 
@@ -74,53 +72,16 @@ const NewBook = () => {
 
   return (
     <div>
-        <Form
-          {...layout}
-          form={form}
-          name="nest-messages"
-          onFinish={onFinish}
-          validateMessages={validateMessages}
-        >
-          <Form.Item
-            name={["book", "title"]}
-            label="Title"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["book", "author"]}
-            label="Author"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["book", "publisher"]}
-            label="Publisher"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={["book", "year"]}
-            label="Year"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-      
+      {user && (
+<div>
+    <p>This is OWNER VIEWS</p>
+</div>
+      )}
     </div>
   );
 };
 
-export default NewBook;
+export default Owner;
 
 function dispatch(arg0: { payload: any; type: string }) {
   throw new Error("Function not implemented.");

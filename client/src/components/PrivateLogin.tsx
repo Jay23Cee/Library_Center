@@ -9,8 +9,9 @@ import { User_Login } from "../controllers/user_handler";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
+import { Private_Login } from "../controllers/Private_handler";
 
-const LoginDemo: React.FC = () => {
+const PrivateLogin: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userRef = useRef<HTMLDivElement>(null);
@@ -29,7 +30,7 @@ const LoginDemo: React.FC = () => {
     try {
       // this.props.startNewBook(values)
 
-      var res = await User_Login(values);
+      var res = await Private_Login(values);
       console.log(res.data)
       dispatch(loginSuccess(res.data));
 
@@ -103,4 +104,4 @@ const LoginDemo: React.FC = () => {
   );
 };
 
-export default LoginDemo;
+export default PrivateLogin;

@@ -20,7 +20,7 @@ import (
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 
 func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-	//devops()
+	devops()
 	link := getLink()
 	// Here get the login URL.
 
@@ -36,7 +36,10 @@ func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
 
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		panic(err)
+
+		http.Error(w, err.Error(), http.StatusBadGateway)
+		return nil
+
 	}
 	return client
 }
@@ -55,11 +58,13 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 	// Get a MongoDB document using the FindOne() method
 	cursor, err := col.Find(context.TODO(), bson.D{})
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	if err = cursor.All(context.TODO(), &results); err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	count := 0
@@ -71,14 +76,15 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 
 	e, err := json.Marshal(mymap)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	w.Write([]byte(e))
 
 }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-	//devops()
+	devops()
 	link := getLink()
 	// Here get the login URL.
 
@@ -86,6 +92,12 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	access := isAuth(w, r, "ADMIN")
+	if !access {
+		http.Error(w, "Unauthorize access", http.StatusBadGateway)
+		return
+	}
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	jsonMap := make(map[string]models.Book)
@@ -99,30 +111,40 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadGateway)
+		return
 	}
 	collection := client.Database("BookAPI").Collection("book")
 
 	objid, err := primitive.ObjectIDFromHex(temp.ID)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	result, err := collection.DeleteOne(ctx, bson.M{"_id": objid})
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	fmt.Fprintf(w, "\nDelete has Completed %v", result.DeletedCount)
 
 }
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
-	//devops()
+
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	access := isAuth(w, r, "ADMIN")
+	if !access {
+		http.Error(w, "Unauthorize access", http.StatusBadGateway)
+		return
+	}
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	clientOptions := options.Client().ApplyURI(url)
@@ -131,12 +153,14 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadGateway)
+		return
 	}
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	jsonMap := make(map[string]models.Book)
@@ -144,28 +168,30 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	book := jsonMap["book"]
 
-	fmt.Println(book)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	defer cancel()
 	if err != nil {
 
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	collection := client.Database("BookAPI").Collection("book")
 
 	doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"_id", primitive.NewObjectID()}}
 	result, err := collection.InsertOne(ctx, doc)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	//devops()
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 
@@ -188,7 +214,8 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadGateway)
+		return
 	}
 	collection := client.Database("BookAPI").Collection("book")
 
@@ -201,9 +228,10 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 		},
 	)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
-	fmt.Printf("Updated %v Documents!\n", result.ModifiedCount)
+	fmt.Fprintf(w, "Updated %v Documents!\n", result.ModifiedCount)
 
 }

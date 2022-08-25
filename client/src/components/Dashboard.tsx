@@ -14,9 +14,25 @@ import {
 import { Book } from "../models/books";
 import { delete_book, edit_book, getbooks } from "../controllers/book_handler";
 import type { ColumnsType, ColumnType, TableProps } from "antd/es/table";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { loginSuccess, logOut } from "../redux/userSlice";
+import { Check_Login } from "../controllers/user_handler";
 
-export const GuestTable: React.FC<{}> = () => {
+export interface BookTableProps {
+  Title: string;
+  Author: string;
+  Year: string;
+  Publisher: string;
+  Id: string;
+  Key: string;
+}
+
+export const Dashboard: React.FC<{}> = () => {
+  const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const originData: Book[] = [];
 
   const EditableTable = () => {
@@ -105,7 +121,7 @@ export const GuestTable: React.FC<{}> = () => {
           setEditingKey("");
         }
       } catch (errInfo) {
-        console.log("Validate Failed:", errInfo);
+        console.error("Validate Failed:", errInfo);
       }
     };
 
@@ -114,6 +130,44 @@ export const GuestTable: React.FC<{}> = () => {
      ******** of the *********
      ********* Table *********/
     const columns = [
+      {
+        title: "Action",
+
+        dataIndex: "action",
+        render: (_: any, record: Book) => {
+          const editable = isEditing(record) || isDeleting(record);
+          return editable ? (
+            <span>
+              <a
+                href="javascript:;"
+                onClick={() => save(record.ID)}
+                style={{ marginRight: 8 }}
+              >
+                Save
+              </a>
+              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+                <a>Cancel</a>
+              </Popconfirm>
+            </span>
+          ) : (
+            <Typography.Link>
+              <Typography.Link
+                disabled={editingKey !== ""}
+                onClick={() => onEdit(record)}
+              >
+                Edit
+              </Typography.Link>
+              <br></br>
+              <Popconfirm
+                title="Sure to Delete?"
+                onConfirm={() => onDelete(record)}
+              >
+                <a>Delete</a>
+              </Popconfirm>
+            </Typography.Link>
+          );
+        },
+      },
       {
         title: "Title",
         dataIndex: "Title",
@@ -167,23 +221,25 @@ export const GuestTable: React.FC<{}> = () => {
     });
 
     return (
-      <Form form={form} component={false}>
-        <Table
-          rowKey={(record) => record.ID}
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          bordered
-          dataSource={data}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          pagination={{
-            onChange: cancel,
-          }}
-        />
-      </Form>
+      user && (
+        <Form form={form} component={false}>
+          <Table
+            rowKey={(record) => record.ID}
+            components={{
+              body: {
+                cell: EditableCell,
+              },
+            }}
+            bordered
+            dataSource={data}
+            columns={mergedColumns}
+            rowClassName="editable-row"
+            pagination={{
+              onChange: cancel,
+            }}
+          />
+        </Form>
+      )
     );
   };
 
@@ -272,4 +328,4 @@ export const Bookintro = () => {
   );
 };
 
-export default GuestTable;
+export default Dashboard;

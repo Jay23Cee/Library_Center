@@ -1,22 +1,30 @@
-import { Navigate , Outlet, useLocation} from "react-router-dom";
+import { Navigate , Outlet, Route, useLocation, Redirect} from "react-router-dom";
 import connect, { useSelector } from"react-redux";
 
 
-const useAuth=()=>{
-    const user  = useSelector((state) => state.user.login);
-    return user ;
+const useAuth=(s :string)=>{
+    const user  = useSelector((state) => state.user);
+    console.log(user.currentUser)
+    if (user.currentUser!= null){
+        console.log(user.currentUser.User_type)
+       let type = String(user.currentUser.User_type)
+        if (type ==s){
+            return true
+        }
+    }
+    return false ;
 }
 
-const ProtectedRoutes = ( props: { children: React.ReactNode }): JSX.Element => {
-    const isAuth = useAuth();
-   
-        console.log(isAuth)
-        return isAuth ? <Outlet/> : <Navigate to ="/"/>
-  }
 
-//  const ProtectedRoutes =()=>{
-//     const isAuth = useAuth();
-//     return isAuth ? <Outlet/> : <Navigate to ="/"/>
-// };
+const ProtectedRoutes = (props:any) => {
+  
+    const auth = useAuth(props.Utype);
+    return auth ? <Outlet/> : <Navigate to="/" replace />;
+  };
 
+//   const ProtectedRoutes = ({Utype}:{Utype:string},{ children }: { children: JSX.Element }) => {
+//     console.log(Utype)
+//     const auth = useAuth("USER");
+//     return auth ? children : <Navigate to="/" replace />;
+//   };
 export default ProtectedRoutes;

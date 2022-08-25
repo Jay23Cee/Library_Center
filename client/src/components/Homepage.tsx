@@ -1,9 +1,9 @@
 import { Layout, Menu, Breadcrumb } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.scss";
 import "antd/dist/antd.min.css";
 import BookTable, { Bookintro } from "./BookTable";
-
+import PrivateLogin from "./PrivateLogin";
 import Newform, { NewItem } from "./Newbook";
 import { Link, Route, Router, Routes, useNavigate } from "react-router-dom";
 import LoginDemo from "./Login";
@@ -19,30 +19,32 @@ import {
 import NewBook from "./Newbook";
 import { UserLogin } from "../models/users";
 import ProtectedRoutes from "../ProtectedRoutes";
+import { Private_Login } from "../controllers/Private_handler";
 
 // ROUTER needs to be improve
 const { Header, Content, Footer } = Layout;
 const Homepage = () => {
+  const [users, setUsers] = useState<any | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   async function isLogin() {
     try {
       var token = await Check_Login();
-      if (token.Email) {
-        dispatch(loginSuccess(token.Email));
+      setUsers(token)
+      if (token.Email) { 
+        dispatch(loginSuccess(token));
       } else {
         dispatch(logOut());
         navigate("/");
       }
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
     }
   }
-
+  
   const user = useSelector((state) => state.user.currentUser);
-  console.log(user);
-
+  console.log(user)
   useEffect(function effectFunction() {
     async function fetchUser() {
       await isLogin();
@@ -62,6 +64,26 @@ const Homepage = () => {
     return;
   };
 
+
+  const CheckAuth = (role:any, Utype:string) => {
+    // if used in more components, this should be in context
+    if (role != null){
+      console.log(role.User_type)
+      if (role.User_type !=null){
+    
+        console.log(role.User_type, " typeof",typeof(role.User_type))
+        console.log(Utype, " typeof",typeof(Utype))
+        if(String(role.User_type) == Utype){
+          return true
+        }
+      }
+    
+    }
+    console.log("FALSE")
+    return false
+  };
+
+
   return (
     <div>
       <Layout className="layout">
@@ -79,11 +101,14 @@ const Homepage = () => {
               </Menu.Item>
             )}
 
-            {user && (
-              <Menu.Item key="2">
+            
+             { CheckAuth(user,"USER") &&
+
+               <Menu.Item key="2">
                 <Link to="/new">New</Link>
               </Menu.Item>
-            )}
+              }
+            
             {user && (
               <Menu.Item key="3">
                 <Link to="/admin">Main</Link>
@@ -109,12 +134,19 @@ const Homepage = () => {
             <Route path="/admin" element={<Bookintro />} />
           </Routes>
           <div className="site-layout-content">
-        
             <Routes>
               <Route path="/admin" element={<BookTable />} />
               <Route path="/guest" element={<GuestTable />} />
-              <Route path="/New" element={<Newform />} />
+             
+            
+              <Route path="/New" element={<ProtectedRoutes Utype={"USER"}/>}>
+                 <Route path="/New" element={<Newform />} />
+              </Route>
+              {/* <Route path="/New" element={<Newform />} /> */}
+            
+              
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/private/login"  element={<PrivateLogin />} />
               <Route path="/" element={<LoginDemo />} />
             </Routes>
           </div>

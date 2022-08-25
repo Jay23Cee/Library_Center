@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
 import {
   Form,
   Input,
@@ -13,88 +13,86 @@ import {
   Switch,
   Checkbox,
   Upload,
-} from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { UserSignUp } from '../models/users';
-import { User_Signup } from '../controllers/user_handler';
-
-const { RangePicker } = DatePicker;
-const { TextArea } = Input;
+} from "antd";
+import { useNavigate } from "react-router-dom";
+import { UserSignUp } from "../models/users";
+import { User_Signup } from "../controllers/user_handler";
 
 const SignUp = () => {
   const navigate = useNavigate();
 
+  const [user, setUser] = useState("");
+  const errRef = useRef<HTMLDivElement>(null);
+  const [errMsg, setErrMsg] = useState("");
 
- const  validateEmail=(email: string)=>{
-    const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
-    const result = pattern.test(email);
-    if(result===true){
-      // this.setState({
-      //   emailError:false,
-      //   email:email
-      // })
-    } else{
-      // this.setState({
-      //   emailError:true
-      // })
-    }
-  }
+
+  useEffect(() => {
+    setErrMsg("");
+  }, []);
+
+
   const onFinish = async (values: UserSignUp) => {
     try {
-      
-   
-    console.log('Success:', values);
-    // this.props.startNewBook(values)
-    console.log(values)
-    var res = await User_Signup(values)
-      console.log("this is the res in login", res)
-    navigate("/")
-  } catch (error) {
-      console.log(error)
-  }
-   
-
-
+      var x = await User_Signup(values);
+      console.log(x);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      setErrMsg("Email already exist");
+    }
   };
 
   return (
     <section>
-    <h1>SignUp</h1>
+      <h1>SignUp</h1>
+
+      <p
+        ref={errRef}
+        className={errMsg ? "errmsg" : "offscreen"}
+        aria-live="assertive"
+      >
+        {errMsg}
+      </p>
 
       <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
-        layout="horizontal" 
-        onFinish={onFinish}>
-
-  
-        <Form.Item label="Name" name={['users', 'Name']}>
+        layout="horizontal"
+        onFinish={onFinish}
+      >
+        <Form.Item label="First_name" name={["users", "First_name"]}>
           <Input />
         </Form.Item>
-        <Form.Item 
-        label="Email" 
-        name={['users', 'Email']}   
-        rules={[
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail!',
-          },
-          { required: true, message: 'Please input your Email!', 
-        },
-        ]}
-     
+        <Form.Item label="Last_name" name={["users", "Last_name"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Phone" name={["users", "Phone"]}
+            rules={[{ 
+              required: true, 
+              message: "A value must be entered",
+              pattern: new RegExp(/^[0-9]+$/)
+          }]}>
+          <Input />
+        </Form.Item>
 
+        <Form.Item
+          label="Email"
+          name={["users", "Email"]}
+          rules={[
+            {
+              type: "email",
+              message: "The input is not valid E-mail!",
+            },
+            { required: true, message: "Please input your Email!" },
+          ]}
         >
           <Input />
         </Form.Item>
 
-        <Form.Item label="Password" name={['users', 'Password'] }>
-          <Input />
+        <Form.Item label="Password" name={["users", "Password"]}>
+          <Input.Password />
         </Form.Item>
-       
-    
-       
-      
+
         <Form.Item label="Upload" valuePropName="fileList">
           <Upload action="/upload.do" listType="picture-card">
             <div>
@@ -103,10 +101,10 @@ const SignUp = () => {
             </div>
           </Upload>
         </Form.Item>
-        <Form.Item label="Button" >
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
+        <Form.Item label="Complete:">
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
         </Form.Item>
       </Form>
     </section>
