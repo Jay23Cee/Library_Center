@@ -147,10 +147,39 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, refreshToken, err := utils.MakeToken(*result.Email, *result.First_name, *result.Last_name, *result.User_type, result.User_id)
+	///Data that will be sent back
+	var userback models.User
+	err = collection.FindOne(context.Background(), doc).Decode(&userback)
+
+	if err != nil {
+
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	e, err := json.Marshal(userback)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Println(userback, "Here at get login")
+
+	//creating Token
+	token, refreshToken, err := utils.MakeToken(*userback.Email, *userback.First_name, *userback.Last_name, *userback.User_type, userback.User_id)
+
+	utils.ExpireAlltokens(w, r)
+	//utils.UpdateAllTokens(token, refreshToken, userback.User_id)
+	utils.Makecookie(w, r, token, refreshToken)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Token Failed", http.StatusBadRequest)
+		return
+	}
+
 	utils.UpdateAllTokens(token, refreshToken, result.User_id)
 
-	fmt.Fprintf(w, "\nsucess")
+	w.Write([]byte(e))
 	return
 }
 
