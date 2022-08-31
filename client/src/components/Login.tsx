@@ -33,7 +33,7 @@ const LoginDemo: React.FC = () => {
       console.log(res.data)
       dispatch(loginSuccess(res.data));
 
-      navigate("/admin");
+      navigate("/Btable");
     } catch (error) {
       dispatch(loginFailure());
       setErrMsg("Email or Password are not correct");

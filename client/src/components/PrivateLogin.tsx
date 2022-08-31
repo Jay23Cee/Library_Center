@@ -34,7 +34,7 @@ const PrivateLogin: React.FC = () => {
       console.log(res.data)
       dispatch(loginSuccess(res.data));
 
-      navigate("/admin");
+      navigate("/PrivateTable");
     } catch (error) {
       dispatch(loginFailure());
       setErrMsg("Email or Password are not correct");

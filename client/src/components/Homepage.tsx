@@ -4,10 +4,10 @@ import "../App.scss";
 import "antd/dist/antd.min.css";
 import BookTable, { Bookintro } from "./BookTable";
 import PrivateLogin from "./PrivateLogin";
+import { Private_Table } from "../components/Private_Table";
 import Newform, { NewItem } from "./Newbook";
 import { Link, Route, Router, Routes, useNavigate } from "react-router-dom";
 import LoginDemo from "./Login";
-import { GuestTable } from "./GuestTable";
 import SignUp from "./Signup";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, logOut } from "../redux/userSlice";
@@ -31,8 +31,8 @@ const Homepage = () => {
   async function isLogin() {
     try {
       var token = await Check_Login();
-      setUsers(token)
-      if (token.Email) { 
+      setUsers(token);
+      if (token.Email) {
         dispatch(loginSuccess(token));
       } else {
         dispatch(logOut());
@@ -42,9 +42,9 @@ const Homepage = () => {
       console.error(error.message);
     }
   }
-  
+
   const user = useSelector((state) => state.user.currentUser);
-  console.log(user)
+  console.log(user);
   useEffect(function effectFunction() {
     async function fetchUser() {
       await isLogin();
@@ -64,25 +64,21 @@ const Homepage = () => {
     return;
   };
 
-
-  const CheckAuth = (role:any, Utype:string) => {
+ const CheckAuth = (role: any, Utype: string) => {
     // if used in more components, this should be in context
-    if (role != null){
-      console.log(role.User_type)
-      if (role.User_type !=null){
-    
-        console.log(role.User_type, " typeof",typeof(role.User_type))
-        console.log(Utype, " typeof",typeof(Utype))
-        if(String(role.User_type) == Utype){
-          return true
+    if (role != null) {
+      console.log(role.User_type);
+      if (role.User_type != null) {
+        console.log(role.User_type, " typeof", typeof role.User_type);
+        console.log(Utype, " typeof", typeof Utype);
+        if (String(role.User_type) == Utype) {
+          return true;
         }
       }
-    
     }
-    console.log("FALSE")
-    return false
+    console.log("FALSE");
+    return false;
   };
-
 
   return (
     <div>
@@ -101,17 +97,22 @@ const Homepage = () => {
               </Menu.Item>
             )}
 
-            
-             { CheckAuth(user,"USER") &&
-
-               <Menu.Item key="2">
+            {CheckAuth(user, "ADMIN") && (
+              <Menu.Item key="2">
                 <Link to="/new">New</Link>
               </Menu.Item>
-              }
-            
-            {user && (
+            )}
+
+
+
+            {CheckAuth(user, "ADMIN") && (
+              <Menu.Item key="6">
+                <Link to="/PrivateTable">Private Table</Link>
+              </Menu.Item>
+            )}
+            {CheckAuth(user,"USER") && (
               <Menu.Item key="3">
-                <Link to="/admin">Main</Link>
+                <Link to="/Btable">BookTable</Link>
               </Menu.Item>
             )}
             {user && (
@@ -131,22 +132,30 @@ const Homepage = () => {
 */}{" "}
           <Routes>
             <Route path="/New" element={<NewItem />} />
-            <Route path="/admin" element={<Bookintro />} />
+            <Route path="/Btable" element={<Bookintro />} />
           </Routes>
           <div className="site-layout-content">
             <Routes>
-              <Route path="/admin" element={<BookTable />} />
-              <Route path="/guest" element={<GuestTable />} />
-             
-            
-              <Route path="/New" element={<ProtectedRoutes Utype={"USER"}/>}>
-                 <Route path="/New" element={<Newform />} />
+              <Route path="/btable" element={<BookTable />} />
+
+              <Route
+                path="/New"
+                element={<ProtectedRoutes props={"ADMIN"} direction={"/"} />}
+              >
+                <Route path="/New" element={<Newform />} />
               </Route>
               {/* <Route path="/New" element={<Newform />} /> */}
-            
-              
+
               <Route path="/signup" element={<SignUp />} />
-              <Route path="/private/login"  element={<PrivateLogin />} />
+              <Route path="/private/login" element={<PrivateLogin />} />
+
+              <Route
+                path="/PrivateTable"
+                element={<ProtectedRoutes props={"ADMIN"} />}
+              >
+                <Route path="/PrivateTable" element={<Private_Table />} />
+              </Route>
+
               <Route path="/" element={<LoginDemo />} />
             </Routes>
           </div>

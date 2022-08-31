@@ -11,6 +11,7 @@ import {
   InputRef,
   Breadcrumb,
 } from "antd";
+
 import { Book } from "../models/books";
 import { delete_book, edit_book, getbooks } from "../controllers/book_handler";
 import type { ColumnsType, ColumnType, TableProps } from "antd/es/table";
@@ -29,7 +30,8 @@ export interface BookTableProps {
   Key: string;
 }
 
-export const BookTable: React.FC<{}> = () => {
+
+export const Private_Table: React.FC<{}> = () => {
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -217,7 +219,44 @@ export const BookTable: React.FC<{}> = () => {
       
     // const customColumns(()=>{
       const columns = [
-
+        {
+          title: "Action",
+  
+          dataIndex: "action",
+          render: (_: any, record: Book) => {
+            const editable = isEditing(record) || isDeleting(record);
+            return editable ? (
+              <span>
+                <a
+                  href="javascript:;"
+                  onClick={() => save(record.ID)}
+                  style={{ marginRight: 8 }}
+                >
+                  Save
+                </a>
+                <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+                  <a>Cancel</a>
+                </Popconfirm>
+              </span>
+            ) : (
+              <Typography.Link>
+                <Typography.Link
+                  disabled={editingKey !== ""}
+                  onClick={() => onEdit(record)}
+                >
+                  Edit
+                </Typography.Link>
+                <br></br>
+                <Popconfirm
+                  title="Sure to Delete?"
+                  onConfirm={() => onDelete(record)}
+                >
+                  <a>Delete</a>
+                </Popconfirm>
+              </Typography.Link>
+            );
+          },
+        },
 
         {
           title: "Title",
@@ -395,7 +434,7 @@ export const Bookintro = () => {
   );
 };
 
-export default BookTable;
+export default Private_Table;
 function dispatch(arg0: any) {
   throw new Error("Function not implemented.");
 }
