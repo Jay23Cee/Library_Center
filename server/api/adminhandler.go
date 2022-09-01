@@ -116,9 +116,11 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	collection := client.Database("BookAPI").Collection("users")
+	email := strings.ToLower(*JSONusers.Email)
+	fmt.Println(email)
 	user := &models.Users{
 
-		Email:    JSONusers.Email,
+		Email:    &email,
 		Password: JSONusers.Password,
 	}
 	doc := bson.D{{"Email", user.Email}}
@@ -137,13 +139,6 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		http.Error(w, "Invalid User Login", http.StatusBadRequest)
-		return
-	}
-
-	err = utils.CheckAuth("ADMIN", *result.User_type)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		http.Error(w, "Unauthorized Login", http.StatusBadRequest)
 		return
 	}
 

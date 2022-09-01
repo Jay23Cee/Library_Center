@@ -159,10 +159,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Connection Failed", http.StatusBadRequest)
 		return
 	}
+	email := strings.ToLower(*JSONusers.Email)
 	collection := client.Database("BookAPI").Collection("users")
 	user := &models.Users{
 
-		Email:    JSONusers.Email,
+		Email:    &email,
 		Password: JSONusers.Password,
 	}
 	doc := bson.D{{"Email", user.Email}}
@@ -175,19 +176,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid User Login", http.StatusBadRequest)
 		return
 	}
+	err = utils.CheckAuth("USER", *result.User_type)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Unauthorized Login", http.StatusBadRequest)
+		return
+	}
 
 	err = utils.CheckPassword(*user.Password, *result.Password)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		http.Error(w, "Invalid User Login", http.StatusBadRequest)
-		return
-	}
-
-	err = utils.CheckAuth("USER", *result.User_type)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		http.Error(w, "Unauthorized Login", http.StatusBadRequest)
 		return
 	}
 
@@ -259,7 +259,9 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	body, err := ioutil.ReadAll(r.Body)
+	fmt.Println(body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
@@ -272,7 +274,6 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "error")
 	}
 	jsonMap := make(map[string]models.Users)
-
 	err = json.Unmarshal([]byte(body), &jsonMap)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -309,20 +310,25 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	UID := primitive.NewObjectID()
 	U_T := "USER"
 	UID_string := UID.Hex()
+	time, err := time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+	// usertype
+	fn := strings.ToLower(*users.First_name)
+	ln := strings.ToLower(*users.Last_name)
+	email := strings.ToLower(*users.Email)
 
-	token, refreshToken, err := utils.MakeToken(*users.Email, *users.First_name, *users.Last_name, U_T, UID_string)
+	if len(fn) == 0 || len(ln) == 0 || len(email) == 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, "Invalid Data", http.StatusBadRequest)
+		return
+	}
+
+	token, refreshToken, err := utils.MakeToken(email, fn, ln, U_T, UID_string)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		http.Error(w, "Token Failed", http.StatusBadRequest)
 		return
 	}
-
-	time, err := time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-	// usertype
-	fn := strings.ToLower(*users.First_name)
-	ln := strings.ToLower(*users.Last_name)
-	email := strings.ToLower(*users.Email)
 
 	user := &models.Users{
 		ID:            UID,
