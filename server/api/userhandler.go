@@ -74,6 +74,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	token, err := utils.Getcookie(w, r)
+	fmt.Println("Here at getUSER")
 
 	if err != nil {
 		return
@@ -112,7 +113,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	e, err := json.Marshal(user)
 
-	authenticator.MatchUserTypeToUid(user, user_id)
+	err = authenticator.MatchUserTypeToUid(user, user_id,"USER")
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -160,13 +161,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	email := strings.ToLower(*JSONusers.Email)
+	user_type := "USER"
 	collection := client.Database("BookAPI").Collection("users")
 	user := &models.Users{
 
-		Email:    &email,
-		Password: JSONusers.Password,
+		Email:     &email,
+		Password:  JSONusers.Password,
+		User_type: &user_type,
 	}
-	doc := bson.D{{"Email", user.Email}}
+	doc := bson.D{{"Email", user.Email}, {"User_type", user.User_type}}
 
 	var result models.Users
 	err = collection.FindOne(context.TODO(), doc).Decode(&result)
