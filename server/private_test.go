@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-func TestUserLogin(t *testing.T) {
+func TestPrivateLogin(t *testing.T) {
 
 	tt := []struct {
 		name string
@@ -20,15 +20,15 @@ func TestUserLogin(t *testing.T) {
 		{name: "This one should Fail Empty", data: []byte(`{"users":{"Email": "","Password": ""}}`)},
 		{name: "This one should fail by email", data: []byte(`{"users":{"Email": "1test@test.com","Password": "pass123"}}`)},
 		{name: "This one should fail by password", data: []byte(`{"users":{"Email": "test@test.com","Password": "pass12"}}`)},
-		{name: "This one should fail by ADMIN", data: []byte(`{"users":{"Email": "Admin@test.com","Password": "pass123"}}`)},
-		{name: "This one should pass", data: []byte(`{"users":{"Email": "User@test.com","Password": "pass123"}}`)},
+		{name: "This one should Fail by USER", data: []byte(`{"users":{"Email": "User@test.com","Password": "pass123"}}`)},
+		{name: "This one should pass", data: []byte(`{"users":{"Email": "Admin@test.com","Password": "pass123"}}`)},
 	}
 
 	for _, tc := range tt {
 
-		req := httptest.NewRequest("POST", "https://localhost:8080/login", bytes.NewBuffer(tc.data))
+		req := httptest.NewRequest("POST", "https://localhost:8080/private/login", bytes.NewBuffer(tc.data))
 		w := httptest.NewRecorder()
-		api.Login(w, req)
+		api.Private_Login(w, req)
 
 		resp := w.Result()
 		body, _ := ioutil.ReadAll(resp.Body)
@@ -41,21 +41,21 @@ func TestUserLogin(t *testing.T) {
 
 }
 
-func TestUserSignup(t *testing.T) {
+func TestPrivateSignup(t *testing.T) {
 	tt := []struct {
 		name string
 		data []byte
 	}{
 		{name: "This one should Fail Empty", data: []byte(`{"users":{"First_name": "","Last_name": "","Phone":"","Email": "","Password": ""}}`)},
 		{name: "This one should Fail ALREADY exist", data: []byte(`{"users":{"First_name": "Stewie","Last_name": "Griffith","Phone":"","Email": "test@test.com","Password": "pass123"}}`)},
-		{name: "This one should Pass", data: []byte(`{"users":{"First_name": "Stewie","Last_name": "Grimes","Phone":"21398457854","Email": "stewie@test.com","Password": "pass123"}}`)},
+		{name: "This one should Pass", data: []byte(`{"users":{"First_name": "Stewie","Last_name": "Grimes","Phone":"21398457854","Email": "Brotewie@test.com","Password": "pass123"}}`)},
 	}
 
 	for _, tc := range tt {
 
-		req := httptest.NewRequest("POST", "https://localhost:8080/signup", bytes.NewBuffer(tc.data))
+		req := httptest.NewRequest("POST", "https://localhost:8080/private/signup", bytes.NewBuffer(tc.data))
 		w := httptest.NewRecorder()
-		api.Signup(w, req)
+		api.Private_Signup(w, req)
 
 		resp := w.Result()
 
@@ -113,7 +113,7 @@ func TestUserSignup(t *testing.T) {
 // 	}
 // }
 
-func TestGetUser(t *testing.T) {
+func TestGetPrivate(t *testing.T) {
 
 	tt := []struct {
 		name      string
@@ -128,7 +128,7 @@ func TestGetUser(t *testing.T) {
 		{name: "This one should fail by email", data: []byte(`{"users":{"Email": "1test@test.com","Password": "pass123"}}`), email: "", firstName: "", lastName: "", userType: "", uid: ""},
 		{name: "This one should fail by password", data: []byte(`{"users":{"Email": "test@test.com","Password": "pass12"}}`), email: "", firstName: "", lastName: "", userType: "", uid: ""},
 		{name: "This one should fail by ADMIN", data: []byte(`{"users":{"Email": "Admin@test.com","Password": "pass123"}}`), email: "", firstName: "", lastName: "", userType: "", uid: ""},
-		{name: "This one should pass", data: []byte(`{"users":{"Email": "User@test.com","Password": "pass123"}}`), email: "User@test.com", firstName: "", lastName: "", userType: "", uid: "63043dbc07a39be4d44b94a0"},
+	
 	}
 
 	for _, tc := range tt {
@@ -142,7 +142,7 @@ func TestGetUser(t *testing.T) {
 			t.Errorf("ERROR making token %v", err)
 		}
 		utils.Makecookie(w, req, token, rtoken)
-		api.GetUser(w, req)
+		api.GetPrivate(w, req)
 
 		resp := w.Result()
 		body, _ := ioutil.ReadAll(resp.Body)

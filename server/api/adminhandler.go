@@ -1,6 +1,7 @@
 package api
 
 import (
+	"bookapi/authenticator"
 	"bookapi/models"
 	"bookapi/utils"
 	"context"
@@ -13,7 +14,6 @@ import (
 	"time"
 
 	"github.com/go-playground/validator"
-	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -29,16 +29,16 @@ func getPrivateKey() []byte {
 
 func GetPrivate(w http.ResponseWriter, r *http.Request) {
 	devops()
-	var user models.Userlogin
+	var user models.User
 	link := getLink()
 	// Here get the login URL.
-
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	token, err := utils.Getcookie(w, r)
+	fmt.Println("Here at getPrivate")
 
 	if err != nil {
 		return
@@ -46,7 +46,7 @@ func GetPrivate(w http.ResponseWriter, r *http.Request) {
 	if token == nil {
 		return
 	}
-	claims := token.Claims.(*jwt.StandardClaims)
+	claims := token.Claims.(*utils.SignedDetails)
 
 	url := getURL()
 	clientOptions := options.Client().ApplyURI(url)
@@ -60,21 +60,30 @@ func GetPrivate(w http.ResponseWriter, r *http.Request) {
 	}
 	collection := client.Database("BookAPI").Collection("users")
 
-	objectId, err := primitive.ObjectIDFromHex(claims.Issuer)
-	doc := bson.D{{Key: "_id", Value: objectId}}
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	user_id := claims.Uid
+	doc := bson.D{{Key: "User_id", Value: user_id}}
 
 	err = collection.FindOne(context.Background(), doc).Decode(&user)
 
 	if err != nil {
+
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	e, err := json.Marshal(user)
+
+	err = authenticator.MatchUserTypeToUid(user, user_id, "ADMIN")
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	fmt.Println(user, "Here at get user")
 	w.Write([]byte(e))
 }
 
@@ -254,8 +263,17 @@ func Private_Signup(w http.ResponseWriter, r *http.Request) {
 	UID := primitive.NewObjectID()
 	U_T := "ADMIN"
 	UID_string := UID.Hex()
+	fn := strings.ToLower(*users.First_name)
+	ln := strings.ToLower(*users.Last_name)
+	email := strings.ToLower(*users.Email)
 
-	token, refreshToken, err := utils.MakeToken(*users.Email, *users.First_name, *users.Last_name, U_T, UID_string)
+	if len(fn) == 0 || len(ln) == 0 || len(email) == 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, "Invalid Data", http.StatusBadRequest)
+		return
+	}
+
+	token, refreshToken, err := utils.MakeToken(email, fn, ln, U_T, UID_string)
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -265,10 +283,6 @@ func Private_Signup(w http.ResponseWriter, r *http.Request) {
 
 	time, err := time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 	// usertype
-
-	fn := strings.ToLower(*users.First_name)
-	ln := strings.ToLower(*users.Last_name)
-	email := strings.ToLower(*users.Email)
 
 	user := &models.Users{
 		ID:            UID,
