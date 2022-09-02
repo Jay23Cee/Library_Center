@@ -198,7 +198,9 @@ func Getcookie(w http.ResponseWriter, r *http.Request) (*jwt.Token, error) {
 	cookie, err := r.Cookie(cookieName)
 
 	if err != nil {
-		return nil, nil
+		fmt.Println("HERE AT COOKIES")
+
+		return nil, errors.New("Error retrieving token")
 	}
 
 	token, err := jwt.ParseWithClaims(cookie.Value, &SignedDetails{}, func(token *jwt.Token) (interface{}, error) {

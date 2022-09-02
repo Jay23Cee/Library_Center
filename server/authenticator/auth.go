@@ -60,7 +60,7 @@ func VerifyAdmin() {
 
 }
 
-func MatchUserTypeToUid(c models.User, userId string) (err error) {
+func MatchUserTypeToUid(c models.User, userId string, UT string) (err error) {
 
 	if c.User_type == nil {
 		err = errors.New("Unauthorized to access this resource")
@@ -68,7 +68,7 @@ func MatchUserTypeToUid(c models.User, userId string) (err error) {
 	}
 	usertype := *c.User_type
 
-	if usertype == "USER" && c.User_id != userId {
+	if usertype == UT && c.User_id != userId {
 		err = errors.New("Unauthorized to access this resource")
 		return err
 	}

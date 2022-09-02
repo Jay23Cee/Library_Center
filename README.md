@@ -1,6 +1,15 @@
 # Library_Center
 This is a library's web-based, RESTful API. Admin may currently generate new, read, change, and delete stored data. Data is stored using mongodb. The frontend development uses Ant design, Typescript, and React. This application can act as a RESTful API because its backend is written in Golang using chi as middleware.
 
+
+9/1/2022:
+Need Test for All of User Routes and Book Routes.
+    Need to find a way to get Cookies inserted in the test area. 
+
++ Add a Homepage for both users. (College maybe?)
++ Add a Get All Admins + All Users list. (Teacher, Students?)
+
+
 8/26/2022
 BOOKTABLE: an Approach for USER and ADMIN action column can be to check which user I currently have 
 in order to make a column. 
