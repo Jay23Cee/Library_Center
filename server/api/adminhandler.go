@@ -28,7 +28,7 @@ func getPrivateKey() []byte {
 }
 
 func GetPrivate(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops()
 	var user models.User
 	link := getLink()
 	// Here get the login URL.
@@ -188,7 +188,7 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func PrivateLogout(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -218,7 +218,7 @@ func Private_Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
-	devops()
+	//devops()
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
