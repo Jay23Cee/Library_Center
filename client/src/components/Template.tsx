@@ -89,8 +89,13 @@ const Template = () => {
         <div className="layout-menu" />
         <Menu theme="dark" mode="horizontal">
           {!user && (
+            <Menu.Item key="0">
+              <Link to="/">Main</Link>
+            </Menu.Item>
+          )}
+              {!user && (
             <Menu.Item key="1">
-              <Link to="/">Login</Link>
+              <Link to="/login">Log In</Link>
             </Menu.Item>
           )}
           {!user && (
