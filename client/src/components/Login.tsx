@@ -10,7 +10,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
 
-const LoginDemo: React.FC = () => {
+const Login_form: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userRef = useRef<HTMLDivElement>(null);
@@ -45,7 +45,7 @@ const LoginDemo: React.FC = () => {
   };
 
   return (
-    <section>
+    <section className="Login-Form">
       <h1 className="LogIn-Title">Log In</h1>
       <p
         ref={errRef}
@@ -103,4 +103,4 @@ const LoginDemo: React.FC = () => {
   );
 };
 
-export default LoginDemo;
+export default Login_form;

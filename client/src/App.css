@@ -1,4 +1,4 @@
-body {
+* {
   margin: 0;
   padding: 0;
 }
@@ -32,6 +32,28 @@ body {
   margin: 16px 0 16px 24px;
 }
 
+.intro {
+  width: 80vw;
+  height: 80vh;
+  display: flex;
+  background: red;
+  justify-content: center;
+  align-content: center;
+  align-self: center;
+}
+
+.about-us {
+  width: 80vw;
+  height: 80vh;
+  background: rgb(164, 165, 166);
+}
+
+.contact {
+  width: 80vw;
+  height: 80vh;
+  background: red;
+}
+
 @media screen and (max-width: 650px) {
   .ant-menu-title-content {
     font-size: 0.8em;
@@ -43,4 +65,4 @@ body {
   .layout-title {
     font-size: 1em;
   }
-} /*# sourceMappingURL=App.css.map */
+}/*# sourceMappingURL=App.css.map */

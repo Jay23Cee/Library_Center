@@ -5,10 +5,25 @@ $devices: (
     large-desktop: 1200px
 );
 
-body {
+* {
   margin: 0;
   padding: 0;
+  font-size: 12px;
 }
+
+
+
+header {
+  position:fixed;
+  width: 100%;
+  z-index: 100;
+}
+.Homepage, .Login-Form {
+  margin-top: 50px !important;
+}
+
+
+
 
 .layout-title{
   color:rgb(255, 255, 255);
@@ -40,7 +55,225 @@ h1{
   margin: 16px 0 16px 24px;
 }
 
+.intro{
+  width:80vw; ;
+  height: 80vh;
+  display: flex;
+  background:rgb(255, 255, 255);
+justify-content: center;
+align-content: center;
+font-family: "Lucida Console", "Courier New", monospace;
+align-items: center;
+justify-content: center;
+
+
+  img {
+    opacity: 80%;
+    order:2;
+
+   height:25vh
+  
+
+  }
+}
+
+.intro-text{
+  display: flex;
+flex-direction: column;
+  font-size: 3.5em;
+ justify-content: center;
+ align-items: center;
+  text-align: center;
+  padding-right: 25px;
+ p{
+  font-size: .5em;
+ }
+  h3{
+    font-size: 1.2em;
+    text-align: center;
+   
+   
+  
+  }
+
+
+
+}
+
+
+
+
+.sign-up{
+  overflow-x: hidden;
+
+  width:100%!important ;
+  height: 80vh;
+  display: flex;
+  flex-direction: row;
+  background:rgb(255, 255, 255);
+justify-content: center;
+align-content: center;
+font-family: "Lucida Console", "Courier New", monospace;
+align-items: center;
+justify-content: center;
+
+  img {
+    opacity: 80%;
+    width:45vw;
+    max-width: 1000%;
+
+  }
+}
+
+.sign-up-text{
+  display: flex;
+flex-direction: column;
+
+ justify-content: center;
+ align-items: center;
+  
+  
+a{
+  font-size: .9em;
+}
+  h1{
+    font-size: 2.8em;
+    text-align: center;
+   
+    z-index: 1;
+  
+  }
+
+
+
+}
+
+
+
+.Ideas{
+  width:100%!important ;
+  height: 80vh;
+  background:rgb(245, 245, 245);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 5px;
+  font-size: 10em;
+h1{
+  font-size: 0.6em;
+}
+  img{
+    width: 50%*10
+  }
+}
+
+.Ideas-example{
+  display: flex;
+  flex-direction: row ;
+  justify-content: center;
+  text-align: center;
+}
+.ideas-example-1, .ideas-example-2, .ideas-example-3{
+  width:40vh;
+  height:auto;
+background:white;
+  z-index: 2 !important;
+
+margin:25px;
+h1{
+  font-size: 1.5em;
+  padding-top: 2em;
+
+}
+img{
+  width:100%;
+  min-height:28%;
+  max-height: 50%;
+}
+}
+
+
+
+
 @media screen and (max-width:650px){ 
+  .intro{
+    flex-flow: column wrap;
+    font-size: 1em;
+    padding-top: 15em;
+    
+    img{
+      width:100%;
+      max-height:60%;
+    }
+
+    h3{
+      margin-top: -60%;
+      text-align: center;
+      align-content: center;
+      object-position: center;
+    }
+  }
+
+
+.sign-up-text{
+  margin:0;
+  order:1;
+}
+
+.Ideas{
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.Ideas-example{
+  flex-direction: column;
+}
+.ideas-1, .ideas-2, .ideas-3{
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 50vh !important;;
+  display: flex;
+  flex-direction: column;
+
+  // h1{
+  //   font-size: 25em;
+    
+  // }
+  img{
+    width:50%;
+  }
+
+}
+
+
+  .sign-up{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1em;
+    
+img{
+  margin-left: 0;
+  width:100% !important;
+}
+  
+  }
+  .sign-up-text{
+  h1{
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  }
+
+
   .ant-menu-title-content {
     font-size: .8em;
    
@@ -57,4 +290,14 @@ h1{
         
     }
   
+}
+
+
+.site-layout-content{
+  padding-top: 100px;
+  font-size: 12em;
+}
+
+h1{
+  font-size: 3em;
 }

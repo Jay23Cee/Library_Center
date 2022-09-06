@@ -1,171 +1,74 @@
-import { Layout, Menu, Breadcrumb } from "antd";
-import React, { useEffect, useState } from "react";
-import "../App.scss";
-import "antd/dist/antd.min.css";
-import BookTable, { Bookintro } from "./BookTable";
-import PrivateLogin from "./PrivateLogin";
-import { Private_Table } from "../components/Private_Table";
-import Newform, { NewItem } from "./Newbook";
-import { Link, Route, Router, Routes, useNavigate } from "react-router-dom";
-import LoginDemo from "./Login";
-import SignUp from "./Signup";
-import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess, logOut } from "../redux/userSlice";
-import {
-  Check_Login,
-  User_Login,
-  User_Logout,
-} from "../controllers/user_handler";
-import NewBook from "./Newbook";
-import { UserLogin } from "../models/users";
-import ProtectedRoutes from "../ProtectedRoutes";
-import { Private_Login } from "../controllers/Private_handler";
+import React from 'react'
+import library_image from '../images/library.jpg'
+import mind_image from '../images/mind.jpg'
+import idea from '../images/idea.jpg'
+import cube from '../images/cube.jpg'
+import chess from '../images/chess.jpg'
+import reading from '../images/book.jpg'
+import panda from '../images/panda.png'
+import {Link, useNavigate} from "react-router-dom";
 
-// ROUTER needs to be improve
-const { Header, Content, Footer } = Layout;
-const Homepage = () => {
-  const [users, setUsers] = useState<any | null>(null);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  async function isLogin() {
-    try {
-      var token = await Check_Login();
-      setUsers(token);
-      if (token.Email) {
-        dispatch(loginSuccess(token));
-      } else {
-        dispatch(logOut());
-        navigate("/");
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
-  const user = useSelector((state) => state.user.currentUser);
-  console.log(user);
-  useEffect(function effectFunction() {
-    async function fetchUser() {
-      await isLogin();
-    }
-    fetchUser();
-  }, []);
-
-  const logout = async () => {
-    // if used in more components, this should be in context
-    // axios to /logout endpoint
-    var ok = await User_Logout();
-    if (ok != null) {
-      return ok;
-    }
-    dispatch(logOut());
-    navigate("/");
-    return;
-  };
-
- const CheckAuth = (role: any, Utype: string) => {
-    // if used in more components, this should be in context
-    if (role != null) {
-      console.log(role.User_type);
-      if (role.User_type != null) {
-        console.log(role.User_type, " typeof", typeof role.User_type);
-        console.log(Utype, " typeof", typeof Utype);
-        if (String(role.User_type) == Utype) {
-          return true;
-        }
-      }
-    }
-    console.log("FALSE");
-    return false;
-  };
-
+function Homepage() {
+  const navigate = useNavigate()
   return (
-    <div>
-      <Layout className="layout">
-        <Header>
-          <div className="layout-menu" />
-          <Menu theme="dark" mode="horizontal">
-            {!user && (
-              <Menu.Item key="1">
-                <Link to="/">Login</Link>
-              </Menu.Item>
-            )}
-            {!user && (
-              <Menu.Item key="4">
-                <Link to="/signup">Sign Up</Link>
-              </Menu.Item>
-            )}
+    <div className="Homepage">
 
-            {CheckAuth(user, "ADMIN") && (
-              <Menu.Item key="2">
-                <Link to="/new">New</Link>
-              </Menu.Item>
-            )}
+    <section className="intro">
+      
+        <img src={library_image} alt='library' />
+        <div className='intro-text'> 
+        
+        <h3>Read Up</h3>
+        
+        <p>Come in to your local Library Center and look at the hundreds of titles left and grab a book or five</p></div>
+       
+    </section>
 
 
 
-            {CheckAuth(user, "ADMIN") && (
-              <Menu.Item key="6">
-                <Link to="/PrivateTable">Private Table</Link>
-              </Menu.Item>
-            )}
-            {CheckAuth(user,"USER") && (
-              <Menu.Item key="3">
-                <Link to="/Btable">BookTable</Link>
-              </Menu.Item>
-            )}
-            {user && (
-              <Menu.Item key="5">
-                <span onClick={logout}>Logout</span>
-              </Menu.Item>
-            )}
-          </Menu>
-          <h3 className="layout-title">Library Center</h3>
-        </Header>
-        <Content style={{ padding: "0 50px" }}>
-          {/* <Breadcrumb style={{ margin: '16px 0' }}>
-<Breadcrumb.Item>Home</Breadcrumb.Item>
-<Breadcrumb.Item>List</Breadcrumb.Item>
-<Breadcrumb.Item>App</Breadcrumb.Item>
-</Breadcrumb>
-*/}{" "}
-          <Routes>
-            <Route path="/New" element={<NewItem />} />
-            <Route path="/Btable" element={<Bookintro />} />
-          </Routes>
-          <div className="site-layout-content">
-            <Routes>
-              <Route path="/btable" element={<BookTable />} />
+    <section className="Ideas">
 
-              <Route
-                path="/New"
-                element={<ProtectedRoutes props={"ADMIN"} direction={"/"} />}
-              >
-                <Route path="/New" element={<Newform />} />
-              </Route>
-              {/* <Route path="/New" element={<Newform />} /> */}
-
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/private/login" element={<PrivateLogin />} />
-
-              <Route
-                path="/PrivateTable"
-                element={<ProtectedRoutes props={"ADMIN"} />}
-              >
-                <Route path="/PrivateTable" element={<Private_Table />} />
-              </Route>
-
-              <Route path="/" element={<LoginDemo />} />
-            </Routes>
+      <h1>The benefits of reading...</h1>
+      <div className='Ideas-example'>
+        <div className='ideas-example-1' >
+          
+        <img src={reading} alt='library'/>
+        
+        
+        <h1>Studies have shown that reading for 30 minutes lowers blood pressure, heart rate, and feelings of stress.</h1>
+        
           </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
-        </Footer>
-      </Layout>
-    </div>
-  );
-};
+        <div className='ideas-example-2'>
+        <img src={cube} alt='library'/>
+         <h1>Reading increases a person's ability to focus and pay attention.</h1>
+         
+         </div>
+        <div className='ideas-example-3'>
+        <img src={chess} alt='library'/>
 
-export default Homepage;
+          <h1>There is a wealth of knowledge to be found in books, newspapers, and articles.</h1>
+          </div>
+
+          </div>
+        </section>
+
+
+    <section className="sign-up">
+      <a> <img src={panda} alt='library' onClick={()=>{navigate("/signup")}}/></a>
+   
+    <div className='sign-up-text'> 
+    
+    <h1>Make sure to  
+ <Link to="/signup"> Sign Up</Link>
+</h1>
+</div>
+
+    
+        </section>
+
+
+    </div>
+  )
+}
+
+export default Homepage
