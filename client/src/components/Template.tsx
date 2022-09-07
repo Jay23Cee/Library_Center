@@ -21,6 +21,7 @@ import { UserLogin } from "../models/users";
 import ProtectedRoutes from "../ProtectedRoutes";
 import { Private_Login } from "../controllers/Private_handler";
 import Homepage from "./Homepage";
+import Menu_icon from "../images/menu.png"
 
 // ROUTER needs to be improve
 const { Header, Content, Footer } = Layout;
@@ -86,7 +87,10 @@ const Template = () => {
     <div>
     <Layout className="layout">
       <Header>
-        <div className="layout-menu" />
+        <div className="layout-menu">
+
+        <h3 className="layout-title">Library Center</h3>
+        <div className="Menu-icon"/>
         <Menu theme="dark" mode="horizontal">
           {!user && (
             <Menu.Item key="0">
@@ -128,7 +132,7 @@ const Template = () => {
             </Menu.Item>
           )}
         </Menu>
-        <h3 className="layout-title">Library Center</h3>
+        </div> 
       </Header>
       <Content style={{ padding: "0 50px" }}>
         {/* <Breadcrumb style={{ margin: '16px 0' }}>

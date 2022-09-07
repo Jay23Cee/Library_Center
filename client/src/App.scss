@@ -24,10 +24,37 @@ header {
 
 
 
+.layout-menu{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  .Menu-icon{
+    display:none;
+    width:210px;
+    height:200px;
+    background:red;
+    
+    background-image:url(  "../src/images/menu.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
 
+}
+  
+
+.ant-menu.ant-menu-dark{
+  display:flex;
+  flex-direction: row;
+  overflow: hidden;
+  width: 240px;
+  margin-top: -80px;
+
+
+}
 .layout-title{
-  color:rgb(255, 255, 255);
-  margin-top: -8vh;
+  color:rgb(0, 191, 255);
+ align-items: center;;
   margin-left: 30vw;
   font-size: 2em;
   
@@ -70,8 +97,8 @@ justify-content: center;
   img {
     opacity: 80%;
     order:2;
-
-   height:25vh
+max-height:45vh;
+min-width: 50vw;
   
 
   }
@@ -159,7 +186,7 @@ a{
   justify-content: center;
   text-align: center;
   padding: 5px;
-  font-size: 10em;
+  font-size: 5em;
 h1{
   font-size: 0.6em;
 }
@@ -187,7 +214,7 @@ h1{
 
 }
 img{
-  width:100%;
+  max-width:100%;
   min-height:28%;
   max-height: 50%;
 }
@@ -197,10 +224,17 @@ img{
 
 
 @media screen and (max-width:650px){ 
+
+  .ant-menu.ant-menu-dark{
+    display:none;
+  }
+
+  
   .intro{
     flex-flow: column wrap;
-    font-size: 1em;
+
     padding-top: 15em;
+    
     
     img{
       width:100%;
@@ -215,7 +249,6 @@ img{
     }
   }
 
-
 .sign-up-text{
   margin:0;
   order:1;
@@ -227,26 +260,27 @@ img{
   align-items: center;
   text-align: center;
   height: 100%;
+  
 }
 
 .Ideas-example{
   flex-direction: column;
 }
-.ideas-1, .ideas-2, .ideas-3{
+.ideas-example-1, .ideas-example-2, .ideas-example-3{
   justify-content: center;
   align-items: center;
   text-align: center;
   height: 50vh !important;;
   display: flex;
   flex-direction: column;
-
+  word-wrap: break-word;
+  white-space: pre-line;
+  width:auto;
   // h1{
   //   font-size: 25em;
     
   // }
-  img{
-    width:50%;
-  }
+
 
 }
 
@@ -285,14 +319,20 @@ img{
     }
   
   
-    .layout-title{
-        font-size: 1em;
-        
-    }
+
   
 }
 
 
+.layout-menu{
+  
+  .Menu-icon{
+    display: block;
+    position:absolute;
+    width:30px;
+    height:30px;
+  }
+  }
 .site-layout-content{
   padding-top: 100px;
   font-size: 12em;

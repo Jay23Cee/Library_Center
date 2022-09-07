@@ -35,18 +35,20 @@ function Homepage() {
         <img src={reading} alt='library'/>
         
         
-        <h1>Studies have shown that reading for 30 minutes lowers blood pressure, heart rate, and feelings of stress.</h1>
-        
+        <h1>Health</h1>
+        <p>Studies have shown that reading for 30 minutes lowers blood pressure, heart rate, and feelings of stress.</p>
           </div>
         <div className='ideas-example-2'>
         <img src={cube} alt='library'/>
-         <h1>Reading increases a person's ability to focus and pay attention.</h1>
+         <h1>Mental</h1>
+         <p>Reading increases a person's ability to focus and pay attention.</p>
          
          </div>
         <div className='ideas-example-3'>
         <img src={chess} alt='library'/>
 
-          <h1>There is a wealth of knowledge to be found in books, newspapers, and articles.</h1>
+          <h1>Wealth</h1>
+          <p>There is a wealth of knowledge to be found in books, newspapers, and articles.</p>
           </div>
 
           </div>
