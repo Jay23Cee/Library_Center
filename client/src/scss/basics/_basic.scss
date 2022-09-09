@@ -1,0 +1,14 @@
+
+$devices: (
+    phone: 480px,
+    tablet: 768px,
+    desktop: 992px,
+    large-desktop: 1200px
+);
+
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  overflow-x: hidden;
+}
