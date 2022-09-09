@@ -1,6 +1,6 @@
 import { Layout, Menu, Breadcrumb } from "antd";
 import React, { useEffect, useState } from "react";
-import "../App.scss";
+import "../scss/App.css";
 import "antd/dist/antd.min.css";
 import BookTable, { Bookintro } from "./BookTable";
 import PrivateLogin from "./PrivateLogin";
@@ -12,9 +12,7 @@ import SignUp from "./Signup";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, logOut } from "../redux/userSlice";
 import {
-  Check_Login,
-  User_Login,
-  User_Logout,
+  Check_Login, User_Login,User_Logout,
 } from "../controllers/user_handler";
 import NewBook from "./Newbook";
 import { UserLogin } from "../models/users";
