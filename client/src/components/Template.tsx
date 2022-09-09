@@ -29,7 +29,8 @@ const Template = () => {
   const [users, setUsers] = useState<any | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const nav = document.getElementsByClassName("ant-menu-submenu")
+  const nav1 = document.getElementsByClassName("ant-menu-submenu-hidden")
   async function isLogin() {
     try {
       var token = await Check_Login();
@@ -51,8 +52,13 @@ const Template = () => {
     async function fetchUser() {
       await isLogin();
     }
+
     fetchUser();
   }, []);
+ 
+
+
+
 
   const logout = async () => {
     // if used in more components, this should be in context
@@ -82,6 +88,16 @@ const Template = () => {
     return false;
   };
 
+  function nav_trigger(){
+    console.log("ACTIVE")
+    console.log(nav)
+  if(nav.length >0){
+    for (let x=0; x<nav.length;x++){
+      nav[x].classList.add("ant-menu-submenu-active")
+      nav[x].classList.add("ant-menu-submenu-open")
+    }
+  }
+  }
 
   return (
     <div>
@@ -90,7 +106,7 @@ const Template = () => {
         <div className="layout-menu">
 
         <h3 className="layout-title">Library Center</h3>
-        <div className="Menu-icon"/>
+       
         <Menu theme="dark" mode="horizontal">
           {!user && (
             <Menu.Item key="0">
