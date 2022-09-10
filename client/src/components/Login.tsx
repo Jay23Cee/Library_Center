@@ -99,6 +99,20 @@ const Login_form: React.FC = () => {
           </Button>
         </Form.Item>
       </Form>
+
+      <div className="Demo-Login">
+        <h1> Demo: Login as</h1>
+      <Button type="primary" onClick={()=>{
+        console.log("LOG IN AS USER")
+      }}>
+            *Client*
+          </Button>
+          <Button type="primary" onClick={()=>{
+        console.log("LOG IN AS Admin")
+      }}>
+            *Admin*
+          </Button>
+      </div>
     </section>
   );
 };

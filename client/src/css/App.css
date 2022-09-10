@@ -1,84 +1,80 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  overflow-x: hidden;
+}
+
 header {
   position: fixed;
   width: 100%;
-  z-index: 100;
+  z-index: 11;
+  overflow: hidden;
 }
 
 .layout-title {
-  color: rgb(0, 191, 255);
+  color: rgb(3, 192, 255);
   align-items: center;
   background: transparent;
-  margin-left: 30vw;
   font-size: 2em;
   text-align: center;
   z-index: 1;
 }
 
-.layout-menu {
+.ant-menu.ant-menu-dark {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  position: absolute;
+  height: auto;
+  font-size: 3em;
+  margin-top: -76px;
+  margin-left: -50px !important;
+  width: 250px;
+  z-index: 10;
+  overflow: hidden !important;
 }
-
-.ant-menu.ant-menu-dark {
-  margin-top: -82px;
-  width: 400px;
+.ant-menu.ant-menu-dark ul {
+  overflow: hidden;
 }
-
-.ant-menu.ant-menu-dark {
-  margin-top: -82px;
-  width: 400px;
+.ant-menu.ant-menu-dark li {
+  overflow: hidden;
 }
 
 @media screen and (max-width: 650px) {
   .ant-menu.ant-menu-dark {
-    width: 10vw;
-    height: 10vh;
-    margin-top: -40px;
-    margin-left: -50px;
-    text-align: left !important;
-  }
-  .ant-menu.ant-menu-dark .layout-menu {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-  }
-  .ant-menu.ant-menu-dark {
-    display: flex;
-    width: 60vw;
+    background: transparent;
+    width: 90px;
+    height: 200vh;
     font-size: 3em;
-    flex-direction: column;
     margin-top: -100px;
-    height: 2vh;
+    margin-left: -50px !important;
   }
   .ant-menu.ant-menu-dark svg {
-    width: 40px;
-    height: 100px;
-  }
-  .ant-menu-submenu-title {
-    width: 5vh;
-    height: 10vh;
-    background: rgba(223, 10, 46, 0);
-    margin-top: -100px;
+    margin-top: 30px;
+    width: 50px;
+    height: 50px;
   }
   .ant-menu-submenu-popup {
     position: fixed !important;
     left: 0px !important;
     top: 60px !important;
   }
+  .ant-menu-overflow .ant-menu .ant-menu-root .ant-menu-horizontal {
+    width: 200px !important;
+  }
+  .ant-menu-overflow .ant-menu .ant-menu-root .ant-menu-horizontal ul {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
 }
-* {
-  margin: 0;
-  padding: 0;
-  font-size: 12px;
-}
-
 .site-layout-content {
   min-height: 280px;
-  padding: 24px;
+  padding-top: 64px;
   background: #fff;
 }
-
 .site-layout-content h1 {
   text-align: center;
 }
@@ -107,7 +103,6 @@ header {
   align-items: center;
   justify-content: center;
 }
-
 .intro img {
   opacity: 80%;
   order: 2;
@@ -124,11 +119,9 @@ header {
   text-align: center;
   padding-right: 25px;
 }
-
 .intro-text p {
   font-size: 0.5em;
 }
-
 .intro-text h3 {
   font-size: 1.2em;
   text-align: center;
@@ -147,7 +140,6 @@ header {
   align-items: center;
   justify-content: center;
 }
-
 .sign-up img {
   opacity: 80%;
   width: 45vw;
@@ -160,11 +152,9 @@ header {
   justify-content: center;
   align-items: center;
 }
-
 .sign-up-text a {
   font-size: 0.9em;
 }
-
 .sign-up-text h1 {
   font-size: 2.8em;
   text-align: center;
@@ -182,11 +172,9 @@ header {
   padding: 5px;
   font-size: 5em;
 }
-
 .Ideas h1 {
   font-size: 0.6em;
 }
-
 .Ideas img {
   width: 500%;
 }
@@ -205,12 +193,10 @@ header {
   z-index: 2 !important;
   margin: 25px;
 }
-
 .ideas-example-1 h1, .ideas-example-2 h1, .ideas-example-3 h1 {
   font-size: 1.5em;
   padding-top: 2em;
 }
-
 .ideas-example-1 img, .ideas-example-2 img, .ideas-example-3 img {
   max-width: 100%;
   min-height: 28%;
@@ -234,7 +220,6 @@ header {
     margin-top: -60%;
     text-align: center;
     align-content: center;
-    -o-object-position: center;
     object-position: center;
   }
   .intro-text {
@@ -280,6 +265,58 @@ header {
     justify-content: center;
     align-items: center;
   }
-} /*# sourceMappingURL=App.css.map */
+}
+.Login-Form {
+  color: red !important;
+  justify-content: center;
+}
+.Login-Form h1 {
+  font-size: 2em;
+}
+
+.Demo-Login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Demo-Login button {
+  margin: 0.5em;
+}
+
+.site-layout-content {
+  justify-content: center;
+  background: forestgreen;
+}
+
+.ant-form-item-label .Login-Form {
+  justify-content: center !important;
+  margin-right: 2em;
+}
+.ant-form-item-label .Login-Form h1 {
+  font-size: 3em;
+}
+.ant-form-item-label label {
+  font-size: 2em !important;
+}
+
+.ant-col-16 {
+  max-width: 20vw !important;
+}
+
+@media screen and (max-width: 650px) {
+  .ant-col-16 {
+    max-width: 200px !important;
+  }
+  .site-layout-content {
+    display: flex;
+    justify-content: center;
+    background: forestgreen;
+    font-size: 4em !important;
+  }
+  .ant-form-item-label label {
+    font-size: 1.5em !important;
+  }
+}
 
 /*# sourceMappingURL=App.css.map */

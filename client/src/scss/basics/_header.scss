@@ -1,11 +1,12 @@
 header {
   position:fixed;
   width: 100%;
-  z-index: 100;
+  z-index: 11;
+  overflow: hidden;
 }
 
 .layout-title{
-  color:rgb(0, 191, 255);
+  color:rgb(3, 192, 255);
  align-items: center;
  background:transparent;
 
@@ -14,22 +15,41 @@ header {
   z-index: 1;
 }
 
-.layout-menu{
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-
-
-
-
 .ant-menu.ant-menu-dark{
-  margin-top: -82px;
-  margin-left: -50px;
-  width: 250px;
+  display: flex;
+  flex-direction: row;
+ position: absolute;
+  height:auto;
+  font-size: 3em;
+  margin-top:-76px;
+  margin-left: -50px !important;
+  width:250px;
   z-index: 10;
+  overflow: hidden !important;
+
+  ul{
+    overflow: hidden;
+  }
+  li{
+    overflow: hidden;
+  }
 }
+// .layout-menu{
+//   display:flex;
+//   flex-direction: column;
+//   justify-content: center;
+// }
+
+
+
+
+
+// .ant-menu.ant-menu-dark{
+//   margin-top: -82px;
+//   margin-left: -50px;
+//   width: 250px;
+//   z-index: 10;
+// }
 
 
 
@@ -37,61 +57,50 @@ header {
 // ***Media
 // ***
 @media screen and (max-width:650px){
-  .ant-menu.ant-menu-dark{
-  //   display:flex;
-  //   flex-direction: column;
-  //   overflow: hidden;
-  //   width: 10vw;
-  //   height:10vh;;
-  //   margin-top: -40px;
-  //   margin-left: -50px;
-  //  text-align: left !important;
 
-     
-  .layout-menu{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    
-  }
-
-
-  }
 
   .ant-menu.ant-menu-dark{
     display: flex;
     flex-direction: column;
-    width:60vw;
-    height:2vh;
+    background:transparent;
+    width:90px;
+    height:200vh;
     font-size: 3em;
     margin-top:-100px;
     margin-left: -50px !important;
     svg{
-      width:40px;
-      height: 100px;
+      margin-top:30px;
+      width:50px;
+      height: 50px;
           }
   }
 
-  .ant-menu-submenu-title{
-    width:5vh;
-    height: 10vh;
-    background:rgba(223, 10, 46, 0);
-    margin-top:-100px;
+  // .ant-menu-submenu-title{
+  //   width:5vh;
+  //   height: 10vh;
+  //   background:rgba(223, 10, 46, 0);
+  //   margin-top:-100px;
     
-  }
+  // }
 
 
   
   .ant-menu-submenu-popup {
    
 
-    
     position: fixed !important;
     left:0px !important;
     top:60px !important;
   }
 
+// .ant-menu-dark
+  .ant-menu-overflow .ant-menu .ant-menu-root .ant-menu-horizontal {
+    width:200px !important;
+    ul{
 
-
-
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }

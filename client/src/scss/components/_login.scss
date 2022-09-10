@@ -1,0 +1,76 @@
+.Login-Form{
+    color:red !important;
+    justify-content: center;
+  h1{
+ font-size: 2em;
+  } 
+}
+
+.Demo-Login{
+    display: flex;
+    flex-direction: column;
+    
+    justify-content: center;
+    align-items: center;
+
+    button{
+        margin: 0.5em;
+    }
+}
+.site-layout-content{
+    
+    // display: flex;
+    // flex-direction: row;
+    justify-content: center;
+   background: forestgreen;
+ 
+
+}
+
+.ant-form-item-label{
+    .Login-Form{
+        justify-content: center !important;
+        margin-right: 2em;;
+        h1{
+       font-size: 3em;
+        } 
+      }
+    label{
+    
+        font-size:2em !important;
+    }
+}
+
+.ant-col-16{
+    max-width:20vw !important;
+}
+
+
+
+// ********
+// ****Media
+
+@media screen and (max-width:650px){ 
+    .ant-col-16{
+
+        max-width:200px !important;
+    }
+    .site-layout-content{
+        display: flex;
+        justify-content: center;
+
+       background: forestgreen;
+       font-size: 4em !important;
+
+    }
+
+.ant-form-item-label{
+
+    label{
+
+        font-size:1.5em !important;
+    }
+}
+
+
+}
