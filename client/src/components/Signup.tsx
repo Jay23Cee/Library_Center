@@ -20,7 +20,7 @@ import { User_Signup } from "../controllers/user_handler";
 
 const SignUp = () => {
   const navigate = useNavigate();
-
+  const [imgFile, setImgFile] = useState('');
   const [user, setUser] = useState("");
   const errRef = useRef<HTMLDivElement>(null);
   const [errMsg, setErrMsg] = useState("");
@@ -31,8 +31,13 @@ const SignUp = () => {
   }, []);
 
 
-  const onFinish = async (values: UserSignUp) => {
+
+  
+  const onFinish = async (values: any) => {
     try {
+      console.log(values)
+      console.log(typeof( values.users.img), " img data type")
+      setImgFile(values.users.img)
       var x = await User_Signup(values);
       console.log(x);
       navigate("/");
@@ -42,8 +47,22 @@ const SignUp = () => {
     }
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
   return (
-    <section>
+    <section className="Sign-up-form">
       <h1>SignUp</h1>
 
       <p
@@ -59,6 +78,7 @@ const SignUp = () => {
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         onFinish={onFinish}
+        
       >
         <Form.Item label="First_name" name={["users", "First_name"]}>
           <Input />
@@ -93,21 +113,16 @@ const SignUp = () => {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item label="Upload" valuePropName="fileList">
-          <Upload action="/upload.do" listType="picture-card">
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
-            </div>
-          </Upload>
-        </Form.Item>
+       
         <Form.Item label="Complete:">
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
       </Form>
-    </section>
+
+      <img src={imgFile}/>
+          </section>
   );
 };
 
