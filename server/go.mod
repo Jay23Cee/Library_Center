@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/joho/godotenv v1.4.0
-	go.mongodb.org/mongo-driver v1.9.1
+	go.mongodb.org/mongo-driver v1.10.2
 )
 
 require (
@@ -15,6 +15,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
+	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
@@ -23,7 +24,7 @@ require (
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/square/go-jose.v2 v2.5.1 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (

@@ -5,7 +5,8 @@ import { useRef, useState, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { add_book } from "../controllers/book_handler";
 import { UserLogin } from "../models/users";
-import { User_Login } from "../controllers/user_handler";
+import { Private_Login_DEMO } from "../controllers/Private_handler";
+import { User_Login, User_Login_DEMO } from "../controllers/user_handler";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginStart, loginSuccess } from "../redux/userSlice";
@@ -20,7 +21,7 @@ const Login_form: React.FC = () => {
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
-  useEffect(() => { 
+  useEffect(() => {
     setErrMsg("");
   }, [user, pwd]);
 
@@ -30,7 +31,7 @@ const Login_form: React.FC = () => {
       // this.props.startNewBook(values)
 
       var res = await User_Login(values);
-      console.log(res.data)
+      console.log(res.data);
       dispatch(loginSuccess(res.data));
 
       navigate("/Btable");
@@ -44,6 +45,23 @@ const Login_form: React.FC = () => {
     console.error("Failed:", errorInfo);
   };
 
+  const UserDemo = async() => {
+    console.log("LOG IN AS USER");
+   var res = await User_Login_DEMO();
+    console.log(res.data);
+    dispatch(loginSuccess(res.data));
+
+    navigate("/Btable");
+  };
+
+  const PrivateDemo = async() => {
+    console.log("LOG IN AS Admin")
+   var res = await Private_Login_DEMO()
+    console.log(res.data);
+    dispatch(loginSuccess(res.data));
+
+    navigate("/Btable");
+  };
   return (
     <section className="Login-Form">
       <h1 className="LogIn-Title">Log In</h1>
@@ -102,16 +120,22 @@ const Login_form: React.FC = () => {
 
       <div className="Demo-Login">
         <h1> Demo: Login as</h1>
-      <Button type="primary" onClick={()=>{
-        console.log("LOG IN AS USER")
-      }}>
-            *Client*
-          </Button>
-          <Button type="primary" onClick={()=>{
-        console.log("LOG IN AS Admin")
-      }}>
-            *Admin*
-          </Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            UserDemo();
+          }}
+        >
+          *Client*
+        </Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            PrivateDemo();
+          }}
+        >
+          *Admin*
+        </Button>
       </div>
     </section>
   );

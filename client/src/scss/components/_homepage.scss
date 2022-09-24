@@ -2,19 +2,9 @@
 
 
 
-
 // .Homepage, .Login-Form {
 //   margin-top: 50px !important;
 // }
-
-
-
-
-
-
-
-
-
 
 
 .site-layout-content {
@@ -40,19 +30,20 @@ h1{
 
 .intro{
   width:80vw; ;
-  height: 80vh;
+  height: 50vh;
   display: flex;
-  background:rgb(255, 255, 255);
+
 justify-content: center;
 align-content: center;
 font-family: "Lucida Console", "Courier New", monospace;
-align-items: center;
-justify-content: center;
+overflow: hidden;
+
 
 
   img {
-    opacity: 80%;
-    order:2;
+    margin-top: 20px;
+    opacity: 83%;
+    order:0;
 max-height:45vh;
 min-width: 50vw;
   
@@ -61,13 +52,16 @@ min-width: 50vw;
 }
 
 .intro-text{
+  width:auto;
+  height:500px;
   display: flex;
 flex-direction: column;
-  font-size: 3.5em;
+  font-size: 3.0em;
  justify-content: center;
  align-items: center;
   text-align: center;
-  padding-right: 25px;
+  padding-left: 25px;
+
  p{
   font-size: .5em;
  }
@@ -93,7 +87,7 @@ flex-direction: column;
   height: 80vh;
   display: flex;
   flex-direction: row;
-  background:rgb(255, 255, 255);
+  background:rgb(237 237 237 / 66%);
 justify-content: center;
 align-content: center;
 font-family: "Lucida Console", "Courier New", monospace;
@@ -103,7 +97,7 @@ justify-content: center;
   img {
     opacity: 80%;
     width:45vw;
-    max-width: 1000%;
+    // max-width: 1000%;
 
   }
 }
@@ -147,7 +141,8 @@ h1{
   font-size: 0.6em;
 }
   img{
-    width: 50%*10
+
+    margin:0;
   }
 }
 
@@ -170,9 +165,8 @@ h1{
 
 }
 img{
-  max-width:100%;
-  min-height:28%;
-  max-height: 50%;
+  width:100%;
+ height:50%;
 }
 }
 
@@ -197,25 +191,31 @@ img{
 
   .intro{
     width:100vw;
-    flex-flow: column wrap;
+    flex-direction: column ;
 
-    padding-top: 15em;
+  
     
     
     img{
-      width:80%;
-      max-height:60%;
+      // width:70%;
+      max-height:80%;
+      margin:0;
     }
 
     h3{
-      margin-top: -60%;
+    
       text-align: center;
       align-content: center;
       object-position: center;
     }
   }
   .intro-text{
-    width:80vw;
+   padding:25px;
+    justify-content:center;
+    align-items: center;
+    text-align: center;
+    font-size: 2.6em;
+    ;
   }
 
 .sign-up-text{
@@ -228,7 +228,7 @@ img{
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 100%;
+  height: auto;
   
 }
 
@@ -236,7 +236,7 @@ img{
   flex-direction: column;
 }
 .ideas-example-1, .ideas-example-2, .ideas-example-3{
-  justify-content: center;
+ 
   align-items: center;
   text-align: center;
   height: 50vh !important;;

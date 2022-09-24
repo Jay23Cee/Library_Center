@@ -19,6 +19,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginSuccess, logOut } from "../redux/userSlice";
 import { Check_Login } from "../controllers/user_handler";
 import UseAuth from "../ProtectedRoutes"
+import { UploadFile } from "antd/lib/upload/interface";
 
 export interface BookTableProps {
   Title: string;
@@ -43,6 +44,9 @@ export const BookTable: React.FC<{}> = () => {
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const searchInput = useRef<InputRef>(null);
+    const [fileList, setFileList] = useState<UploadFile[]>([
+
+    ]);
 
 
     useEffect(function effectFunction() {

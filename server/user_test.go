@@ -156,3 +156,35 @@ func TestGetUser(t *testing.T) {
 	fmt.Printf("SUCESS Getuser ")
 
 }
+
+
+
+func TestUserLoginDemo(t *testing.T) {
+
+	tt := []struct {
+		name string
+		data []byte
+	}{
+		{name: "This one should Fail Empty", data: []byte(`{"users":{"Email": "","Password": ""}}`)},
+		{name: "This one should fail by email", data: []byte(`{"users":{"Email": "1test@test.com","Password": "pass123"}}`)},
+		{name: "This one should fail by password", data: []byte(`{"users":{"Email": "test@test.com","Password": "pass12"}}`)},
+		{name: "This one should fail by ADMIN", data: []byte(`{"users":{"Email": "Admin@test.com","Password": "pass123"}}`)},
+		{name: "This one should pass", data: []byte(`{"users":{"Email": "User@test.com","Password": "pass123"}}`)},
+	}
+
+	for _, tc := range tt {
+
+		req := httptest.NewRequest("POST", "https://localhost:8080/login", bytes.NewBuffer(tc.data))
+		w := httptest.NewRecorder()
+		api.Login_Demo(w, req)
+
+		resp := w.Result()
+		body, _ := ioutil.ReadAll(resp.Body)
+		fmt.Println(string(body))
+		if 200 != resp.StatusCode {
+			t.Errorf("Status code not OK %v", tc.name)
+		}
+
+	}
+
+}

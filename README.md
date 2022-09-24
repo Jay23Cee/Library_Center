@@ -1,9 +1,25 @@
 # Library_Center
 This is a library's web-based, RESTful API. Admin may currently generate new, read, change, and delete stored data. Data is stored using mongodb. The frontend development uses Ant design, Typescript, and React. This application can act as a RESTful API because its backend is written in Golang using chi as middleware.
 
+
+9/23/22 : REMOVE Comment from Access validation on addbook. bookhandler.go
+
+
+9/14/22
+Need to add image to mongodb.
+
+add image to the table.
+Or Maybe Remove the tables. and add images and boxes for each book.
+
+
+
+
+
+
+
 9/6/2022
 PUSHING TO PRODUCTION:
-Comment all the //devops()
+Comment all the devops()
 and the getdotenv..
 
 9/1/2022:

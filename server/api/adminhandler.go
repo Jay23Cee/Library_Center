@@ -28,7 +28,7 @@ func getPrivateKey() []byte {
 }
 
 func GetPrivate(w http.ResponseWriter, r *http.Request) {
-	//devops()
+	devops()
 	var user models.User
 	link := getLink()
 	// Here get the login URL.
@@ -187,8 +187,94 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+func Private_Login_Demo(w http.ResponseWriter, r *http.Request) {
+	em := "admin@test.com"
+	p := "pass123"
+	link := getLink()
+	user_type := "ADMIN"
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	// get
+	url := getURL()
+
+	clientOptions := options.Client().ApplyURI(url)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+
+		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Connection Failed", http.StatusBadRequest)
+		return
+	}
+
+	collection := client.Database("BookAPI").Collection("users")
+
+	doc := bson.D{{"Email", em}, {"User_type", user_type}}
+
+	var result models.Users
+	err = collection.FindOne(context.TODO(), doc).Decode(&result)
+
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Invalid User Login", http.StatusBadRequest)
+		return
+	}
+	err = utils.CheckAuth(user_type, *result.User_type)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Unauthorized Login", http.StatusBadRequest)
+		return
+	}
+
+	err = utils.CheckPassword(p, *result.Password)
+
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Invalid User Login", http.StatusBadRequest)
+		return
+	}
+
+	///Data that will be sent back
+	var userback models.User
+	err = collection.FindOne(context.Background(), doc).Decode(&userback)
+
+	if err != nil {
+
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	e, err := json.Marshal(userback)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	//creating Token
+	token, refreshToken, err := utils.MakeToken(*userback.Email, *userback.First_name, *userback.Last_name, *userback.User_type, userback.User_id)
+
+	utils.ExpireAlltokens(w, r)
+	//utils.UpdateAllTokens(token, refreshToken, userback.User_id)
+	utils.Makecookie(w, r, token, refreshToken)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		http.Error(w, "Token Failed", http.StatusBadRequest)
+		return
+	}
+
+	utils.UpdateAllTokens(token, refreshToken, result.User_id)
+
+	w.Write([]byte(e))
+	return
+}
+
 func PrivateLogout(w http.ResponseWriter, r *http.Request) {
-	//devops()
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -218,7 +304,7 @@ func Private_Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
-	//devops()
+	devops()
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")

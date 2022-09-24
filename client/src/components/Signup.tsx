@@ -33,11 +33,9 @@ const SignUp = () => {
 
 
   
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: UserSignUp) => {
     try {
-      console.log(values)
-      console.log(typeof( values.users.img), " img data type")
-      setImgFile(values.users.img)
+      
       var x = await User_Signup(values);
       console.log(x);
       navigate("/");
@@ -56,7 +54,7 @@ const SignUp = () => {
 
 
 
-
+  const onHandleChangeNumeric = () => {}
 
 
   
@@ -87,6 +85,7 @@ const SignUp = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Phone" name={["users", "Phone"]}
+           
             rules={[{ 
               required: true, 
               message: "A value must be entered",
@@ -114,7 +113,7 @@ const SignUp = () => {
         </Form.Item>
 
        
-        <Form.Item label="Complete:">
+        <Form.Item className="sign-up-button">
           <Button type="primary" htmlType="submit">
             Submit
           </Button>

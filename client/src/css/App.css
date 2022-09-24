@@ -97,30 +97,31 @@ header {
 
 .intro {
   width: 80vw;
-  height: 80vh;
+  height: 50vh;
   display: flex;
-  background: rgb(255, 255, 255);
   justify-content: center;
   align-content: center;
   font-family: "Lucida Console", "Courier New", monospace;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
 }
 .intro img {
-  opacity: 80%;
-  order: 2;
+  margin-top: 20px;
+  opacity: 83%;
+  order: 0;
   max-height: 45vh;
   min-width: 50vw;
 }
 
 .intro-text {
+  width: auto;
+  height: 500px;
   display: flex;
   flex-direction: column;
-  font-size: 3.5em;
+  font-size: 3em;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-right: 25px;
+  padding-left: 25px;
 }
 .intro-text p {
   font-size: 0.5em;
@@ -136,7 +137,7 @@ header {
   height: 80vh;
   display: flex;
   flex-direction: row;
-  background: rgb(255, 255, 255);
+  background: rgba(237, 237, 237, 0.66);
   justify-content: center;
   align-content: center;
   font-family: "Lucida Console", "Courier New", monospace;
@@ -146,7 +147,6 @@ header {
 .sign-up img {
   opacity: 80%;
   width: 45vw;
-  max-width: 1000%;
 }
 
 .sign-up-text {
@@ -179,7 +179,7 @@ header {
   font-size: 0.6em;
 }
 .Ideas img {
-  width: 500%;
+  margin: 0;
 }
 
 .Ideas-example {
@@ -201,9 +201,8 @@ header {
   padding-top: 2em;
 }
 .ideas-example-1 img, .ideas-example-2 img, .ideas-example-3 img {
-  max-width: 100%;
-  min-height: 28%;
-  max-height: 50%;
+  width: 100%;
+  height: 50%;
 }
 
 @media screen and (max-width: 650px) {
@@ -212,21 +211,23 @@ header {
   }
   .intro {
     width: 100vw;
-    flex-flow: column wrap;
-    padding-top: 15em;
+    flex-direction: column;
   }
   .intro img {
-    width: 80%;
-    max-height: 60%;
+    max-height: 80%;
+    margin: 0;
   }
   .intro h3 {
-    margin-top: -60%;
     text-align: center;
     align-content: center;
     object-position: center;
   }
   .intro-text {
-    width: 80vw;
+    padding: 25px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2.6em;
   }
   .sign-up-text {
     margin: 0;
@@ -237,13 +238,12 @@ header {
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 100%;
+    height: auto;
   }
   .Ideas-example {
     flex-direction: column;
   }
   .ideas-example-1, .ideas-example-2, .ideas-example-3 {
-    justify-content: center;
     align-items: center;
     text-align: center;
     height: 50vh !important;
@@ -290,13 +290,13 @@ header {
 
 .ant-form-item-label .Login-Form {
   justify-content: center !important;
-  margin-right: 2em;
+  text-align: left;
 }
 .ant-form-item-label .Login-Form h1 {
   font-size: 3em;
 }
 .ant-form-item-label label {
-  font-size: 2em !important;
+  font-size: 1.5em !important;
 }
 
 .ant-col-16 {
@@ -314,6 +314,16 @@ header {
   }
   .ant-form-item-label label {
     font-size: 1.5em !important;
+  }
+}
+.sign-up-button {
+  justify-content: center;
+}
+
+@media screen and (max-width: 650px) {
+  .Sign-up-form {
+    background: rgb(255, 255, 255);
+    width: 90%;
   }
 }
 
