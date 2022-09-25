@@ -168,11 +168,12 @@ const NewBook = () => {
   }
 
   return (
-    <div>
+    <div className="NewBook_Form">
+     
         <Form
           {...layout}
           form={form}
-          name="nest-messages"
+          name="NewBook_Form_Input"
           onFinish={onFinish}
           validateMessages={validateMessages}
         >
@@ -222,11 +223,11 @@ const NewBook = () => {
       </Modal>
     </Form.Item>
 
-        
+    <Form.Item >
             <Button type="primary" htmlType="submit">
               Submit
             </Button>
-    
+            </Form.Item >
         </Form>
       
     </div>

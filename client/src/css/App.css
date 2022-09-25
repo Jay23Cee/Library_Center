@@ -32,7 +32,7 @@ header {
   font-size: 3em;
   margin-top: -76px;
   margin-left: -50px !important;
-  width: 250px;
+  width: 400px;
   z-index: 10;
   overflow: hidden !important;
 }
@@ -325,6 +325,33 @@ header {
     background: rgb(255, 255, 255);
     width: 90%;
   }
+}
+.ant-pagination-disabled .ant-pagination-item-link {
+  overflow: hidden;
+}
+
+.ant-popover .ant-popconfirm .ant-popover-placement-top {
+  z-index: 99;
+}
+
+.Book_Table button {
+  color: black;
+  background: rgba(232, 10, 10, 0.709);
+  border-radius: 21.3px;
+  width: 50px;
+}
+
+.ant-table-tbody > tr > td {
+  text-align: center;
+}
+
+.ant-form-item {
+  justify-content: center;
+}
+
+.ant-col-8 {
+  flex: 0 0 18.333333%;
+  margin-left: -20%;
 }
 
 /*# sourceMappingURL=App.css.map */

@@ -11,6 +11,7 @@ import {
   InputRef,
   Breadcrumb,
 } from "antd";
+
 import { Book } from "../models/books";
 import { delete_book, edit_book, getbooks } from "../controllers/book_handler";
 import type { ColumnsType, ColumnType, TableProps } from "antd/es/table";
@@ -30,7 +31,8 @@ export interface BookTableProps {
   Key: string;
 }
 
-export const BookTable: React.FC<{}> = () => {
+
+export const Private_Table: React.FC<{}> = () => {
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,10 +46,8 @@ export const BookTable: React.FC<{}> = () => {
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const searchInput = useRef<InputRef>(null);
-    const [fileList, setFileList] = useState<UploadFile[]>([
-
-    ]);
-
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
 
     useEffect(function effectFunction() {
       async function fetchBooks() {
@@ -55,9 +55,26 @@ export const BookTable: React.FC<{}> = () => {
 
         var data = await getbooks();
         setData(data);
+        console.log(data)
       }
       fetchBooks();
+    
     }, []);
+
+
+
+     const handlePreview = async (file: UploadFile) => {
+    console.log(file)
+    console.log(typeof file)
+ 
+
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+
+    console.log(previewTitle)
+    console.log(previewImage)
+   
+  };
 
     const isEditing = (record: Book) => record.ID === editingKey;
     const isDeleting = (record: Book) => record.ID === editingKey;
@@ -141,52 +158,25 @@ export const BookTable: React.FC<{}> = () => {
      ********* Table *********/
 
 
-      
-    const customColumns=(()=>{
+
+ 
       const columns = [
+
         {
-          title: "Action",
-  
-          dataIndex: "action",
-          render: (_: any, record: Book) => {
-            const editable = isEditing(record) || isDeleting(record);
-            return editable ? (
-              <span>
-                <a
-                  href="javascript:;"
-                  onClick={() => save(record.ID)}
-                  style={{ marginRight: 8 }}
-                >
-                  Save
-                </a>
-                <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                  <a>Cancel</a>
-                </Popconfirm>
-              </span>
-            ) : (
-              <Typography.Link>
-                <Typography.Link
-                  disabled={editingKey !== ""}
-                  onClick={() => onEdit(record)}
-                >
-                  Edit
-                </Typography.Link>
-                <br></br>
-                <Popconfirm
-                  title="Sure to Delete?"
-                  onConfirm={() => onDelete(record)}
-                >
-                  <a>Delete</a>
-                </Popconfirm>
-              </Typography.Link>
-            );
-          },
+          title: "Img_url",
+          
+          key: "Img_url",
+          width: "35%",
+          editable: false,
+          render:  (_: any, record: Book) => {
+          return <img alt={record.Img_url} style={{ width: '100%' ,height:'100%'}} src={record.Img_url} /> }
         },
+
         {
           title: "Title",
           dataIndex: "Title",
           key: "Title",
-          width: "35%",
+          width: "25%",
           sorter: (a: any, b: any) => a.Title.localeCompare(b.Title),
           editable: true,
         },
@@ -214,47 +204,7 @@ export const BookTable: React.FC<{}> = () => {
           sorter: (a: any, b: any) => a.Year.localeCompare(b.Year),
           editable: true,
         },
-      ];
-  
-      
-      return columns})
-      
-    // const customColumns(()=>{
-      const columns = [
 
-
-        {
-          title: "Title",
-          dataIndex: "Title",
-          key: "Title",
-          width: "35%",
-          sorter: (a: any, b: any) => a.Title.localeCompare(b.Title),
-          editable: true,
-        },
-        {
-          title: "Author",
-          dataIndex: "Author",
-          key: "Author",
-          width: "25%",
-          sorter: (a: any, b: any) => a.Author.localeCompare(b.Author),
-          editable: true,
-        },
-        {
-          title: "Publisher",
-          dataIndex: "Publisher",
-          key: "Publisher",
-          width: "25%",
-          sorter: (a: any, b: any) => a.Publisher.localeCompare(b.Publisher),
-          editable: true,
-        },
-        {
-          title: "Year",
-          dataIndex: "Year",
-          key: "Year",
-          width: "15%",
-          sorter: (a: any, b: any) => a.Year.localeCompare(b.Year),
-          editable: true,
-        },
       ];
   
       
@@ -340,6 +290,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   dataIndex: string;
   title: string;
   author: string;
+  img:any;
   inputType: "number" | "text";
   record: Book;
   index: number;
@@ -353,6 +304,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   title,
   author,
   inputType,
+  img,
   record,
   index,
   children,
@@ -399,7 +351,7 @@ export const Bookintro = () => {
   );
 };
 
-export default BookTable;
+export default Private_Table;
 function dispatch(arg0: any) {
   throw new Error("Function not implemented.");
 }

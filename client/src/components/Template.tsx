@@ -70,20 +70,29 @@ const Template = () => {
     return;
   };
 
- const CheckAuth = (role: any, Utype: string) => {
+ const CheckAuth = (role: any, Utype: string[]) => {
     // if used in more components, this should be in context
+    console.log(Utype)
+
+    let ulen = Utype.length
     if (role != null) {
       console.log(role.User_type);
       if (role.User_type != null) {
         console.log(role.User_type, " typeof", typeof role.User_type);
-        console.log(Utype, " typeof", typeof Utype);
-        if (String(role.User_type) == Utype) {
-          return true;
+
+        let x=0;
+        for (x; x<ulen;x++){
+          console.log(Utype[x])
+          if (role.User_type == Utype[x]){
+            return true
+          }
         }
+      
       }
     }
     console.log("FALSE");
     return false;
+    return true;
   };
 
   function nav_trigger(){
@@ -122,7 +131,7 @@ const Template = () => {
             </Menu.Item>
           )}
 
-          {CheckAuth(user, "ADMIN") && (
+          {CheckAuth(user, ["ADMIN"]) && (
             <Menu.Item key="2">
               <Link to="/new">New</Link>
             </Menu.Item>
@@ -130,12 +139,12 @@ const Template = () => {
 
 
 
-          {CheckAuth(user, "ADMIN") && (
+          {CheckAuth(user, ["ADMIN"]) && (
             <Menu.Item key="6">
               <Link to="/PrivateTable">Private Table</Link>
             </Menu.Item>
           )}
-          {CheckAuth(user,"USER") && (
+          {CheckAuth(user,["ADMIN", "USER"]) && (
             <Menu.Item key="3">
               <Link to="/Btable">BookTable</Link>
             </Menu.Item>

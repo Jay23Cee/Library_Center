@@ -103,17 +103,9 @@ const Login_form: React.FC = () => {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item
-          name={["users", "Remember"]}
-          valuePropName="checked"
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            Login
           </Button>
         </Form.Item>
       </Form>

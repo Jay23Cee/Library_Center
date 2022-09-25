@@ -86,7 +86,7 @@ export const Private_Table: React.FC<{}> = () => {
 
     const onDelete = async (record: Partial<Book> & { ID: React.Key }) => {
       setEditingKey(record.ID);
-  
+      console.log("DELETe")
       try {
         const row = (await form.validateFields()) as Book;
 
@@ -100,15 +100,16 @@ export const Private_Table: React.FC<{}> = () => {
           delete_book(JSON_string);
 
           const update = await getbooks();
-          setData(update);
+  
           setData(update);
           // action.startEditBook(newData[index]);
           setEditingKey("");
+          navigate("/PrivateTable")
         } else {
           newData.push(row);
 
           const update = await getbooks();
-          setData(update);
+       
           setData(update);
           setEditingKey("");
         }
@@ -163,7 +164,7 @@ export const Private_Table: React.FC<{}> = () => {
       const columns = [
         {
           title: "Action",
-  
+          
           dataIndex: "action",
           render: (_: any, record: Book) => {
             const editable = isEditing(record) || isDeleting(record);
@@ -189,22 +190,28 @@ export const Private_Table: React.FC<{}> = () => {
                   Edit
                 </Typography.Link>
                 <br></br>
-                <Popconfirm
-                  title="Sure to Delete?"
-                  onConfirm={() => onDelete(record)}
-                >
-                  <a>Delete</a>
-                </Popconfirm>
+               
+    <button onClick={()=>{onDelete(record)}} >Delete</button>
+ 
               </Typography.Link>
             );
           },
+        },
+        {
+          title: "Img_url",
+          
+          key: "Img_url",
+          width: "35%",
+          editable: false,
+          render:  (_: any, record: Book) => {
+          return <img alt={record.Img_url} style={{ width: '100%' ,height:'100%'}} src={record.Img_url} /> }
         },
 
         {
           title: "Title",
           dataIndex: "Title",
           key: "Title",
-          width: "35%",
+          width: "25%",
           sorter: (a: any, b: any) => a.Title.localeCompare(b.Title),
           editable: true,
         },
@@ -232,16 +239,7 @@ export const Private_Table: React.FC<{}> = () => {
           sorter: (a: any, b: any) => a.Year.localeCompare(b.Year),
           editable: true,
         },
-        {
-          title: "Img_url",
-          dataIndex:"Img_url",
-          key: "Img_url",
-          width: "45%",
-          editable: true,
-          render:  (_: any, record: Book) => {
-          console.log(record)
-          return <img alt={record.Img_url} style={{ width: '100%' ,height:'100%'}} src={record.Img_url} /> }
-        },
+
       ];
   
       
@@ -302,7 +300,7 @@ export const Private_Table: React.FC<{}> = () => {
   };
 
   return (
-    <div>
+    <div className="Book_Table">
       <EditableTable />
     </div>
   );
