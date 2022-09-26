@@ -44,7 +44,7 @@ type SignedDetails struct {
 }
 
 func UpdateAllTokens(signedToken string, signedRefreshToken string, userId string) {
-	fmt.Println("\n\nHERE AT UPDATE TOKEN\n\n")
+
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 	var updateObj primitive.D
@@ -198,7 +198,7 @@ func Getcookie(w http.ResponseWriter, r *http.Request) (*jwt.Token, error) {
 	cookie, err := r.Cookie(cookieName)
 
 	if err != nil {
-		fmt.Println("HERE AT COOKIES")
+	
 
 		return nil, errors.New("Error retrieving token")
 	}

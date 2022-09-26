@@ -317,7 +317,7 @@ const onChange: TableProps<Book>["onChange"] = (
   sorter,
   extra
 ) => {
-  console.log("params", pagination, filters, sorter, extra);
+ // console.log("params", pagination, filters, sorter, extra);
 };
 
 export const Bookintro = () => {

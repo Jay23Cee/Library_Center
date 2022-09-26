@@ -4,9 +4,9 @@ import connect, { useSelector } from"react-redux";
 
 export const UseAuth=(s :string)=>{
     const user  = useSelector((state) => state.user);
-    console.log(user.currentUser)
+    // console.log(user.currentUser)
     if (user.currentUser!= null){
-        console.log(user.currentUser.User_type)
+   //     console.log(user.currentUser.User_type)
        let type = String(user.currentUser.User_type)
         if (type ==s){
             return true
@@ -17,10 +17,10 @@ export const UseAuth=(s :string)=>{
 
 
 const ProtectedRoutes = ({props, direction=""}:{props:any,direction?:string}) => {
-    console.log(props)
+   // console.log(props)
     const auth = UseAuth(props);
    const redirect = "/"+direction
-   console.log(auth)
+ //  console.log(auth)
     return auth ? <Outlet/> : <Navigate to={redirect} replace />;
   };
 

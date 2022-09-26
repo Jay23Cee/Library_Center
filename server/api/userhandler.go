@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
@@ -23,13 +23,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func devops() {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Errorf("ERROR ON LOAD %v", err)
-		panic(err)
-	}
-}
+// func devops() {
+// 	err := godotenv.Load()
+// 	if err != nil {
+// 		fmt.Errorf("ERROR ON LOAD %v", err)
+// 		panic(err)
+// 	}
+// }
 
 func FindUser(collection *mongo.Collection, email string) (err error) {
 	filter := bson.M{"Email": email}
@@ -48,7 +48,7 @@ func FindUser(collection *mongo.Collection, email string) (err error) {
 }
 
 func getLink() string {
-	devops()
+	//devops
 	link := os.Getenv("REACT_APP_CLIENT_URL")
 	// Here get the login URL.
 
@@ -66,7 +66,7 @@ func getURL() string {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops
 	var user models.User
 	link := getLink()
 	// Here get the login URL.
@@ -76,7 +76,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	token, err := utils.Getcookie(w, r)
-	fmt.Println("Here at getUSER")
 
 	if err != nil {
 		return
@@ -121,7 +120,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println(user, "Here at get user")
+	
 	w.Write([]byte(e))
 }
 
@@ -212,7 +211,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println(userback, "Here at get login")
+
 
 	//creating Token
 	token, refreshToken, err := utils.MakeToken(*userback.Email, *userback.First_name, *userback.Last_name, *userback.User_type, userback.User_id)
@@ -319,7 +318,7 @@ func Login_Demo(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -352,12 +351,12 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	body, err := ioutil.ReadAll(r.Body)
-	fmt.Println(body)
+	
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
-	devops()
+	//devops
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
@@ -446,7 +445,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 
 func isAuth(w http.ResponseWriter, r *http.Request, rtype string) bool {
-	devops()
+	//devops
 	var user models.Users
 
 	token, err := utils.Getcookie(w, r)

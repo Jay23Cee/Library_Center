@@ -25,7 +25,7 @@ Or Maybe Remove the tables. and add images and boxes for each book.
 
 9/6/2022
 PUSHING TO PRODUCTION:
-Comment all the devops()
+Comment all the //devops
 and the getdotenv..
 
 9/1/2022:

@@ -37,7 +37,7 @@ const SignUp = () => {
     try {
       
       var x = await User_Signup(values);
-      console.log(x);
+      //console.log(x);
       navigate("/");
     } catch (error) {
       console.error(error);

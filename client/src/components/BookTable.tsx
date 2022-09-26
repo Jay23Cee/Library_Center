@@ -55,7 +55,7 @@ export const Private_Table: React.FC<{}> = () => {
 
         var data = await getbooks();
         setData(data);
-        console.log(data)
+      //  console.log(data)
       }
       fetchBooks();
     
@@ -64,15 +64,15 @@ export const Private_Table: React.FC<{}> = () => {
 
 
      const handlePreview = async (file: UploadFile) => {
-    console.log(file)
-    console.log(typeof file)
+   // console.log(file)
+   // console.log(typeof file)
  
 
     setPreviewImage(file.url || (file.preview as string));
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
 
-    console.log(previewTitle)
-    console.log(previewImage)
+   // console.log(previewTitle)
+  //  console.log(previewImage)
    
   };
 
@@ -163,13 +163,13 @@ export const Private_Table: React.FC<{}> = () => {
       const columns = [
 
         {
-          title: "Img_url",
+          title: "Cover",
           
           key: "Img_url",
           width: "35%",
           editable: false,
           render:  (_: any, record: Book) => {
-          return <img alt={record.Img_url} style={{ width: '100%' ,height:'100%'}} src={record.Img_url} /> }
+          return <img alt={record.Img_url} style={{ width: '60%' ,height:'100%'}} src={record.Img_url} /> }
         },
 
         {

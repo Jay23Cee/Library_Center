@@ -20,7 +20,7 @@ import (
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 
 func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-	devops()
+	//devops
 	link := getLink()
 	// Here get the login URL.
 
@@ -84,7 +84,7 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops
 	link := getLink()
 	// Here get the login URL.
 
@@ -128,13 +128,12 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, "\nDelete has Completed %v", result.DeletedCount)
-	
+
 }
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
-	
-	fmt.Println("\n\n\n HERE AT addbooks")
-	devops()
+
+	//devops
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -166,8 +165,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	jsonMap := make(map[string]models.Book)
 
 	err = json.Unmarshal([]byte(body), &jsonMap)
-	
-	
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -182,7 +180,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	}
 	collection := client.Database("BookAPI").Collection("book")
 
-	doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year},{"Img", book.Img}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}}
+	doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}}
 	result, err := collection.InsertOne(ctx, doc)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -193,7 +191,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 
 func BookImg(w http.ResponseWriter, r *http.Request) {
 
-	devops()
+	//devops
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -250,7 +248,7 @@ func BookImg(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 

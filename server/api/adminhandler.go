@@ -28,7 +28,7 @@ func getPrivateKey() []byte {
 }
 
 func GetPrivate(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops
 	var user models.User
 	link := getLink()
 	// Here get the login URL.
@@ -38,7 +38,6 @@ func GetPrivate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	token, err := utils.Getcookie(w, r)
-	fmt.Println("Here at getPrivate")
 
 	if err != nil {
 		return
@@ -83,7 +82,7 @@ func GetPrivate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println(user, "Here at get user")
+
 	w.Write([]byte(e))
 }
 
@@ -126,7 +125,7 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 	}
 	collection := client.Database("BookAPI").Collection("users")
 	email := strings.ToLower(*JSONusers.Email)
-	fmt.Println(email)
+
 	user := &models.Users{
 
 		Email:    &email,
@@ -167,7 +166,6 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println(userback, "Here at get login")
 
 	//creating Token
 	token, refreshToken, err := utils.MakeToken(*userback.Email, *userback.First_name, *userback.Last_name, *userback.User_type, userback.User_id)
@@ -274,7 +272,7 @@ func Private_Login_Demo(w http.ResponseWriter, r *http.Request) {
 }
 
 func PrivateLogout(w http.ResponseWriter, r *http.Request) {
-	devops()
+	//devops
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -304,7 +302,7 @@ func Private_Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
-	devops()
+	//devops
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")

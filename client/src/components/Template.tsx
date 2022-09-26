@@ -45,7 +45,7 @@ const Template = () => {
   }
 
   const user = useSelector((state) => state.user.currentUser);
-  console.log(user);
+ // console.log(user);
   useEffect(function effectFunction() {
     async function fetchUser() {
       await isLogin();
@@ -72,17 +72,17 @@ const Template = () => {
 
  const CheckAuth = (role: any, Utype: string[]) => {
     // if used in more components, this should be in context
-    console.log(Utype)
+    //console.log(Utype)
 
     let ulen = Utype.length
     if (role != null) {
-      console.log(role.User_type);
+      //console.log(role.User_type);
       if (role.User_type != null) {
-        console.log(role.User_type, " typeof", typeof role.User_type);
+        //console.log(role.User_type, " typeof", typeof role.User_type);
 
         let x=0;
         for (x; x<ulen;x++){
-          console.log(Utype[x])
+          //console.log(Utype[x])
           if (role.User_type == Utype[x]){
             return true
           }
@@ -90,14 +90,14 @@ const Template = () => {
       
       }
     }
-    console.log("FALSE");
+    //console.log("FALSE");
     return false;
     return true;
   };
 
   function nav_trigger(){
-    console.log("ACTIVE")
-    console.log(nav)
+   // console.log("ACTIVE")
+    //console.log(nav)
   if(nav.length >0){
     for (let x=0; x<nav.length;x++){
       nav[x].classList.add("ant-menu-submenu-active")

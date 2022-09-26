@@ -55,7 +55,7 @@ export const Private_Table: React.FC<{}> = () => {
 
         var data = await getbooks();
         setData(data);
-        console.log(data)
+      //  console.log(data)
       }
       fetchBooks();
     
@@ -64,8 +64,8 @@ export const Private_Table: React.FC<{}> = () => {
 
 
      const handlePreview = async (file: UploadFile) => {
-    console.log(file)
-    console.log(typeof file)
+   // console.log(file)
+   // console.log(typeof file)
  
 
     setPreviewImage(file.url || (file.preview as string));
@@ -86,7 +86,7 @@ export const Private_Table: React.FC<{}> = () => {
 
     const onDelete = async (record: Partial<Book> & { ID: React.Key }) => {
       setEditingKey(record.ID);
-      console.log("DELETe")
+    //  console.log("DELETe")
       try {
         const row = (await form.validateFields()) as Book;
 
@@ -198,13 +198,13 @@ export const Private_Table: React.FC<{}> = () => {
           },
         },
         {
-          title: "Img_url",
+          title: "Cover",
           
           key: "Img_url",
           width: "35%",
           editable: false,
           render:  (_: any, record: Book) => {
-          return <img alt={record.Img_url} style={{ width: '100%' ,height:'100%'}} src={record.Img_url} /> }
+          return <img alt={record.Img_url} style={{width: '60%' ,height:'100%'}} src={record.Img_url} /> }
         },
 
         {
@@ -375,7 +375,7 @@ const onChange: TableProps<Book>["onChange"] = (
   sorter,
   extra
 ) => {
-  console.log("params", pagination, filters, sorter, extra);
+ // console.log("params", pagination, filters, sorter, extra);
 };
 
 export const Bookintro = () => {

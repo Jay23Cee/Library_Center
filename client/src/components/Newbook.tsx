@@ -84,15 +84,15 @@ const NewBook = () => {
     }
     // console.log(file.preview)
     let url = file.preview as string
-    console.log(url)
+    //console.log(url)
     setFiles(url )
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
  
     // console.log(files_url , " last 91")
-    console.log(previewTitle)
-    console.log(previewImage)
+   // console.log(previewTitle)
+   // console.log(previewImage)
    
   };
 
@@ -102,7 +102,7 @@ const NewBook = () => {
      }
      // console.log(file.preview)
      let url = file.preview as string
-     console.log(url)
+    // console.log(url)
      setFiles(url )
      setPreviewImage(file.url || (file.preview as string));
      setPreviewOpen(true);
@@ -146,13 +146,13 @@ const NewBook = () => {
   const onFinish = async (values: Book) => {
     //book should be ..
  
-    console.log(files_url as string, " onFINISH URL")
+   // console.log(files_url as string, " onFINISH URL")
    
     values.book.img_url = files_url as string
     values.book.img = JSON.stringify(fileList[0]);
    
     const JSON_string = JSON.stringify(values);
-    console.log(JSON_string)
+  //  console.log(JSON_string)
     try {
       await add_book(JSON_string, values);
       message.success("Success ====>");

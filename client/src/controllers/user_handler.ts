@@ -84,7 +84,7 @@ export async function Check_Login() {
 
     let User = JSON.stringify(data);
     let parse: User = JSON.parse(User);
-    console.log(parse)
+   // console.log(parse)
     return Promise.resolve(parse);
   } catch (error) {
     return Promise.reject(error);
