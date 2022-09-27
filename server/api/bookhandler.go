@@ -20,7 +20,7 @@ import (
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 
 func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-	//devops
+	devops()
 	link := getLink()
 	// Here get the login URL.
 
@@ -84,7 +84,7 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-	//devops
+	devops()
 	link := getLink()
 	// Here get the login URL.
 
@@ -133,7 +133,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
 
-	//devops
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -191,7 +191,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 
 func BookImg(w http.ResponseWriter, r *http.Request) {
 
-	//devops
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -248,7 +248,7 @@ func BookImg(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	//devops
+	devops()
 	link := getLink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 

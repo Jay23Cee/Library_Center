@@ -6,3 +6,16 @@
     flex: 0 0 18.333333%;
     margin-left: -20%;
 }
+
+
+@media screen and (max-width:650px){ 
+    .ant-col-8 {
+      flex-basis: auto;
+        margin:0 !important;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    
+    }

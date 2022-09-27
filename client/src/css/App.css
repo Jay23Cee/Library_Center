@@ -207,6 +207,9 @@ header {
 }
 
 @media screen and (max-width: 650px) {
+  .ant-form .ant-form-item .ant-form-item-label {
+    max-width: 80%;
+  }
   .ant-layout-content {
     padding: 0 !important;
   }
@@ -273,6 +276,7 @@ header {
 .Login-Form {
   color: red !important;
   justify-content: center;
+  width: 100vw;
 }
 
 .Demo-Login {
@@ -353,6 +357,16 @@ header {
 .ant-col-8 {
   flex: 0 0 18.333333%;
   margin-left: -20%;
+}
+
+@media screen and (max-width: 650px) {
+  .ant-col-8 {
+    flex-basis: auto;
+    margin: 0 !important;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 /*# sourceMappingURL=App.css.map */
