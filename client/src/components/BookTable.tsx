@@ -55,7 +55,7 @@ export const Private_Table: React.FC<{}> = () => {
 
         var data = await getbooks();
         setData(data);
-      //  console.log(data)
+   
       }
       fetchBooks();
     
@@ -64,15 +64,13 @@ export const Private_Table: React.FC<{}> = () => {
 
 
      const handlePreview = async (file: UploadFile) => {
-   // console.log(file)
-   // console.log(typeof file)
+  
  
 
     setPreviewImage(file.url || (file.preview as string));
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
 
-   // console.log(previewTitle)
-  //  console.log(previewImage)
+
    
   };
 
