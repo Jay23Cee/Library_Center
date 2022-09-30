@@ -7,14 +7,16 @@ header {
 
 .layout-title{
   color:rgb(3, 192, 255);
+
  align-items: center;
- background:transparent;
+ background:transparent!important;
+width:10em;
+  font-size:1.8em;
 
-  font-size: 2em;
-  text-align: end;
-  z-index: 1;
+  z-index: 20 !important;
+  margin-left: 62vw;
 
-  margin-right:20px
+  
 }
 
 .ant-menu.ant-menu-dark{
@@ -25,8 +27,8 @@ header {
   font-size: 3em;
   margin-top:-76px;
   margin-left: -50px !important;
-  width:400px;
-  z-index: 10;
+  width:450px;
+  z-index: 2 !important;
   overflow: hidden !important;
 
   ul{
@@ -60,7 +62,20 @@ header {
 // ***
 @media screen and (max-width:650px){
 
+  .layout-title{
+    color:rgb(3, 192, 255);
+  
+   align-items: center;
 
+  width:10em;
+    font-size:2em;
+  
+    z-index: 20 !important;
+  
+    margin-left: 12vw;
+    
+  }
+  
   .ant-menu.ant-menu-dark{
     display: flex;
     flex-direction: column;

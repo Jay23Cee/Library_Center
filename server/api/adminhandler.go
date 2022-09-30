@@ -28,9 +28,9 @@ func getPrivateKey() []byte {
 }
 
 func GetPrivate(w http.ResponseWriter, r *http.Request) {
-	devops()
+	////Devops
 	var user models.User
-	link := getLink()
+	link := Getlink()
 	// Here get the login URL.
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -47,7 +47,7 @@ func GetPrivate(w http.ResponseWriter, r *http.Request) {
 	}
 	claims := token.Claims.(*utils.SignedDetails)
 
-	url := getURL()
+	url := GetURL()
 	clientOptions := options.Client().ApplyURI(url)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
@@ -87,7 +87,7 @@ func GetPrivate(w http.ResponseWriter, r *http.Request) {
 }
 
 func Private_Login(w http.ResponseWriter, r *http.Request) {
-	link := getLink()
+	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -100,7 +100,7 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get
-	url := getURL()
+	url := GetURL()
 
 	jsonMap := make(map[string]models.Users)
 
@@ -172,7 +172,7 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 
 	utils.ExpireAlltokens(w, r)
 	//utils.UpdateAllTokens(token, refreshToken, userback.User_id)
-	utils.Makecookie(w, r, token, refreshToken)
+	utils.Makecookie(w, r, token, refreshToken, false)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		http.Error(w, "Token Failed", http.StatusBadRequest)
@@ -188,7 +188,7 @@ func Private_Login(w http.ResponseWriter, r *http.Request) {
 func Private_Login_Demo(w http.ResponseWriter, r *http.Request) {
 	em := "admin@test.com"
 	p := "pass123"
-	link := getLink()
+	link := Getlink()
 	user_type := "ADMIN"
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -196,7 +196,7 @@ func Private_Login_Demo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	// get
-	url := getURL()
+	url := GetURL()
 
 	clientOptions := options.Client().ApplyURI(url)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -258,7 +258,7 @@ func Private_Login_Demo(w http.ResponseWriter, r *http.Request) {
 
 	utils.ExpireAlltokens(w, r)
 	//utils.UpdateAllTokens(token, refreshToken, userback.User_id)
-	utils.Makecookie(w, r, token, refreshToken)
+	utils.Makecookie(w, r, token, refreshToken, false)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		http.Error(w, "Token Failed", http.StatusBadRequest)
@@ -272,8 +272,8 @@ func Private_Login_Demo(w http.ResponseWriter, r *http.Request) {
 }
 
 func PrivateLogout(w http.ResponseWriter, r *http.Request) {
-	devops()
-	link := getLink()
+	////Devops
+	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -302,7 +302,7 @@ func Private_Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
-	devops()
+	////Devops
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")

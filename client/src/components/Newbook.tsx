@@ -82,9 +82,9 @@ const NewBook = () => {
    if (!file.url && !file.preview) {
      file.preview = await getBase64(file.originFileObj as RcFile);
     }
-    // console.log(file.preview)
+
     let url = file.preview as string
-    //console.log(url)
+   
     setFiles(url )
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);

@@ -19,9 +19,9 @@ import (
 // Create a struct that will be encoded to a JWT.
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 
-func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-	devops()
-	link := getLink()
+func Makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
+	//Devops()
+	link := Getlink()
 	// Here get the login URL.
 
 	w.Header().Set("Access-Control-Allow-Origin", link)
@@ -46,9 +46,15 @@ func makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
 
 func GetBooks(w http.ResponseWriter, r *http.Request) {
 
+	access := IsAuth(w, r, []string{"ADMIN", "USER"})
+	if !access {
+		http.Error(w, "Unauthorize access", http.StatusBadGateway)
+		return
+	}
+
 	mymap := make(map[int]models.Book)
 
-	client := makeconnection(w, r)
+	client := Makeconnection(w, r)
 
 	// users.GetUser(w, r)
 
@@ -84,8 +90,8 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-	devops()
-	link := getLink()
+	//Devops()
+	link := Getlink()
 	// Here get the login URL.
 
 	w.Header().Set("Access-Control-Allow-Origin", link)
@@ -93,7 +99,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	access := isAuth(w, r, "ADMIN")
+	access := IsAuth(w, r, []string{"ADMIN"})
 	if !access {
 		http.Error(w, "Unauthorize access", http.StatusBadGateway)
 		return
@@ -133,18 +139,18 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
 
-	devops()
-	link := getLink()
+	//Devops()
+	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	// access := isAuth(w, r, "ADMIN")
-	// if !access {
-	// 	http.Error(w, "Unauthorize access", http.StatusBadGateway)
-	// 	return
-	// }
+	access := IsAuth(w, r, []string{"ADMIN"})
+	if !access {
+		http.Error(w, "Unauthorize access", http.StatusBadGateway)
+		return
+	}
 	url := os.Getenv("REACT_APP_GO_URL")
 	clientOptions := options.Client().ApplyURI(url)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -191,14 +197,14 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 
 func BookImg(w http.ResponseWriter, r *http.Request) {
 
-	devops()
-	link := getLink()
+	//Devops()
+	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	access := isAuth(w, r, "ADMIN")
+	access := IsAuth(w, r, []string{"ADMIN"})
 	if !access {
 		http.Error(w, "Unauthorize access", http.StatusBadGateway)
 		return
@@ -248,8 +254,8 @@ func BookImg(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	devops()
-	link := getLink()
+	//Devops()
+	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 
 	w.Header().Set("Access-Control-Allow-Credentials", "true")

@@ -14,7 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/joho/godotenv"
+	"github.com/golang-jwt/jwt"
+	// "github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
@@ -23,13 +24,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func devops() {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Errorf("ERROR ON LOAD %v", err)
-		panic(err)
-	}
-}
+// func Devops() {
+// 	err := godotenv.Load()
+// 	if err != nil {
+// 		fmt.Errorf("ERROR ON LOAD %v", err)
+// 		panic(err)
+// 	}
+// }
 
 func FindUser(collection *mongo.Collection, email string) (err error) {
 	filter := bson.M{"Email": email}
@@ -47,8 +48,8 @@ func FindUser(collection *mongo.Collection, email string) (err error) {
 	return err
 }
 
-func getLink() string {
-	devops()
+func Getlink() string {
+	//Devops()
 	link := os.Getenv("REACT_APP_CLIENT_URL")
 	// Here get the login URL.
 
@@ -60,45 +61,44 @@ func getKey() []byte {
 	return []byte(key)
 }
 
-func getURL() string {
+func GetURL() string {
 	url := os.Getenv("REACT_APP_GO_URL")
 	return url
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	devops()
-	var user models.User
-	link := getLink()
+	//Devops()
+
+	link := Getlink()
 	// Here get the login URL.
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	var user models.User
+	url := GetURL()
 
 	token, err := utils.Getcookie(w, r)
 
 	if err != nil {
+
 		return
 	}
 	if token == nil {
+
 		return
 	}
 	claims := token.Claims.(*utils.SignedDetails)
 
-	url := getURL()
 	clientOptions := options.Client().ApplyURI(url)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	client, err := mongo.Connect(ctx, clientOptions)
-	if err != nil {
-
-		http.Error(w, err.Error(), http.StatusBadGateway)
-		return
-	}
 	collection := client.Database("BookAPI").Collection("users")
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+
 		return
 	}
 	user_id := claims.Uid
@@ -108,7 +108,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 
-		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -117,7 +116,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	err = authenticator.MatchUserTypeToUid(user, user_id, "USER")
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+
 		return
 	}
 
@@ -125,7 +124,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	link := getLink()
+	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -138,7 +137,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get
-	url := getURL()
+	url := GetURL()
 
 	jsonMap := make(map[string]models.Users)
 
@@ -217,7 +216,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	utils.ExpireAlltokens(w, r)
 	//utils.UpdateAllTokens(token, refreshToken, userback.User_id)
-	utils.Makecookie(w, r, token, refreshToken)
+	utils.Makecookie(w, r, token, refreshToken, false)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		http.Error(w, "Token Failed", http.StatusBadRequest)
@@ -233,7 +232,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 func Login_Demo(w http.ResponseWriter, r *http.Request) {
 	em := "user@test.com"
 	p := "pass123"
-	link := getLink()
+	link := Getlink()
 	user_type := "USER"
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -241,7 +240,7 @@ func Login_Demo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	// get
-	url := getURL()
+	url := GetURL()
 
 	clientOptions := options.Client().ApplyURI(url)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -303,7 +302,7 @@ func Login_Demo(w http.ResponseWriter, r *http.Request) {
 
 	utils.ExpireAlltokens(w, r)
 	//utils.UpdateAllTokens(token, refreshToken, userback.User_id)
-	utils.Makecookie(w, r, token, refreshToken)
+	utils.Makecookie(w, r, token, refreshToken, false)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		http.Error(w, "Token Failed", http.StatusBadRequest)
@@ -317,8 +316,8 @@ func Login_Demo(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	devops()
-	link := getLink()
+	//Devops()
+	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -337,6 +336,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 	refresh := http.Cookie{
 		Name:   "r",
+		Path:   "/refresh",
 		MaxAge: -1}
 	http.SetCookie(w, &refresh)
 	r.AddCookie(&refresh)
@@ -355,7 +355,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
-	devops()
+	//Devops()
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
@@ -442,24 +442,29 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nSucess ==> ")
 }
 
-func isAuth(w http.ResponseWriter, r *http.Request, rtype string) bool {
-	devops()
+func IsAuth(w http.ResponseWriter, r *http.Request, rtype []string) bool {
+	//Devops()
 	var user models.Users
+
 
 	token, err := utils.Getcookie(w, r)
 
 	if err != nil {
-		err = errors.New("Not Auth")
-		return false
-	}
-	if token == nil {
+		//check if there's a refresh token.err
+
+		if err != nil {
+			return false
+
+		}
+
+	} else if token == nil {
 		err = errors.New("Not Auth")
 		return false
 
 	}
 	claims := token.Claims.(*utils.SignedDetails)
 
-	url := getURL()
+	url := GetURL()
 	clientOptions := options.Client().ApplyURI(url)
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
@@ -482,11 +487,102 @@ func isAuth(w http.ResponseWriter, r *http.Request, rtype string) bool {
 		return false
 	}
 
-	err = utils.CheckAuth(*user.User_type, rtype)
+valid := false
+for x:=0; x<len(rtype); x++{ 
+	fmt.Println(rtype[x], " TYPE OF ARRAY AD")
+	err = utils.CheckAuth(*user.User_type, rtype[x])
 	if err != nil {
-		return false
+		valid = false
+		continue
+	}
+	valid = true
+	return valid
+}
+fmt.Println(valid)
+
+
+	return valid
+
+}
+
+func RefreshUser(w http.ResponseWriter, r *http.Request, claims string) models.User {
+	//Devops()
+	var user models.User
+
+	url := GetURL()
+	clientOptions := options.Client().ApplyURI(url)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+
+		http.Error(w, err.Error(), http.StatusBadGateway)
+
+	}
+	collection := client.Database("BookAPI").Collection("users")
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+
+	}
+	user_id := claims
+	doc := bson.D{{Key: "User_id", Value: user_id}}
+
+	err = collection.FindOne(context.Background(), doc).Decode(&user)
+
+	if err != nil {
+
+		http.Error(w, err.Error(), http.StatusBadRequest)
+
 	}
 
-	return true
+	return user
+}
+
+func Refreshcookie(w http.ResponseWriter, r *http.Request) {
+
+	link := Getlink()
+	// Here get the login URL.
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	// var user models.Userlogin
+	cookieName := "r"
+	cookie, err := r.Cookie(cookieName)
+
+	if err != nil {
+
+		http.Error(w, "Error retrieving r token", http.StatusBadGateway)
+
+	}
+	fmt.Println("getting token")
+	token, err := jwt.ParseWithClaims(cookie.Value, &utils.SignedDetails{}, func(token *jwt.Token) (interface{}, error) {
+		jwtKey := getKey()
+		return jwtKey, nil
+	})
+
+	if err != nil {
+
+		http.Error(w, "Unauthenticated", http.StatusBadGateway)
+	}
+
+	claims := token.Claims.(*utils.SignedDetails)
+
+	if claims.ExpiresAt < time.Now().Local().Unix() {
+		// msg := fmt.Sprintf("token is expired")
+		fmt.Println("error")
+		http.Error(w, "Error r token Expired", http.StatusBadGateway)
+
+	}
+	user_id := claims.Uid
+
+	var user models.User
+
+	user = RefreshUser(w, r, user_id)
+
+	rtoken, _, _ := utils.MakeToken(*user.Email, *user.First_name, *user.Last_name, *user.User_type, user.User_id)
+
+	utils.Makecookie(w, r, rtoken, user_id, true)
 
 }

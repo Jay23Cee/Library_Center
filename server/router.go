@@ -29,11 +29,13 @@ func Connect_router() *chi.Mux {
 	}))
 
 	r.Post("/signup", api.Signup)
-	r.Get("/user", api.GetUser)
+	r.Post("/user", api.GetUser)
 	r.Get("/user/{user_id}", api.GetUser)
 	r.Get("/logout", api.Logout)
 	r.Post("/login", api.Login)
 	r.Post("/login/demo", api.Login_Demo)
+
+	r.Post("/refresh", api.Refreshcookie)
 
 	r.Post("/private/login", api.Private_Login)
 	r.Post("/private/login/demo", api.Private_Login_Demo)

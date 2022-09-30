@@ -141,7 +141,7 @@ func TestGetPrivate(t *testing.T) {
 		if err != nil {
 			t.Errorf("ERROR making token %v", err)
 		}
-		utils.Makecookie(w, req, token, rtoken)
+		utils.Makecookie(w, req, token, rtoken,false)
 		api.GetPrivate(w, req)
 
 		resp := w.Result()

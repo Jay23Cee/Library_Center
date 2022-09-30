@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginSuccess, logOut } from "../redux/userSlice";
 import { Check_Login } from "../controllers/user_handler";
-import UseAuth from "../ProtectedRoutes"
+import UseAuth from "../ProtectedRoutes";
 import { UploadFile } from "antd/lib/upload/interface";
 
 export interface BookTableProps {
@@ -31,7 +31,6 @@ export interface BookTableProps {
   Key: string;
 }
 
-
 export const Private_Table: React.FC<{}> = () => {
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
@@ -39,6 +38,10 @@ export const Private_Table: React.FC<{}> = () => {
 
   const originData: Book[] = [];
 
+
+
+  
+  
   const EditableTable = () => {
     const [form] = Form.useForm();
     const [data, setData] = useState(originData);
@@ -46,35 +49,30 @@ export const Private_Table: React.FC<{}> = () => {
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
     const searchInput = useRef<InputRef>(null);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
+    const [previewImage, setPreviewImage] = useState("");
+    const [previewTitle, setPreviewTitle] = useState("");
 
     useEffect(function effectFunction() {
       async function fetchBooks() {
-
-
         var data = await getbooks();
         setData(data);
-      //  console.log(data)
+        //  console.log(data)
       }
       fetchBooks();
-    
     }, []);
 
+    const handlePreview = async (file: UploadFile) => {
+      // console.log(file)
+      // console.log(typeof file)
 
+      setPreviewImage(file.url || (file.preview as string));
+      setPreviewTitle(
+        file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+      );
 
-     const handlePreview = async (file: UploadFile) => {
-   // console.log(file)
-   // console.log(typeof file)
- 
-
-    setPreviewImage(file.url || (file.preview as string));
-    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-
-    console.log(previewTitle)
-    console.log(previewImage)
-   
-  };
+      console.log(previewTitle);
+      console.log(previewImage);
+    };
 
     const isEditing = (record: Book) => record.ID === editingKey;
     const isDeleting = (record: Book) => record.ID === editingKey;
@@ -86,7 +84,7 @@ export const Private_Table: React.FC<{}> = () => {
 
     const onDelete = async (record: Partial<Book> & { ID: React.Key }) => {
       setEditingKey(record.ID);
-    //  console.log("DELETe")
+      //  console.log("DELETe")
       try {
         const row = (await form.validateFields()) as Book;
 
@@ -100,16 +98,16 @@ export const Private_Table: React.FC<{}> = () => {
           delete_book(JSON_string);
 
           const update = await getbooks();
-  
+
           setData(update);
           // action.startEditBook(newData[index]);
           setEditingKey("");
-          navigate("/PrivateTable")
+          navigate("/PrivateTable");
         } else {
           newData.push(row);
 
           const update = await getbooks();
-       
+
           setData(update);
           setEditingKey("");
         }
@@ -151,117 +149,117 @@ export const Private_Table: React.FC<{}> = () => {
       }
     };
 
-
-
     /**************************
      ******* Columns **********
      ******** of the *********
      ********* Table *********/
 
+    const columns = [
+      {
+        title: "Action",
 
-
- 
-      const columns = [
-        {
-          title: "Action",
-          
-          dataIndex: "action",
-          render: (_: any, record: Book) => {
-            const editable = isEditing(record) || isDeleting(record);
-            return editable ? (
-              <span>
-                <a
-                  href="javascript:;"
-                  onClick={() => save(record.ID)}
-                  style={{ marginRight: 8 }}
-                >
-                  Save
-                </a>
-                <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                  <a>Cancel</a>
-                </Popconfirm>
-              </span>
-            ) : (
-              <Typography.Link>
-                <Typography.Link
-                  disabled={editingKey !== ""}
-                  onClick={() => onEdit(record)}
-                >
-                  Edit
-                </Typography.Link>
-                <br></br>
-               
-    <button onClick={()=>{onDelete(record)}} >Delete</button>
- 
+        dataIndex: "action",
+        render: (_: any, record: Book) => {
+          const editable = isEditing(record) || isDeleting(record);
+          return editable ? (
+            <span>
+              <a
+                href="javascript:;"
+                onClick={() => save(record.ID)}
+                style={{ marginRight: 8 }}
+              >
+                Save
+              </a>
+              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+                <a>Cancel</a>
+              </Popconfirm>
+            </span>
+          ) : (
+            <Typography.Link>
+              <Typography.Link
+                disabled={editingKey !== ""}
+                onClick={() => onEdit(record)}
+              >
+                Edit
               </Typography.Link>
-            );
-          },
-        },
-        {
-          title: "Cover",
-          
-          key: "Img_url",
-          width: "35%",
-          editable: false,
-          render:  (_: any, record: Book) => {
-          return <img alt={record.Img_url} style={{width: '60%' ,height:'100%'}} src={record.Img_url} /> }
-        },
+              <br></br>
 
-        {
-          title: "Title",
-          dataIndex: "Title",
-          key: "Title",
-          width: "25%",
-          sorter: (a: any, b: any) => a.Title.localeCompare(b.Title),
-          editable: true,
+              <button
+                onClick={() => {
+                  onDelete(record);
+                }}
+              >
+                Delete
+              </button>
+            </Typography.Link>
+          );
         },
-        {
-          title: "Author",
-          dataIndex: "Author",
-          key: "Author",
-          width: "25%",
-          sorter: (a: any, b: any) => a.Author.localeCompare(b.Author),
-          editable: true,
-        },
-        {
-          title: "Publisher",
-          dataIndex: "Publisher",
-          key: "Publisher",
-          width: "25%",
-          sorter: (a: any, b: any) => a.Publisher.localeCompare(b.Publisher),
-          editable: true,
-        },
-        {
-          title: "Year",
-          dataIndex: "Year",
-          key: "Year",
-          width: "15%",
-          sorter: (a: any, b: any) => a.Year.localeCompare(b.Year),
-          editable: true,
-        },
+      },
+      {
+        title: "Cover",
 
-      ];
-  
-      
+        key: "Img_url",
+        width: "35%",
+        editable: false,
+        render: (_: any, record: Book) => {
+          return (
+            <img
+              alt={record.Img_url}
+              style={{ width: "60%", height: "100%" }}
+              src={record.Img_url}
+            />
+          );
+        },
+      },
+
+      {
+        title: "Title",
+        dataIndex: "Title",
+        key: "Title",
+        width: "25%",
+        sorter: (a: any, b: any) => a.Title.localeCompare(b.Title),
+        editable: true,
+      },
+      {
+        title: "Author",
+        dataIndex: "Author",
+        key: "Author",
+        width: "25%",
+        sorter: (a: any, b: any) => a.Author.localeCompare(b.Author),
+        editable: true,
+      },
+      {
+        title: "Publisher",
+        dataIndex: "Publisher",
+        key: "Publisher",
+        width: "25%",
+        sorter: (a: any, b: any) => a.Publisher.localeCompare(b.Publisher),
+        editable: true,
+      },
+      {
+        title: "Year",
+        dataIndex: "Year",
+        key: "Year",
+        width: "15%",
+        sorter: (a: any, b: any) => a.Year.localeCompare(b.Year),
+        editable: true,
+      },
+    ];
+
     //   return columns})
-    
 
     const mergedColumns = columns.map((col) => {
       try {
         if (!col.editable) {
           return col;
         }
-  
       } catch (error) {
-        console.error(error.message())
+        console.error(error.message());
       }
-    
-      const Getcolumn =(() => {
-          
 
-       
-          return  mergedColumns;
-        })
+      const Getcolumn = () => {
+        return mergedColumns;
+      };
 
       return {
         ...col,
@@ -325,7 +323,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   dataIndex: string;
   title: string;
   author: string;
-  img:any;
+  img: any;
   inputType: "number" | "text";
   record: Book;
   index: number;
@@ -375,7 +373,7 @@ const onChange: TableProps<Book>["onChange"] = (
   sorter,
   extra
 ) => {
- // console.log("params", pagination, filters, sorter, extra);
+  // console.log("params", pagination, filters, sorter, extra);
 };
 
 export const Bookintro = () => {

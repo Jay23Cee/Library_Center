@@ -73,6 +73,7 @@ const SignUp = () => {
 
       <Form
         labelCol={{ span: 4 }}
+        name={"Sign-up-form-begin"}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         onFinish={onFinish}

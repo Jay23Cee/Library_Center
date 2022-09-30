@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bookapi/database"
+
 	"context"
 	"errors"
 	"fmt"
@@ -86,26 +87,21 @@ func getKey() []byte {
 }
 
 func MakeToken(email string, firstName string, lastName string, userType string, uid string) (signedToken string, signedRefreshToken string, err error) {
-
+	fmt.Printf("\n\n email,%v, || firstname:%v, || Lastnamse:%v, || usertype,:%v, || uid: :%v", email, firstName, lastName, userType, uid)
 	claims := &SignedDetails{
-		Email:      email,
-		First_name: firstName,
-		Last_name:  lastName,
-		Uid:        uid,
-		User_Type:  userType,
+		Email:     email,
+		Uid:       uid,
+		User_Type: userType,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Minute * 5).Unix(), //1 day
 		},
 	}
 	refreshclaims := &SignedDetails{
-
+		Uid: uid,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(168)).Unix(), //1 day
 		},
 	}
-	// refreshClaims := jwt.StandardClaims{
-	// 	ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(168)).Unix(),
-	// }
 
 	// Declare the token with the algorithm used for signing, and the claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -113,8 +109,6 @@ func MakeToken(email string, firstName string, lastName string, userType string,
 	jwtKey := getKey()
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
-		// If there is an error in creating the JWT return an internal server error
-		// w.WriteHeader(http.StatusInternalServerError)
 
 		return "", "", errors.New("Error creating token")
 
@@ -132,7 +126,7 @@ func MakeToken(email string, firstName string, lastName string, userType string,
 
 }
 
-func Makecookie(w http.ResponseWriter, r *http.Request, token string, rtoken string) {
+func Makecookie(w http.ResponseWriter, r *http.Request, token string, rtoken string, refresh bool) {
 
 	// Finally, we set the client cookie for "token" as the JWT we just generated
 	// we also set an expiry time which is the same as the token itself
@@ -146,20 +140,24 @@ func Makecookie(w http.ResponseWriter, r *http.Request, token string, rtoken str
 		Secure:   false,
 	}
 
-	cookie2 := http.Cookie{
-		Name:     "r",
-		Value:    rtoken,
-		Expires:  time.Now().Local().Add(time.Hour * time.Duration(24)),
-		Path:     "/refresh",
-		HttpOnly: true,
-		Secure:   false,
-	}
-
 	http.SetCookie(w, &cookie)
 	r.AddCookie(&cookie)
 
-	http.SetCookie(w, &cookie2)
-	r.AddCookie(&cookie2)
+	if !(refresh) {
+
+		cookie2 := http.Cookie{
+			Name:     "r",
+			Value:    rtoken,
+			Expires:  time.Now().Local().Add(time.Hour * time.Duration(24)),
+			Path:     "/refresh",
+			HttpOnly: true,
+			Secure:   false,
+		}
+
+		http.SetCookie(w, &cookie2)
+		r.AddCookie(&cookie2)
+	}
+
 }
 
 func validateJWT(next func(w http.ResponseWriter, r *http.Request)) http.Handler {
@@ -196,10 +194,9 @@ func Getcookie(w http.ResponseWriter, r *http.Request) (*jwt.Token, error) {
 	// var user models.Userlogin
 	cookieName := "Token"
 	cookie, err := r.Cookie(cookieName)
-
+	fmt.Println("I'M ON COOKIES")
 	if err != nil {
-	
-
+		fmt.Println("Cookie not found")
 		return nil, errors.New("Error retrieving token")
 	}
 
@@ -211,7 +208,7 @@ func Getcookie(w http.ResponseWriter, r *http.Request) (*jwt.Token, error) {
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		fmt.Fprintf(w, "Unauthenticated")
-
+		return nil, errors.New("Unauthenticated")
 	}
 
 	return token, nil

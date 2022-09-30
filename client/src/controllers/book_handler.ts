@@ -7,14 +7,14 @@ import { RcFile, UploadFile } from "antd/lib/upload/interface";
 
 
 const handlePreview = (file: UploadFile) => {
-  console.log(file)
-  console.log(typeof file)
+  // console.log(file)
+  // console.log(typeof file)
   let previewImage = (file.url || (file.preview as string));
 
   let previewTitle=(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
 
-  console.log(previewTitle)
-  console.log(previewImage)
+  // console.log(previewTitle)
+  // console.log(previewImage)
 
   return [previewImage, previewTitle]
  
@@ -48,7 +48,7 @@ export async function getbooks() {
   } catch (error) {
     console.error(error);
   }
-  console.log(BookRedeucerDefaultState)
+  // console.log(BookRedeucerDefaultState)
   return Promise.resolve(BookRedeucerDefaultState);
 }
 
@@ -84,7 +84,7 @@ export async function edit_book(JSON_string: string) {
 }
 
 export async function add_book(JSON_string: string, values: Book) {
-  console.log(values)
+  // console.log(values)
   const headers = {
     "Content-Type": "text/plain",
   };

@@ -53,6 +53,7 @@ export async function User_Logout() {
 
   try {
     await axios.get(url, { withCredentials: true, headers });
+    return
   } catch (error) {
     return Promise.reject(error);
   }
@@ -80,13 +81,43 @@ export async function Check_Login() {
   let url = link + `/user`;
 
   try {
-    const { data } = await axios.get(url, { withCredentials: true, headers });
-
-    let User = JSON.stringify(data);
-    let parse: User = JSON.parse(User);
-   // console.log(parse)
-    return Promise.resolve(parse);
+    const res = await axios
+    .post(url, "",{ withCredentials: true, headers })
+    .then((response) => {
+      // console.log(response)
+      console.log("Sucess ========>,");
+      return response.data
+    })
+    .catch((error) => {
+      console.error("Error ========>", error);
+    });
+  
+    return Promise.resolve(res)
   } catch (error) {
     return Promise.reject(error);
   }
+
+ 
+}
+
+
+export async function Check_Refresh() {
+  const headers = {
+    "Content-Type": "text/plain",
+  };
+  let link = process.env.REACT_APP_URL as string;
+
+  let url = link + `/refresh`;
+
+  
+    const res = axios
+    .post(url, "",{ withCredentials: true, headers })
+    .then((response) => {
+      console.log("Sucess ========>,");
+    })
+    .catch((error) => {
+      console.error("Error ========>", error);
+    });
+
+  
 }

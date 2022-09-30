@@ -46,18 +46,17 @@ const Login_form: React.FC = () => {
   };
 
   const UserDemo = async() => {
-  //  console.log("LOG IN AS USER");
-   var res = await User_Login_DEMO();
-    //console.log(res.data);
-    //dispatch(loginSuccess(res.data));
 
+   var res = await User_Login_DEMO();
+    dispatch(loginSuccess(res.data));
+   
     navigate("/Btable");
   };
 
   const PrivateDemo = async() => {
-    //console.log("LOG IN AS Admin")
+
    var res = await Private_Login_DEMO()
-    //console.log(res.data);
+
     dispatch(loginSuccess(res.data));
 
     navigate("/Btable");

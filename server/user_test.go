@@ -141,7 +141,7 @@ func TestGetUser(t *testing.T) {
 		if err != nil {
 			t.Errorf("ERROR making token %v", err)
 		}
-		utils.Makecookie(w, req, token, rtoken)
+		utils.Makecookie(w, req, token, rtoken,false)
 		api.GetUser(w, req)
 
 		resp := w.Result()
@@ -187,4 +187,47 @@ func TestUserLoginDemo(t *testing.T) {
 
 	}
 
+}
+
+
+func TestRefreshCookie(t *testing.T) {
+	t.Logf("Testing Refresh Cookie ")
+	tt := []struct {
+		name      string
+		email     string
+		firstName string
+		lastName  string
+		userType  string
+		uid       string
+		data      []byte
+	}{
+
+		{name: "This one should pass", data: []byte(`{"users":{"Email": "User@test.com","Password": "pass123"}}`), email: "User@test.com", firstName: "", lastName: "", userType: "", uid: "63043dbc07a39be4d44b94a0"},
+	}
+
+	for _, tc := range tt {
+
+		req := httptest.NewRequest("GET", "https://localhost:8080/refresh", bytes.NewBuffer(tc.data))
+		req.Header.Set("Access-Control-Allow-Credentials", "true")
+		w := httptest.NewRecorder()
+		token, rtoken, err := utils.MakeToken(tc.email, tc.firstName, tc.lastName, tc.userType, tc.uid)
+
+		if err != nil {
+			t.Errorf("ERROR making token %v", err)
+			t.Fail()
+		}
+		utils.Makecookie(w, req, token, rtoken,false)
+		api.Refreshcookie(w, req)
+
+		resp := w.Result()
+		body, _ := ioutil.ReadAll(resp.Body)
+		fmt.Println(string(body))
+		if 200 != resp.StatusCode {
+			t.Errorf("Status code not OK %v", tc.name)
+			t.Fail()
+		}
+
+	}
+	fmt.Printf("SUCESS Refreshing cookie ")
+	return 
 }

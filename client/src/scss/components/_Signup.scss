@@ -4,10 +4,20 @@
 }
 
 
-@media screen and (max-width:650px){ 
+@media screen and (max-width:650px ) and (min-width:400px){ 
 .Sign-up-form{
-    background:rgb(255, 255, 255);
-    width:90%;
+  .ant-form .ant-form-item .ant-form-item-control .ant-form .ant-form-item .ant-form-item-label{
+    color:red;
+    background:red;
+    flex:0 0 100% !important;
+  }
 }
 
+#Sign-up-form-begin{
+ 
+  width:90vw !important;
+
+
+
+}
 }

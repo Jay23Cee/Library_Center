@@ -31,7 +31,7 @@ const PrivateLogin: React.FC = () => {
       // this.props.startNewBook(values)
 
       var res = await Private_Login(values);
-   //   console.log(res.data)
+
       dispatch(loginSuccess(res.data));
 
       navigate("/PrivateTable");
