@@ -20,7 +20,7 @@ import (
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 
 func Makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-	//Devops()
+	Devops()
 	link := Getlink()
 	// Here get the login URL.
 
@@ -90,7 +90,7 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-	//Devops()
+	Devops()
 	link := Getlink()
 	// Here get the login URL.
 
@@ -139,7 +139,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
 
-	//Devops()
+	Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -168,15 +168,15 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jsonMap := make(map[string]models.Book)
+	var book models.Book
 
-	err = json.Unmarshal([]byte(body), &jsonMap)
+	// Unmarshal the JSON body into the book variable
+	err = json.Unmarshal([]byte(body), &book)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	book := jsonMap["book"]
 
 	defer cancel()
 	if err != nil {
@@ -186,7 +186,8 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	}
 	collection := client.Database("BookAPI").Collection("book")
 
-	doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}}
+	// Use the book object to create the doc variable
+	doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}, {"Summary", book.Summary}}
 	result, err := collection.InsertOne(ctx, doc)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -195,9 +196,58 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 
+func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
+	Devops()
+	link := Getlink()
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	access := IsAuth(w, r, []string{"ADMIN"})
+	if !access {
+		http.Error(w, "Unauthorized access", http.StatusBadGateway)
+		return
+	}
+	url := os.Getenv("REACT_APP_GO_URL")
+	clientOptions := options.Client().ApplyURI(url)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadGateway)
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	var books []models.Book
+	err = json.Unmarshal([]byte(body), &books)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	collection := client.Database("BookAPI").Collection("book")
+	for _, book := range books {
+		doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}, {"Summary", book.Summary}}
+		_, err := collection.InsertOne(ctx, doc)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+	}
+	fmt.Fprintf(w, "\nBooks have been added")
+}
+
 func BookImg(w http.ResponseWriter, r *http.Request) {
 
-	//Devops()
+	Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -254,7 +304,7 @@ func BookImg(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	//Devops()
+	Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 
@@ -280,6 +330,7 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadGateway)
 		return
 	}
+	fmt.Println(book)
 	collection := client.Database("BookAPI").Collection("book")
 
 	id, _ := primitive.ObjectIDFromHex(book.ID)
@@ -287,7 +338,7 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 		ctx,
 		bson.M{"_id": id},
 		bson.D{
-			{"$set", bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}}},
+			{"$set", bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"Summary", book.Summary}}},
 		},
 	)
 	if err != nil {

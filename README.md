@@ -1,6 +1,12 @@
 # Library_Center
 This is a library's web-based, RESTful API. Admin may currently generate new, read, change, and delete stored data. Data is stored using mongodb. The frontend development uses Ant design, Typescript, and React. This application can act as a RESTful API because its backend is written in Golang using chi as middleware.
 
+
+12/26/22: 
+We need a database only for testing and a database only for Production.
+We need front end better detail. no table. for USER. 
+
+
 09/29/22:
 Add category to book.
 Limist File size to be uploaded.

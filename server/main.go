@@ -5,11 +5,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-
 )
 
 func main() {
+
 	setconnection()
 }
 
@@ -18,7 +17,6 @@ func setconnection() {
 	r := Connect_router()
 
 	port := os.Getenv("PORT")
-
 
 	if port == "" {
 		port = "8080" // Default port if not specified

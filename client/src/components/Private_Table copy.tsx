@@ -13,12 +13,11 @@ import {
 import { Book } from "../models/books";
 import { delete_book, edit_book, getbooks } from "../controllers/book_handler";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate,  createSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { loginSuccess, logOut } from "../redux/userSlice";
 import { Check_Login } from "../controllers/user_handler";
 import UseAuth from "../ProtectedRoutes";
 import { UploadFile } from "antd/lib/upload/interface";
-import { addBook } from "../redux/bookSlice";
 
 export interface BookTableProps {
   Title: string;
@@ -54,17 +53,9 @@ export const Private_Table: React.FC<{}> = () => {
       async function fetchBooks() {
         var data = await getbooks();
         setData(data);
-        const titles: string[] = []; // create a new array to hold the book titles
-    for (const book of data) {
-        titles.push(book.Title);
-    }
-
-    console.log(titles); // log the titles array
-
-
+        //  console.log(data)
       }
       fetchBooks();
-     
     }, []);
 
     const handlePreview = async (file: UploadFile) => {
@@ -88,17 +79,44 @@ export const Private_Table: React.FC<{}> = () => {
       setEditingKey(record.ID);
     };
 
-    const onAdvanceEdit=(record: Partial<Book> & { ID: React.Key })=>{
-      
-      console.log(record)
-      dispatch(addBook(record as Book))
-    navigate("/Advance_Edit", {state:{record}})
+    const onFinish = async (values: any) => {
+      console.log(values);
+    
+      if (editingKey) {
+        const newData = [...data];
+        const index = newData.findIndex((item) => editingKey === item.ID);
+    
+        if (index > -1) {
+          const item = newData[index];
+          newData.splice(index, 1, { ...item, ...values });
+          setData(newData);
+          setEditingKey("");
+        } else {
+          newData.push(values);
+          setData(newData);
+          setEditingKey("");
+        }
+      }
+    };
 
 
-
-    }
-
-
+    const uploadProps = {
+      name: "file",
+      action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      headers: {
+        authorization: "authorization-text",
+      },
+      onChange(info) {
+        if (info.file.status !== "uploading") {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === "done") {
+          console.log(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === "error") {
+          console.log(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
 
 
     const onDelete = async (record: Partial<Book> & { ID: React.Key }) => {
@@ -135,7 +153,7 @@ export const Private_Table: React.FC<{}> = () => {
       }
     };
 
-    const onCancel = () => {
+    const cancel = () => {
       setEditingKey("");
     };
 
@@ -154,7 +172,7 @@ export const Private_Table: React.FC<{}> = () => {
           });
           const temp_book = { book: newData[index] };
           const JSON_string = JSON.stringify(temp_book);
-          console.log(JSON_string, "GOOD")
+
           edit_book(JSON_string);
           setData(newData);
           setEditingKey("");
@@ -176,12 +194,11 @@ export const Private_Table: React.FC<{}> = () => {
     const columns = [
       {
         title: "Action",
-        width:"25%",
+
         dataIndex: "action",
         render: (_: any, record: Book) => {
           const editable = isEditing(record) || isDeleting(record);
           return editable ? (
-            
             <span>
               <a
                 href="javascript:;"
@@ -190,16 +207,9 @@ export const Private_Table: React.FC<{}> = () => {
               >
                 Save
               </a>
-              <a
-                href="javascript:;"
-                onClick={() => onCancel()}
-                style={{ marginRight: 8 }}
-              >
-                Cancel
-              </a>
-              {/* <Popconfirm title="Sure to cancel?" onConfirm={onCancel}>
+              <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
                 <a>Cancel</a>
-              </Popconfirm> */}
+              </Popconfirm>
             </span>
           ) : (
             <Typography.Link>
@@ -207,19 +217,9 @@ export const Private_Table: React.FC<{}> = () => {
                 disabled={editingKey !== ""}
                 onClick={() => onEdit(record)}
               >
-              Quick Edit
+                Edit
               </Typography.Link>
               <br></br>
-
-
-              <Typography.Link
-                disabled={editingKey !== ""}
-                onClick={()=> onAdvanceEdit(record)}
-              >
-                Advance Edit
-              </Typography.Link>
-              <br></br>
-
 
               <button
                 onClick={() => {
@@ -326,7 +326,7 @@ export const Private_Table: React.FC<{}> = () => {
             columns={mergedColumns}
             rowClassName="editable-row"
             pagination={{
-              onChange: onCancel,
+              onChange: cancel,
             }}
           />
         </Form>

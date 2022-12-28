@@ -43,6 +43,7 @@ func Connect_router() *chi.Mux {
 
 	r.Route("/api", func(r chi.Router) {
 		r.Post("/add", api.Addbooks)
+		r.Post("/addbooksbulk", api.AddBooksBulk)
 		r.Post("/addImg", api.BookImg)
 		r.Post("/edit", api.Editbook)
 		r.Get("/read", api.GetBooks)

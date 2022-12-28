@@ -8,6 +8,7 @@ type Book struct {
 	Img       string `bson:"Img, omitempty"`
 	Img_url   string `bson:"Img_url, omitempty"`
 	ID        string `json:"ID,omitempty" bson:"_id,omitempty"`
+	Summary   string `bson:"Summary, omitempty"`
 
 	// CreatedAt time.Time
 	// UpdatedAt time.Time

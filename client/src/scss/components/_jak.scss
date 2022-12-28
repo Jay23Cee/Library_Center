@@ -1,0 +1,338 @@
+   
+.banner-one {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 25vh;
+    background: url(${Donateimg}) no-repeat center center;
+    background-size: cover;
+    font-weight: 600;
+    //font-size: 1.2em;
+    text-align: center;
+    justify-content: center;
+    align-item: center;
+    color: white;
+  
+  }
+  
+  .donate-banner{
+    height:100%;
+    background: #fff40059;
+    padding:20px;
+    padding-right:40px;
+  
+  
+  }
+  
+  .program-banner{
+    height:100%;
+  
+    background: #00e33f61;
+    padding:20px;
+    padding-right:40px;
+  }
+  .banner-two {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 25vh;
+    background: url(${Programimg}) no-repeat;
+    background-size: cover;
+    font-weight: 600;
+    //font-size: 1.2em;
+    text-align: center;
+    justify-content: center;
+    align-item: center;
+    color: white;
+  
+  }
+  
+  
+  .sop{
+  
+   height:100%;
+    display: flex;
+    flex-direction: column;
+  
+    // overflow:hidden;
+    font-size: calc(14px + 6 * ((100vw - 320px) / 680));
+    .sop-wrap{
+    
+  
+      
+      position:relative;
+  
+    }
+   
+  }
+  
+  
+  
+    @media screen and (max-width: 768px) {
+  
+      html {
+        font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+      }
+  
+      
+      .container {
+        display: flex;
+        flex-direction: column;
+  
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        left: 0 !important;
+       
+      }
+  
+  
+  
+      
+      .banner-one {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        height: 25vh;
+  
+        font-weight: 600;
+        //font-size: 1.2em;
+        text-align: center;
+        justify-content: center;
+        align-item: center;
+        color: white;
+        h3 {
+          //font-size: 3em;
+          overflow:hidden;
+        }
+      }
+      
+      .donate-banner{
+        height:100%;
+        background: #fff40059;
+        padding:20px;
+        padding-right:40px;
+      
+      
+      }
+      
+      .program-banner{
+        height:100%;
+      
+        background: #00e33f61;
+        padding:20px;
+        padding-right:40px;
+      }
+      .banner-two {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        height: 25vh;
+    
+        font-weight: 600;
+        //font-size: 1.2em;
+        text-align: center;
+        justify-content: center;
+        align-item: center;
+        color: white;
+        h3 {
+          //font-size: 3em;
+          overflow:hidden;
+        }
+      }
+  
+  .Programs{
+  
+    //font-size:.90em;
+    h3{
+      //font-size:1.3em;
+      
+    }
+  
+  
+  button{
+    background:#00ba9c !important;
+    border-radius: 20px;
+    width:fit-content;
+  }
+  }
+  
+  
+  
+  
+  
+  
+    }
+  
+  
+    .Programs-item{
+      width:90vw;
+      margin-top:50px;
+  
+      
+    }
+  .coach-info{
+        text-align:end !important;
+      }
+    .hands-info{
+      margin-bottom:50px;
+    }
+  
+  
+  
+    .sop-img{
+     
+      width:100%;
+      height:450px !important;
+  
+    }
+  
+    }
+  
+  
+  
+  
+  #Layer_1{
+    path{
+      fill:#000000 !important;
+    }
+  
+    rect{
+      fill:white !important;
+    }
+  
+    circle{
+      fill:white !important;
+    }
+  }
+  
+    .bus-icon {
+      fill:#000000;
+     width:80px;
+     g{fill:yellow;}
+     transform: scaleX(-1);
+  
+  
+    }
+  
+    .coach-icon{
+      fill:#000000;
+      width:80px;
+      transform: scaleX(-1);
+      
+    }
+  
+    .hands-icon{
+      fill:#000000;
+      width:80px;
+      
+    }
+  
+  
+    .sop{
+      
+     
+      display: flex;
+      flex-direction: column;
+      overflow:hidden;
+    }
+  
+    .sop-wrap{
+      display:flex;
+      flex-direction:row;
+      overflow:hidden;
+    }
+     .sop-wrap> div {
+      flex: 50%; /* or - flex: 0 50% - or - flex-basis: 50% - */
+  
+     
+      margin-bottom: 10px;
+    
+    }
+  
+  .sop-img{
+    background:url(${Sopimg}) no-repeat top; 
+    background-size:cover;
+  
+  
+  }
+  
+  
+  .sop-statement{
+    justify-content:center;
+    overflow:hidden;
+  
+    .sop-statement-title{
+      text-align:left !important;
+      font-size:1.1em;
+      font-weight:450;
+      padding-left:10px;
+    }
+   
+    .sop-statement-text{
+      position:inherit;
+      font-size: calc(2.1em + 6 * ((100vw - 320px) / 680));
+      width:80%;
+      height:90%;
+     
+      padding:15px;
+  
+    }
+  
+  
+  
+  }
+  .sop-quote{
+    
+    background:green;
+    color:white;
+    padding:10px;
+    margin-top:-240px;
+    margin-left:15vw;
+    z-index:1;
+   width:80vw !important;
+  
+  
+   
+    line-height: 30px;
+    border-radius:20px;
+  }
+   
+  
+  
+  // NEEDS MEDIA
+  .sop-info{
+  
+  
+  }
+  
+  .last-quote{
+    padding-top:20px;
+    display:flex;
+    justify-content:center;
+  
+    img{
+      width:80%;
+      height:10%;
+    }
+  }
+  
+  .banner{
+   a{
+    background:transparent;
+    outline:none;
+    border:none;
+    height:100%;
+    color:black;
+    link { text-decoration: none; }
+  
+  
+  visited { text-decoration: none; }
+  
+  
+  hover { text-decoration: none; }
+  
+  
+  active{ text-decoration: none; }
+  }
+  }

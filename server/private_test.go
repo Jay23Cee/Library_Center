@@ -128,7 +128,6 @@ func TestGetPrivate(t *testing.T) {
 		{name: "This one should fail by email", data: []byte(`{"users":{"Email": "1test@test.com","Password": "pass123"}}`), email: "", firstName: "", lastName: "", userType: "", uid: ""},
 		{name: "This one should fail by password", data: []byte(`{"users":{"Email": "test@test.com","Password": "pass12"}}`), email: "", firstName: "", lastName: "", userType: "", uid: ""},
 		{name: "This one should fail by ADMIN", data: []byte(`{"users":{"Email": "Admin@test.com","Password": "pass123"}}`), email: "", firstName: "", lastName: "", userType: "", uid: ""},
-	
 	}
 
 	for _, tc := range tt {
@@ -141,7 +140,7 @@ func TestGetPrivate(t *testing.T) {
 		if err != nil {
 			t.Errorf("ERROR making token %v", err)
 		}
-		utils.Makecookie(w, req, token, rtoken,false)
+		utils.Makecookie(w, req, token, rtoken, false)
 		api.GetPrivate(w, req)
 
 		resp := w.Result()

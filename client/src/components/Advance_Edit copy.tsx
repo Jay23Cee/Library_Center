@@ -1,9 +1,9 @@
-import { Form, Input, Menu, Breadcrumb, Button } from "antd";
+import { Form, Input, Menu, Breadcrumb, Button, Card } from "antd";
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { Book } from "../models/books";
-import { Link, useNavigate } from "react-router-dom";
-import { add_book, add_bulkbook } from "../controllers/book_handler";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { add_book, add_bulkbook, edit_book } from "../controllers/book_handler";
 import { formatTimeStr } from "antd/lib/statistic/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, logOut } from "../redux/userSlice";
@@ -15,7 +15,7 @@ import type { UploadFile } from 'antd/es/upload/interface';
 import TextArea from "antd/lib/input/TextArea";
 import { json } from "body-parser";
 
-export const getBase64 = (file: RcFile): Promise<string> =>
+const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -26,7 +26,11 @@ export const getBase64 = (file: RcFile): Promise<string> =>
 
 
 
-
+  type RootState = {
+    book: {
+      data: Book[];
+    };
+  };
   
 const layout = {
   labelCol: { span: 8 },
@@ -36,7 +40,7 @@ const layout = {
 export const NewItem = () => {
   return (
     <Breadcrumb style={{ margin: "16px 0" }}>
-      <Breadcrumb.Item>New</Breadcrumb.Item>
+      <Breadcrumb.Item>Advance Edit</Breadcrumb.Item>
       <Breadcrumb.Item>Library</Breadcrumb.Item>
       <Breadcrumb.Item>Book</Breadcrumb.Item>
     </Breadcrumb>
@@ -65,21 +69,31 @@ const validateMessages = {
   },
 };
 
-const NewBook = () => {
-  const books1 = [];
+const AdvanceEdit : React.FC = () => {
+  const {state} = useLocation();
+  const bookRaw  = useSelector((state:RootState) => 
+  state.book.data[0]) // Read values passed on state
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
+  const [previewOpen, setPreviewOpen] = useState(true);
+  const [previewImage, setPreviewImage] = useState(bookRaw.Img_url);
+  const [previewTitle, setPreviewTitle] = useState(bookRaw.Img_title);
   const [fileList, setFileList] = useState<UploadFile[]>([
-
+    
   ]);
-  const [files_url, setFiles] =useState<string>("");
+  const [files_url, setFiles] =useState<string>();
+  console.log(bookRaw)
 
-  const handleCancel = () => setPreviewOpen(false);
+
+  const handleCancel = () => {
+    setPreviewOpen(false);
+    setFileList([]);
+    setPreviewImage(bookRaw.Img_url);
+    setPreviewTitle(bookRaw.Img_title);
+    setFiles(bookRaw.Img_url);
+  }
+
  const handlePreview = async (file: UploadFile) => {
    if (!file.url && !file.preview) {
      file.preview = await getBase64(file.originFileObj as RcFile);
@@ -115,11 +129,13 @@ const NewBook = () => {
     
    };
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>{ 
-
+   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>{ 
     setFileList(newFileList);
     handleImage(fileList[0])
+    setPreviewOpen(true);
+    setPreviewTitle(fileList[0].name || fileList[0].url!.substring(fileList[0].url!.lastIndexOf('/') + 1));
   }
+  
 
   const uploadButton = (
     <div>
@@ -130,6 +146,12 @@ const NewBook = () => {
 
 
 
+
+
+
+
+
+  
   useEffect(function effectFunction() {
     async function fetchUser() {}
     fetchUser();
@@ -139,32 +161,34 @@ const NewBook = () => {
 
   const [form] = Form.useForm();
   
-
   const onFinish = async (values: Book) => {
 
-    const books =  {
-     
-          Title: values.Title,
-          Author: values.Author,
-          Publisher: values.Publisher,
-          Year: values.Year,
-          Summary: values.Summary,
-          Img_url: files_url as string,
-          Img: JSON.stringify(fileList[0])
-        }
+
+   console.log(values)
+   const book=  {
+  
+    Title: values.Title,
+    Author: values.Author,
+    Publisher: values.Publisher,
+    Year: values.Year,
+    Summary: values.Summary,
+    Img_url: files_url as string,
+    Img: JSON.stringify(fileList[0]),
+    ID : bookRaw.ID, 
+  }
     
     
 
         const payload = {
-          ...books
+          book
         };
         
-        console.log(books)
-   
-    const JSON_string = JSON.stringify(payload);
-    
+        
+        const JSON_string = JSON.stringify(payload);
+        
+        console.log(JSON_string, " Needs IMproving")
     try {
-      await add_book(JSON_string, payload);
+      await edit_book(JSON_string);
       message.success("Success ====>");
       // form.resetFields();
     } catch (error) {
@@ -173,22 +197,21 @@ const NewBook = () => {
   };
 
 
-  const handleupload =(file, fileList)=>{
 
-  }
 
   return (
-    <div className="NewBook_Form">
+    <div className="EditBook_Form">
      
         <Form
           {...layout}
+          initialValues={bookRaw}
           form={form}
-          name="NewBook_Form_Input"
+        
           onFinish={onFinish}
           validateMessages={validateMessages}
         >
           <Form.Item
-            name="Title"
+            name= "Title"
             label="Title"
             rules={[{ required: true }]}
           >
@@ -232,7 +255,7 @@ const NewBook = () => {
         accept=".jpg ,.jpeg, .png"
         onPreview={handlePreview}
         onChange={handleChange}
-        beforeUpload={handleupload}
+    
       >
         {fileList.length >= 8 ? null : uploadButton}
       </Upload>
@@ -241,6 +264,12 @@ const NewBook = () => {
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
     </Form.Item>
+    <Card
+      cover={<img src={previewImage} alt={previewImage} />}
+      title={previewTitle}
+    >
+     
+    </Card>
 
     <Form.Item >
             <Button type="primary" htmlType="submit">
@@ -253,7 +282,7 @@ const NewBook = () => {
   );
 };
 
-export default NewBook;
+export default AdvanceEdit;
 
 function dispatch(arg0: { payload: any; type: string }) {
   throw new Error("Function not implemented.");

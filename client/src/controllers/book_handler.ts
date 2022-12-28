@@ -83,7 +83,7 @@ export async function edit_book(JSON_string: string) {
     });
 }
 
-export async function add_book(JSON_string: string, values: Book) {
+export async function add_book(JSON_string: string, values: { books: any; }) {
   // console.log(values)
   const headers = {
     "Content-Type": "text/plain",
@@ -91,6 +91,27 @@ export async function add_book(JSON_string: string, values: Book) {
   let link = process.env.REACT_APP_URL as string;
   let url = link + `/api/add`;
 
+
+console.log(JSON_string)
+  await axios
+    .post(url, values, { withCredentials: true, headers })
+    .then((response) => {})
+    .catch((error) => {
+      console.error("Error ========>", error);
+    });
+}
+
+
+export async function add_bulkbook(JSON_string: string, values: any) {
+  // console.log(values)
+  const headers = {
+    "Content-Type": "text/plain",
+  };
+  let link = process.env.REACT_APP_URL as string;
+  // let url = link + `/api/add`;
+  let url = link + `/api/addbooksbulk`;
+
+console.log(values)
   await axios
     .post(url, values, { withCredentials: true, headers })
     .then((response) => {})

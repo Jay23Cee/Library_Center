@@ -23,6 +23,7 @@ import ProtectedRoutes from "../ProtectedRoutes";
 import { Private_Login } from "../controllers/Private_handler";
 import Homepage from "./Homepage";
 import Menu_icon from "../images/menu.png";
+import AdvanceEdit from "./Advance_Edit";
 
 
 
@@ -215,6 +216,22 @@ const Template = () => {
               >
                 <Route path="/PrivateTable" element={<Private_Table />} />
               </Route>
+
+                
+                <Route
+                path="/advance_edit"
+                element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+              >
+               <Route path="/advance_edit"  element={<AdvanceEdit />} />
+              </Route>
+
+              <Route
+                path="/advance_edit"
+                element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+              >
+              
+              </Route>
+              
 
               <Route path="/login" element={<Login_form />} />
 

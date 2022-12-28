@@ -8,4 +8,6 @@ export interface Book {
   Img: string;
   Img_url:string;
   Img_title:string;
+  Summary:string;
 }
+

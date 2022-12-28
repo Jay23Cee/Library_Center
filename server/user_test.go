@@ -141,7 +141,7 @@ func TestGetUser(t *testing.T) {
 		if err != nil {
 			t.Errorf("ERROR making token %v", err)
 		}
-		utils.Makecookie(w, req, token, rtoken,false)
+		utils.Makecookie(w, req, token, rtoken, false)
 		api.GetUser(w, req)
 
 		resp := w.Result()
@@ -156,8 +156,6 @@ func TestGetUser(t *testing.T) {
 	fmt.Printf("SUCESS Getuser ")
 
 }
-
-
 
 func TestUserLoginDemo(t *testing.T) {
 
@@ -189,7 +187,6 @@ func TestUserLoginDemo(t *testing.T) {
 
 }
 
-
 func TestRefreshCookie(t *testing.T) {
 	t.Logf("Testing Refresh Cookie ")
 	tt := []struct {
@@ -216,7 +213,7 @@ func TestRefreshCookie(t *testing.T) {
 			t.Errorf("ERROR making token %v", err)
 			t.Fail()
 		}
-		utils.Makecookie(w, req, token, rtoken,false)
+		utils.Makecookie(w, req, token, rtoken, false)
 		api.Refreshcookie(w, req)
 
 		resp := w.Result()
@@ -229,5 +226,5 @@ func TestRefreshCookie(t *testing.T) {
 
 	}
 	fmt.Printf("SUCESS Refreshing cookie ")
-	return 
+	return
 }
