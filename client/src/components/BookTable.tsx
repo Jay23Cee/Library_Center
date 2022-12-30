@@ -13,7 +13,7 @@ import {
 } from "antd";
 
 import { Book } from "../models/books";
-import { delete_book, edit_book, getbooks } from "../controllers/book_handler";
+import { deleteBook, edit_book, getbooks } from "../controllers/book_handler";
 import type { ColumnsType, ColumnType, TableProps } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
@@ -21,6 +21,8 @@ import { loginSuccess, logOut } from "../redux/userSlice";
 import { Check_Login } from "../controllers/user_handler";
 import UseAuth from "../ProtectedRoutes"
 import { UploadFile } from "antd/lib/upload/interface";
+import bookSlice, { addBook } from "../redux/bookSlice";
+import librarySlice, { addBulkBooks } from "../redux/librarySlice";
 
 export interface BookTableProps {
   Title: string;
@@ -33,7 +35,7 @@ export interface BookTableProps {
 
 
 export const Private_Table: React.FC<{}> = () => {
-  const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state:any) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -48,16 +50,26 @@ export const Private_Table: React.FC<{}> = () => {
     const searchInput = useRef<InputRef>(null);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
+    const library = useSelector((state: any) => state.library);
 
     useEffect(function effectFunction() {
-      async function fetchBooks() {
+          async function fetchBooks() {
+            var data = await getbooks();
+            setData(data);
+            dispatch(addBulkBooks(data))
+      
+          }
 
-
-        var data = await getbooks();
-        setData(data);
-   
+      // Check if the library data is present in the store
+      console.log(library)
+      console.log(!library.library.length , " length is :", library.library.length)
+      console.log(Boolean(library))
+      if (!library.library.length) {
+        fetchBooks();
+        
+      }else{
+        setData(library.library)
       }
-      fetchBooks();
     
     }, []);
 
@@ -72,6 +84,17 @@ export const Private_Table: React.FC<{}> = () => {
 
 
    
+  };
+  
+
+  const handleTitleClick = (record: Book) => {
+    dispatch(addBook(record as Book));
+    navigate("/BookView");
+  };
+  
+  const handleCoverClick = (record: Book) => {
+    dispatch(addBook(record as Book));
+    navigate("/BookView");
   };
 
     const isEditing = (record: Book) => record.ID === editingKey;
@@ -95,7 +118,7 @@ export const Private_Table: React.FC<{}> = () => {
           const temp_book = { book: newData[index] };
           const JSON_string = JSON.stringify(temp_book);
 
-          delete_book(JSON_string);
+          deleteBook(JSON_string);
 
           const update = await getbooks();
           setData(update);
@@ -167,8 +190,16 @@ export const Private_Table: React.FC<{}> = () => {
           width: "35%",
           editable: false,
           render:  (_: any, record: Book) => {
-          return <img alt={record.Img_url} style={{ width: '60%' ,height:'100%'}} src={record.Img_url} /> }
+          return <img onClick={() => handleCoverClick(record)} alt={record.Img_url} style={{ width: '60%' ,height:'100%'}} src={record.Img_url} /> }
         },
+        // render: (_: any, record: Book) => (
+        //   <img
+        //     onClick={() => handleCoverClick(record)}
+        //     src={record.Img_url}
+        //     alt={record.Img_url}
+        //   />
+        // ),
+      // },
 
         {
           title: "Title",
@@ -177,6 +208,9 @@ export const Private_Table: React.FC<{}> = () => {
           width: "25%",
           sorter: (a: any, b: any) => a.Title.localeCompare(b.Title),
           editable: true,
+          render: (_:any, record: Book) => (
+            <a onClick={() => handleTitleClick(record)}>{record.Title}</a>
+          ),
         },
         {
           title: "Author",
