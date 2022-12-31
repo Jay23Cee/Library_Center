@@ -48,9 +48,9 @@ export const NewItem = () => {
 export const NewMenu = () => {
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-      <Menu items={[{key:"1" }]} >Home</Menu>
+      <Menu items={[{ key: "1" }]}>Home</Menu>
       <Link to="/new">
-        <Menu items={[{key:"2" }]} >New</Menu>
+        <Menu items={[{ key: "2" }]}>New</Menu>
       </Link>
     </Menu>
   );
@@ -72,6 +72,8 @@ const AdvanceEdit = () => {
   const bookRaw = useSelector((state: RootState) => state.book.data[0]); // Read values passed on state
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [modal, setModal] = useState<JSX.Element | null>(null);
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(bookRaw.Img_url);
@@ -101,11 +103,21 @@ const AdvanceEdit = () => {
     setPreviewTitle(
       file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
     );
+    setPreviewOpen(false);
     setPreviewOpen(true);
 
-    // console.log(files_url , " last 91")
-    // console.log(previewTitle)
-    // console.log(previewImage)
+    setModal(null);
+
+    setModal(
+      <Modal
+        open={previewOpen}
+        title={previewTitle}
+        footer={null}
+        onCancel={handleCancel}
+      >
+        <img alt="example" style={{ width: "100%" }} src={previewImage} />
+      </Modal>
+    );
   };
 
   const handleImage = async (file: UploadFile) => {
@@ -127,8 +139,26 @@ const AdvanceEdit = () => {
   };
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-    handleImage(fileList[0]);
+    // Reset fileList
+
+    if (newFileList.length > 1) {
+      const items = document.querySelectorAll(".ant-upload-list-item-container");
+for (let i = 0; i < items.length - 1; i++) {
+  items[i].remove();
+}
+
+      const singleFileList = [newFileList[newFileList.length - 1]];
+      setFileList(singleFileList);
+      console.log(singleFileList);
+      handleImage(singleFileList[0]);
+    } else {
+      setFileList(newFileList);
+      handleImage(newFileList[0]);
+    }
+
+    console.log(newFileList.length > 1);
+    console.log(newFileList);
+    console.log(fileList)
   };
 
   const uploadButton = (
@@ -143,7 +173,7 @@ const AdvanceEdit = () => {
     fetchUser();
   }, []);
 
- // const user = useSelector((state) => state.user.currentUser);
+  // const user = useSelector((state) => state.user.currentUser);
 
   const [form] = Form.useForm();
 
@@ -185,12 +215,12 @@ const AdvanceEdit = () => {
 
   return (
     <div className="form-container">
-       <Card
-          cover={<img src={previewImage} alt={previewImage} />}
-          title={previewTitle}
-        ></Card>
+      <Card
+        className="Card-img"
+        cover={<img src={previewImage} alt={previewImage} />}
+      ></Card>
       <Form
-      className="Book-form"
+        className="Book-form"
         {...layout}
         initialValues={bookRaw}
         form={form}
@@ -214,20 +244,21 @@ const AdvanceEdit = () => {
           <Input />
         </Form.Item>
         <Form.Item name="Summary" label="Summary" rules={[{ required: true }]}>
-          <TextArea autoSize/>
+          <TextArea autoSize />
         </Form.Item>
 
         <Form.Item>
           <Upload
             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            fileList={fileList}
             listType="picture-card"
             accept=".jpg ,.jpeg, .png"
             onPreview={handlePreview}
             onChange={handleChange}
           >
-            {fileList.length >= 8 ? null : uploadButton}
+            {fileList.length >=2 ? null : uploadButton}
           </Upload>
-          <Modal
+          {/* <Modal
             open={previewOpen}
             title={previewTitle}
             footer={null}
@@ -235,19 +266,21 @@ const AdvanceEdit = () => {
           >
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
+           */}
+          {modal}
         </Form.Item>
-       
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
-          <Button type="default" onClick={() =>{ 
-            
-            dispatch(clearBooks());
-            navigate("/privatetable");
-          }
-            }>
+          <Button
+            type="default"
+            onClick={() => {
+              dispatch(clearBooks());
+              navigate("/privatetable");
+            }}
+          >
             Cancel
           </Button>
         </Form.Item>
