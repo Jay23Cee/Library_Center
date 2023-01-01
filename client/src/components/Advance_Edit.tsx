@@ -15,6 +15,7 @@ import type { UploadFile } from "antd/es/upload/interface";
 import TextArea from "antd/lib/input/TextArea";
 import { json } from "body-parser";
 import { clearBooks } from "../redux/bookSlice";
+import { clearBulkBooks } from "../redux/librarySlice";
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -70,6 +71,7 @@ const validateMessages = {
 const AdvanceEdit = () => {
   const { state } = useLocation();
   const bookRaw = useSelector((state: RootState) => state.book.data[0]); // Read values passed on state
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -80,7 +82,7 @@ const AdvanceEdit = () => {
   const [previewTitle, setPreviewTitle] = useState(bookRaw.Img_title);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [files_url, setFiles_url] = useState<string>(bookRaw.Img_url);
-  console.log(bookRaw);
+
 
   const handleCancel = () => {
     setPreviewOpen(false);
@@ -203,8 +205,8 @@ for (let i = 0; i < items.length - 1; i++) {
       message.success("Success ====>");
       console.log("FUNCTION BEFORE DISPATCH");
 
-      dispatch(clearBooks());
-
+      dispatch(clearBulkBooks());
+      dispatch(clearBooks)
       console.log("AFTER DISPATCH");
       navigate("/PrivateTable");
       // form.resetFields();
@@ -220,7 +222,7 @@ for (let i = 0; i < items.length - 1; i++) {
         cover={<img src={previewImage} alt={previewImage} />}
       ></Card>
       <Form
-        className="Book-form"
+        className="Book-form-edit"
         {...layout}
         initialValues={bookRaw}
         form={form}
@@ -228,25 +230,27 @@ for (let i = 0; i < items.length - 1; i++) {
         validateMessages={validateMessages}
       >
         <Form.Item name="Title" label="Title" rules={[{ required: true }]}>
-          <Input />
+        <TextArea autoSize />
         </Form.Item>
         <Form.Item name="Author" label="Author" rules={[{ required: true }]}>
-          <Input />
+        <TextArea autoSize />
         </Form.Item>
         <Form.Item
           name="Publisher"
           label="Publisher"
+          style={{ overflow: "auto" }}
           rules={[{ required: true }]}
         >
-          <Input />
+           <TextArea autoSize />
         </Form.Item>
-        <Form.Item name="Year" label="Year" rules={[{ required: true }]}>
-          <Input />
+        <Form.Item name="Year" label="Year" rules={[{ required: true }]}    >
+        <TextArea autoSize />
         </Form.Item>
         <Form.Item name="Summary" label="Summary" rules={[{ required: true }]}>
           <TextArea autoSize />
         </Form.Item>
 
+        <div style={{display: 'flex', justifyContent: 'center'}}>
         <Form.Item>
           <Upload
             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -277,13 +281,14 @@ for (let i = 0; i < items.length - 1; i++) {
           <Button
             type="default"
             onClick={() => {
-              dispatch(clearBooks());
+              dispatch(clearBooks)
               navigate("/privatetable");
             }}
           >
             Cancel
           </Button>
         </Form.Item>
+        </div>
       </Form>
     </div>
   );

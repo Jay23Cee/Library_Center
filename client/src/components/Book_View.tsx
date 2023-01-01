@@ -139,9 +139,9 @@ const Book_View = () => {
   return (
     <div className="form-container">
 
-<Card 
+<Card className="Card-img"
           cover={<img src={previewImage} alt={previewImage} />}
-          title={previewTitle}
+       
         ></Card>
 
       <Form
@@ -153,20 +153,22 @@ const Book_View = () => {
         validateMessages={validateMessages}
       >
         <Form.Item name="Title" label="Title" >
-          <Input name="Title-input" readOnly={true} />
+        
+          <TextArea name="Title-input" readOnly autoSize/>
         </Form.Item>
         <Form.Item name="Author" label="Author" >
-          <Input readOnly={true} />
+        <TextArea readOnly autoSize/>
         </Form.Item>
         <Form.Item
           name="Publisher"
           label="Publisher"
        
         >
-          <Input readOnly={true} />
+           <TextArea readOnly autoSize/>
+        
         </Form.Item>
         <Form.Item name="Year" label="Year" >
-          <Input readOnly={true} />
+        <TextArea readOnly autoSize/>
         </Form.Item>
         <Form.Item name="Summary" label="Summary" >
 

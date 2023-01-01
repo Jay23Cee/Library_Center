@@ -1,0 +1,101 @@
+// BOOKVIEW & Advance Edit Form.
+
+.form-container{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+
+ 
+    width: 100%;
+    background: rgba($color: #f1fefc, $alpha: 1.0);
+    flex: 0 0 0% !important;    
+
+    .ant-card {
+        width: 40%;
+        max-height: auto;
+        display: flex;
+        justify-content: center;
+        
+        background: none;
+        margin-top: 20px;
+       
+      }
+      
+
+      
+
+
+@mixin set-input-font-size($font-size) {
+    // Set font size for all form input elements
+    .ant-form-item-label label,
+    .ant-form-item-control input,
+    .ant-form-item-control textarea,
+    .ant-form-item-control select {
+      font-size: $font-size;
+      width:100% !important;
+      overflow: hidden;
+      height:auto;
+    }
+  }
+  
+  // Mobile
+  @media (max-width: 480px) {
+    @include set-input-font-size(1.5em); // 1.5 times the font size of the parent element
+  }
+  
+  // Tablet
+  @media (min-width: 481px) and (max-width: 768px) {
+    @include set-input-font-size(1.75em); // 1.75 times the font size of the parent element
+  }
+  
+  // Desktop
+  @media (min-width: 769px) {
+    @include set-input-font-size(2em); // 2 times the font size of the parent element
+  }
+  
+  
+  .Card-img {
+    // Set default size
+   overflow: hidden;
+    width: 100%;
+   
+  
+    // Mobile
+    @media (max-width: 480px) {
+      width: 100%;
+    
+    }
+  
+    // Tablet
+    @media (min-width: 481px) and (max-width: 768px) {
+        width: 100%;
+     
+    }
+  
+    // Desktop
+    @media (min-width: 769px) {
+        width: 100%;
+     
+    }
+  }
+  
+
+
+
+  @media (max-width: 768px) {
+   
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    
+
+      .Card-img{
+       
+        width:100%;
+      
+      }
+  }
+
+  }
+  
