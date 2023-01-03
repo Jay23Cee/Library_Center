@@ -14,6 +14,8 @@ import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import TextArea from "antd/lib/input/TextArea";
 import { json } from "body-parser";
+import { clearBooks } from "../redux/bookSlice";
+import { clearBulkBooks } from "../redux/librarySlice";
 
 export const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -46,9 +48,9 @@ export const NewItem = () => {
 export const NewMenu = () => {
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-      <Menu.Item key="1">Home</Menu.Item>
+      <Menu items={[{key:"1" }]} >Home</Menu>
       <Link to="/new">
-        <Menu.Item key="2">New</Menu.Item>
+        <Menu items={[{key:"2" }]} >New</Menu>
       </Link>
     </Menu>
   );
@@ -135,7 +137,7 @@ const NewBook = () => {
     fetchUser();
   }, []);
   
-  const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state:any) => state.user.currentUser);
 
   const [form] = Form.useForm();
   
@@ -156,7 +158,7 @@ const NewBook = () => {
     
 
         const payload = {
-          ...books
+          books
         };
         
         console.log(books)
@@ -164,8 +166,10 @@ const NewBook = () => {
     const JSON_string = JSON.stringify(payload);
     
     try {
+
       await add_book(JSON_string, payload);
-      message.success("Success ====>");
+      dispatch(clearBulkBooks());
+       navigate("/Btable")
       // form.resetFields();
     } catch (error) {
       console.error(error);
@@ -173,7 +177,7 @@ const NewBook = () => {
   };
 
 
-  const handleupload =(file, fileList)=>{
+  const handleupload =(file:any, fileList:any)=>{
 
   }
 
@@ -226,16 +230,22 @@ const NewBook = () => {
 
 
         <Form.Item >
+         
+         
+        
+
       <Upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        listType="picture-card"
-        accept=".jpg ,.jpeg, .png"
-        onPreview={handlePreview}
-        onChange={handleChange}
-        beforeUpload={handleupload}
-      >
+      className="upload-button"
+action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+listType="picture-card"
+accept=".jpg ,.jpeg, .png"
+onPreview={handlePreview}
+onChange={handleChange}
+beforeUpload={handleupload}
+>
         {fileList.length >= 8 ? null : uploadButton}
       </Upload>
+      
       <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
 
         <img alt="example" style={{ width: '100%' }} src={previewImage} />

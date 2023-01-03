@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/joho/godotenv"
 
 	// "github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
@@ -25,15 +24,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-func Devops() {
-
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Errorf("ERROR ON LOAD %v", err)
-		panic(err)
-	}
-}
 
 func FindUser(collection *mongo.Collection, email string) (err error) {
 	filter := bson.M{"Email": email}
@@ -52,7 +42,7 @@ func FindUser(collection *mongo.Collection, email string) (err error) {
 }
 
 func Getlink() string {
-	Devops()
+	//	database.Devops()
 	link := os.Getenv("REACT_APP_CLIENT_URL")
 	// Here get the login URL.
 
@@ -71,7 +61,7 @@ func GetURL() string {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	Devops()
+	//	database.Devops()
 
 	link := Getlink()
 	// Here get the login URL.
@@ -128,7 +118,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	Devops()
+	//	database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -321,7 +311,7 @@ func Login_Demo(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	Devops()
+	//	database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -360,7 +350,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
-	Devops()
+	//	database.Devops()
 
 	// get
 	url := os.Getenv("REACT_APP_GO_URL")
@@ -448,7 +438,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 func IsAuth(w http.ResponseWriter, r *http.Request, rtype []string) bool {
-	Devops()
+	//	database.Devops()
 	var user models.Users
 
 	token, err := utils.Getcookie(w, r)
@@ -509,7 +499,7 @@ func IsAuth(w http.ResponseWriter, r *http.Request, rtype []string) bool {
 }
 
 func RefreshUser(w http.ResponseWriter, r *http.Request, claims string) models.User {
-	Devops()
+	//	database.Devops()
 	var user models.User
 
 	url := GetURL()

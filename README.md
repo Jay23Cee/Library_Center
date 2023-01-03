@@ -2,6 +2,11 @@
 This is a library's web-based, RESTful API. Admin may currently generate new, read, change, and delete stored data. Data is stored using mongodb. The frontend development uses Ant design, Typescript, and React. This application can act as a RESTful API because its backend is written in Golang using chi as middleware.
 
 
+12/30/22
+Created a redux store for the bulk of books.
+Now the booktable is able to get the data used from the redux store. Instead of always 
+calling the database.
+
 12/26/22: 
 We need a database only for testing and a database only for Production.
 We need front end better detail. no table. for USER. 

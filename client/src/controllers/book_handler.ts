@@ -1,9 +1,9 @@
 import { Book } from "../models/books";
 import "setimmediate";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-import { RcFile, UploadFile } from "antd/lib/upload/interface";
-
+import { UploadFile } from "antd/lib/upload/interface";
+import { useSelector } from 'react-redux';
 
 
 const handlePreview = (file: UploadFile) => {
@@ -20,48 +20,94 @@ const handlePreview = (file: UploadFile) => {
  
 };
 
+// Create a cache to store the results of the API call
+const cache = new Map<string, Book[]>();
+
 /**************************
  ******* Connect DATABASE ***
  **************************/
-export async function getbooks() {
+
+
+
+ export function getbooks(): Promise<Book[]> {
+
+
+
   const headers = {
     withCredentials: true,
-    "Content-Type": "text/plain",
+    'Content-Type': 'text/plain',
   };
-  const BookRedeucerDefaultState: Book[] = [];
 
   let link = process.env.REACT_APP_URL as string;
 
-  try {
-    let url = link + `/api/read`;
-    const { data } = await axios.get(url, headers);
-    var len = Object.keys(data).length;
+  let url = link + '/api/read';
+  // Make the HTTP request using the `then` method
+  return axios
+    .get(url, headers)
+    .then((response: AxiosResponse<any>) => {
+      // Use the `Array.map` method to transform the data
+      const books = Object.keys(response.data).map((key) => {
+        const book = response.data[key];
+        if (book.Img.length > 0) {
+          book.Img = JSON.parse(book.Img);
+        }
+        return book;
+      });
 
-    for (let i = 0; i < len; i++) {
-      if (data[i].Img.length > 0){
-        let img = JSON.parse(data[i].Img)
-          
-          data[i].Img = img
-      }
-      BookRedeucerDefaultState.push(data[i]);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-  // console.log(BookRedeucerDefaultState)
-  return Promise.resolve(BookRedeucerDefaultState);
+      // Add the results to the cache
+      cache.set('books', books);
+      return books;
+    })
+    .catch((error) => {
+      console.error(error);
+      return Promise.reject(error);
+    });
 }
 
-export async function delete_book(JSON_string: string) {
+// export async function deleteBook(jsonString: string) {
+//   const headers = {
+//     "Content-Type": "application/json",
+//   };
+//   let link = process.env.REACT_APP_URL;
+//   if (link == null) {
+//     throw new Error("REACT_APP_URL is not set in the environment");
+//   }
+//   let url = link + "/api/delete";
+
+//   try {
+//     const response = await axios.post(url, jsonString, { withCredentials: true, headers });
+//     console.log(response);
+//   } catch (error) {
+//     if (error.response) {
+//       // The request was made and the server responded with a status code
+//       // that falls out of the range of 2xx
+//       console.log(error.response.data);
+//       console.log(error.response.status);
+//       console.log(error.response.headers);
+//     } else if (error.request) {
+//       // The request was made but no response was received
+//       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+//       // http.ClientRequest in node.js
+//       console.log(error.request);
+//     } else {
+//       // Something happened in setting up the request that triggered an Error
+//       console.log('Error', error.message);
+//     }
+//     console.log(error.config);
+//   }
+// }
+
+export async function deleteBook(JSON_string: string) {
   const headers = {
     "Content-Type": "text/plain",
   };
   let link = process.env.REACT_APP_URL as string;
   let url = link + `/api/delete`;
-
-  await axios
+  const res = axios
     .post(url, JSON_string, { withCredentials: true, headers })
-    .then((response) => {})
+    .then((response) => {
+      console.log("Sucess ========>,");
+    })
     .catch((error) => {
       console.error("Error ========>", error);
     });

@@ -5,10 +5,10 @@ COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
 ENV REACT_APP_URL="http://localhost:$PORT"
-RUN npm install
+RUN npm install --force
 RUN npm run build
 EXPOSE $PORT
-CMD ["npm","run", "start:prod"]
+CMD ["npm","run", "start:prod "]
 
 
 # # nginx state for serving content

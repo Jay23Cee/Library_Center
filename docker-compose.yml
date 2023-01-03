@@ -2,7 +2,7 @@ version: '3'
 services:
   golang-app:
     build: ./server
-    ports:
+    ports: 
       - "8080:8080"
     networks:
       - react-go-app

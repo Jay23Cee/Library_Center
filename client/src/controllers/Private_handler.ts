@@ -26,7 +26,7 @@ export async function Private_Login(values: UserLogin) {
       const headers = {
         "Content-Type": "text/plain",
       };
-      const JSON_string = JSON.stringify();
+      const JSON_string = JSON.stringify('');
       let link = process.env.REACT_APP_URL as string;
       let url = link + `/private/login/demo`;
       const res = axios

@@ -12,7 +12,7 @@ import {
   Breadcrumb,
 } from "antd";
 import { Book } from "../models/books";
-import { delete_book, edit_book, getbooks } from "../controllers/book_handler";
+import { deleteBook, edit_book, getbooks } from "../controllers/book_handler";
 import type { ColumnsType, ColumnType, TableProps } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ export interface BookTableProps {
 }
 
 export const Dashboard: React.FC<{}> = () => {
-  const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state:any) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -72,7 +72,7 @@ export const Dashboard: React.FC<{}> = () => {
           const temp_book = { book: newData[index] };
           const JSON_string = JSON.stringify(temp_book);
 
-          delete_book(JSON_string);
+          deleteBook(JSON_string);
 
           const update = await getbooks();
           setData(update);

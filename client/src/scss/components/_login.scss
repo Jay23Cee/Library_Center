@@ -1,76 +1,53 @@
-.Login-Form{
-    color:red !important;
-    justify-content: center;
-    width:100vw;
-
-}
-
-.Demo-Login{
+.Login-Form {
     display: flex;
     flex-direction: column;
-    
-    justify-content: center;
     align-items: center;
-
-    button{
+  
+    .LogIn-Title {
+      text-align: center;
+    }
+  
+    .errmsg {
+      color: red;
+      text-align: center;
+    }
+  
+    .offscreen {
+      position: absolute;
+      left: -9999px;
+    }
+  
+    .login-button {
+      display: flex;
+      justify-content: center;
+    }
+  
+    .Demo-Login {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      button{
         margin: 0.5em;
     }
-}
-.site-layout-content{
-    
-    // display: flex;
-    // flex-direction: row;
-    justify-content: center;
-
-
-}
-
-.ant-form-item-label{
-    
-    .Login-Form{
-        justify-content: center !important;
-
-        text-align: left;
-        h1{
-       font-size: 3em;
-        } 
+      h1 {
+        text-align: center;
       }
-    label{
-    
-        font-size:1.5em !important;
-    }
-}
-
-.ant-col-16{
-    max-width:20vw !important;
-}
-
-
-
-// ********
-// ****Media
-
-@media screen and (max-width:650px){ 
-    .ant-col-16{
-
-        max-width:200px !important;
-    }
-    .site-layout-content{
-        display: flex;
-        justify-content: center;
-
+  
      
-       font-size: 4em !important;
-
     }
-
-.ant-form-item-label{
-
-    label{
-
-        font-size:1.5em !important;
-    }
-}
+  }
+  
 
 
-}
+
+
+
+
+// // ********
+// // ****Media
+
+// @media screen and (max-width:650px){ 
+
+
+
+// }

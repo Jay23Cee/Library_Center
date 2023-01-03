@@ -39,6 +39,7 @@ const bookSlice = createSlice({
       state.loading = false;
       state.errors = action.payload;
     },
+
     addBook: (state, action: PayloadAction<Book>) => {
       state.data = [action.payload];
     },
@@ -70,7 +71,8 @@ export const {
   fetchBooksError,
   addBook,
   removeBook,
-  clearBooks
+  clearBooks,
+  
 } = bookSlice.actions;
 
 export default bookSlice.reducer;

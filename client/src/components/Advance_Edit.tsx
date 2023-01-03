@@ -281,7 +281,7 @@ for (let i = 0; i < items.length - 1; i++) {
           <Button
             type="default"
             onClick={() => {
-              dispatch(clearBooks)
+              dispatch(clearBooks())
               navigate("/privatetable");
             }}
           >

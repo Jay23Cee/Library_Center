@@ -1,8 +1,10 @@
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout,Menu } from "antd";
+
 import React, { useEffect, useState } from "react";
 import "../css/App.css";
-import "antd/dist/antd.min.css";
+
 import BookTable, { Bookintro } from "./BookTable";
+import BookView from "./Book_View";
 import PrivateLogin from "./PrivateLogin";
 import { Private_Table } from "./Private_Table";
 import Newform, { NewItem } from "./Newbook";
@@ -24,6 +26,7 @@ import { Private_Login } from "../controllers/Private_handler";
 import Homepage from "./Homepage";
 import Menu_icon from "../images/menu.png";
 import AdvanceEdit from "./Advance_Edit";
+import NewBulkBook from "./Newbulkbooks";
 
 
 
@@ -69,7 +72,7 @@ const Template = () => {
     }
   }
 
-  const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state: any) => state.user.currentUser);
   // console.log(user);
   useEffect(function effectFunction() {
     async function fetchUser() {
@@ -158,16 +161,33 @@ const Template = () => {
                 </Menu.Item>
               )}
 
+{CheckAuth(user, ["ADMIN"]) && (
+                <Menu.Item key="2">
+                  <Link to="/newbulk">New Bulk</Link>
+                </Menu.Item>
+              )}
+
               {CheckAuth(user, ["ADMIN"]) && (
                 <Menu.Item key="6">
                   <Link to="/PrivateTable">Private Table</Link>
                 </Menu.Item>
               )}
+
+{CheckAuth(user, ["ADMIN"]) && (
+                <Menu.Item key="6">
+                  <Link to="/Advance_Edit">Advance Edit</Link>
+                </Menu.Item>
+              )}
+
               {CheckAuth(user, ["ADMIN", "USER"]) && (
                 <Menu.Item key="3">
                   <Link to="/Btable">BookTable</Link>
                 </Menu.Item>
               )}
+
+
+
+
               {user && (
                 <Menu.Item key="5">
                   <span onClick={logout}>Logout</span>
@@ -199,14 +219,31 @@ const Template = () => {
                 <Route path="/btable" element={<BookTable />} />
               </Route>
 
+
+              <Route
+                path="/bookview"
+                element={<ProtectedRoutes props={["ADMIN", "USER"]} direction={"/"} />}
+              >
+                <Route path="/bookview" element={<BookView />} />
+              </Route>
+
+
+
               <Route
                 path="/new"
                 element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
               >
                 <Route path="/new" element={<Newform />} />
               </Route>
-              {/* <Route path="/New" element={<Newform />} /> */}
 
+
+              <Route
+                path="/newbulk"
+                element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+              >
+                <Route path="/newbulk" element={<NewBulkBook />} />
+              </Route>
+            
               <Route path="/signup" element={<SignUp />} />
               <Route path="/private/login" element={<PrivateLogin />} />
 

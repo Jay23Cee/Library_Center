@@ -32,7 +32,7 @@
     .ant-form-item-control textarea,
     .ant-form-item-control select {
       font-size: $font-size;
-      width:100% !important;
+     
       overflow: hidden;
       height:auto;
     }
@@ -50,7 +50,7 @@
   
   // Desktop
   @media (min-width: 769px) {
-    @include set-input-font-size(2em); // 2 times the font size of the parent element
+    @include set-input-font-size(1.8em); // 2 times the font size of the parent element
   }
   
   

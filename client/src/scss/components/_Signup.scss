@@ -1,23 +1,47 @@
-.sign-up-button{
-  justify-content: center;
-
-}
-
-
-@media screen and (max-width:650px ) and (min-width:400px){ 
-.Sign-up-form{
-  .ant-form .ant-form-item .ant-form-item-control .ant-form .ant-form-item .ant-form-item-label{
-    color:red;
-    background:red;
-    flex:0 0 100% !important;
+.Sign-up-form {
+  h1 {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 1em;
   }
-}
 
-#Sign-up-form-begin{
- 
-  width:90vw !important;
+  .ant-form-item {
+    display: block;
+    margin-bottom: 1em;
+  }
+
+  label {
+    display: block;
+    width: 120px;
+    text-align: right;
+    margin-right: 1em;
+  }
+
+  .ant-form-item-control {
+    display: block;
+  }
+
+  .errmsg {
+    color: red;
+    font-weight: bold;
+    margin-top: 1em;
+  }
+
+  .offscreen {
+    position: absolute;
+    left: -999em;
+  }
+
+  .sign-up-button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 1em;
+    width: 200px;
+  }
+  /* Add this block */
 
 
 
-}
+  overflow: hidden;
+  max-height: 100%;
 }

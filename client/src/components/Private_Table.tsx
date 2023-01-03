@@ -8,17 +8,20 @@ import {
   Typography,
   InputRef,
   Breadcrumb,Upload ,
+  Button,
 } from "antd";
 
 import { Book } from "../models/books";
-import { delete_book, edit_book, getbooks } from "../controllers/book_handler";
 import { useDispatch, useSelector } from "react-redux";
+import { deleteBook, edit_book, getbooks } from "../controllers/book_handler";
+
 import { Link, Navigate, useNavigate,  createSearchParams } from "react-router-dom";
 import { loginSuccess, logOut } from "../redux/userSlice";
 import { Check_Login } from "../controllers/user_handler";
 import UseAuth from "../ProtectedRoutes";
 import { UploadFile } from "antd/lib/upload/interface";
-import { addBook } from "../redux/bookSlice";
+import { addBook, clearBooks } from "../redux/bookSlice";
+import { addBulkBooks, clearBulkBooks } from "../redux/librarySlice";
 
 export interface BookTableProps {
   Title: string;
@@ -30,7 +33,7 @@ export interface BookTableProps {
 }
 
 export const Private_Table: React.FC<{}> = () => {
-  const user = useSelector((state) => state.user.currentUser);
+  const user = useSelector((state:any) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -49,21 +52,23 @@ export const Private_Table: React.FC<{}> = () => {
     const searchInput = useRef<InputRef>(null);
     const [previewImage, setPreviewImage] = useState("");
     const [previewTitle, setPreviewTitle] = useState("");
+    const library = useSelector((state: any) => state.library);
 
     useEffect(function effectFunction() {
+      dispatch(clearBooks())
       async function fetchBooks() {
         var data = await getbooks();
         setData(data);
-        const titles: string[] = []; // create a new array to hold the book titles
-    for (const book of data) {
-        titles.push(book.Title);
-    }
-
-    console.log(titles); // log the titles array
+        dispatch(addBulkBooks(data))
 
 
       }
-      fetchBooks();
+      if (!library.library.length) {
+        fetchBooks();
+        
+      }else{
+        setData(library.library)
+      }
      
     }, []);
 
@@ -102,25 +107,22 @@ export const Private_Table: React.FC<{}> = () => {
 
 
     const onDelete = async (record: Partial<Book> & { ID: React.Key }) => {
-      setEditingKey(record.ID);
-      //  console.log("DELETe")
+    
+      console.log("DELETe")
       try {
         const row = (await form.validateFields()) as Book;
-
+        console.log(row)
         const newData = [...data];
         const index = newData.findIndex((item) => record.ID === item.ID);
-
+        console.log(index)
         if (index > -1) {
           const temp_book = { book: newData[index] };
           const JSON_string = JSON.stringify(temp_book);
-
-          delete_book(JSON_string);
-
-          const update = await getbooks();
-
-          setData(update);
-          // action.startEditBook(newData[index]);
-          setEditingKey("");
+          console.log(JSON_string)
+          dispatch(clearBulkBooks())
+          console.log(library, " HERE IS LIBRARY")
+         deleteBook(JSON_string);
+          
           navigate("/PrivateTable");
         } else {
           newData.push(row);
@@ -202,32 +204,24 @@ export const Private_Table: React.FC<{}> = () => {
               </Popconfirm> */}
             </span>
           ) : (
+
             <Typography.Link>
-              <Typography.Link
-                disabled={editingKey !== ""}
-                onClick={() => onEdit(record)}
-              >
-              Quick Edit
-              </Typography.Link>
+                  <Button className="blue-button" type="primary" onClick={() => onEdit(record)}>
+            Quick Edit
+          </Button>
+          <Button className="blue-button" type="primary" onClick={() => onAdvanceEdit(record)}>
+            Advance Edit
+          </Button>
               <br></br>
 
 
-              <Typography.Link
-                disabled={editingKey !== ""}
-                onClick={()=> onAdvanceEdit(record)}
-              >
-                Advance Edit
-              </Typography.Link>
-              <br></br>
-
-
-              <button
+              <Button
                 onClick={() => {
                   onDelete(record);
                 }}
               >
                 Delete
-              </button>
+              </Button>
             </Typography.Link>
           );
         },

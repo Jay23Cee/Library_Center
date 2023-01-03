@@ -1,120 +1,78 @@
 header {
-  position:fixed;
+  position: fixed;
   width: 100%;
   z-index: 11;
   overflow: hidden;
 }
 
-.layout-title{
-  color:rgb(3, 192, 255);
-
- align-items: center;
- background:transparent!important;
-width:10em;
-  font-size:1.8em;
-
+.layout-title {
+  color: rgb(3, 192, 255);
+  align-items: center;
+  background: transparent !important;
+  width: 10em;
+  font-size: 1.8em;
   z-index: 20 !important;
   margin-left: 62vw;
-
-  
 }
 
-.ant-menu.ant-menu-dark{
+.ant-menu.ant-menu-dark {
   display: flex;
   flex-direction: row;
- position: absolute;
-  height:auto;
+  position: absolute;
+  height: auto;
   font-size: 3em;
-  margin-top:-76px;
+  margin-top: -76px;
   margin-left: -50px !important;
-  width:450px;
+  width: 450px;
   z-index: 2 !important;
   overflow: hidden !important;
 
-  ul{
+  ul {
     overflow: hidden;
   }
-  li{
+
+  li {
     overflow: hidden;
   }
 }
-// .layout-menu{
-//   display:flex;
-//   flex-direction: column;
-//   justify-content: center;
-// }
 
-
-
-
-
-// .ant-menu.ant-menu-dark{
-//   margin-top: -82px;
-//   margin-left: -50px;
-//   width: 250px;
-//   z-index: 10;
-// }
-
-
-
-// ****
-// ***Media
-// ***
-@media screen and (max-width:650px){
-
-  .layout-title{
-    color:rgb(3, 192, 255);
-  
-   align-items: center;
-
-  width:10em;
-    font-size:2em;
-  
+@media screen and (max-width: 650px) {
+  .layout-title {
+    color: rgb(3, 192, 255);
+    align-items: center;
+    width: 10em;
+    font-size: 2em;
     z-index: 20 !important;
-  
     margin-left: 12vw;
-    
   }
-  
-  .ant-menu.ant-menu-dark{
+
+  .ant-menu.ant-menu-dark {
     display: flex;
     flex-direction: column;
-    background:transparent;
-    width:90px;
-    height:200vh;
+    background: transparent;
+    width: 90px;
+    height: 200vh;
     font-size: 3em;
-    margin-top:-100px;
+    margin-top: -100px;
     margin-left: -50px !important;
-    svg{
-      margin-top:30px;
-      width:50px;
+
+    svg {
+      margin-top: 30px;
+      width: 50px;
       height: 50px;
-          }
+    }
   }
 
-  // .ant-menu-submenu-title{
-  //   width:5vh;
-  //   height: 10vh;
-  //   background:rgba(223, 10, 46, 0);
-  //   margin-top:-100px;
-    
-  // }
-
-
-  
   .ant-menu-submenu-popup {
-   
-
     position: fixed !important;
-    left:0px !important;
-    top:60px !important;
+    left: 0px !important;
+    top: 60px !important;
   }
 
-// .ant-menu-dark
-  .ant-menu-overflow .ant-menu .ant-menu-root .ant-menu-horizontal {
-    width:200px !important;
-    ul{
+  .ant-menu-dark .ant-menu-overflow .ant-menu .ant-menu-root .ant-menu-horizontal {
+    width: 200px !important;
 
+    ul {
       text-align: center;
       justify-content: center;
       align-items: center;

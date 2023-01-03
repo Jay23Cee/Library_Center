@@ -3,7 +3,7 @@ import connect, { useSelector } from"react-redux";
 
 
 export const UseAuth=(s :string)=>{
-    const user  = useSelector((state) => state.user);
+    const user  = useSelector((state:any  ) => state.user);
     // console.log(user.currentUser)
     if (user.currentUser!= null){
    //     console.log(user.currentUser.User_type)

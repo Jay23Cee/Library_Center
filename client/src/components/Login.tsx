@@ -102,7 +102,7 @@ const Login_form: React.FC = () => {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }} className="login-button">
           <Button type="primary" htmlType="submit">
             Login
           </Button>

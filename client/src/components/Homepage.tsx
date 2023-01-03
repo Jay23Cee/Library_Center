@@ -18,9 +18,11 @@ function Homepage() {
         <img src={library_image} alt='library' />
         <div className='intro-text'> 
         
-        <h3>Read Up</h3>
+        <h3 id="xpress">Library <span className="x">X</span>press</h3>
         
-        <p>Come in to your local Library Center and look at the hundreds of titles left and grab a book or five</p></div>
+        <p>
+        Discover endless knowledge at Library <span className="x">X</span>press
+         </p></div>
        
     </section>
 
@@ -35,20 +37,20 @@ function Homepage() {
         <img src={reading} alt='library'/>
         
         
-        <h1>Health</h1>
-        <p>Studies have shown that reading for 30 minutes lowers blood pressure, heart rate, and feelings of stress.</p>
+        <h1>Reading for Wellness</h1>
+        <p>By incorporating reading into your routine, you can reap the numerous benefits it has for mental and emotional wellness, such as stress reduction and improved focus. Make it a regular part of your routine for overall well-being.</p>
           </div>
         <div className='ideas-example-2'>
         <img src={cube} alt='library'/>
-         <h1>Mental</h1>
-         <p>Reading increases a person's ability to focus and pay attention.</p>
+         <h1>Reading for Self-Care</h1>
+         <p>Reading can be a powerful tool for self-care, providing relaxation, personal growth, and an escape from daily life. Make it a habit to nourish your mind and soul through literature</p>
          
          </div>
         <div className='ideas-example-3'>
         <img src={chess} alt='library'/>
 
-          <h1>Wealth</h1>
-          <p>There is a wealth of knowledge to be found in books, newspapers, and articles.</p>
+          <h1>Wealth Through Reading</h1>
+          <p>Reading can expand our minds, provide valuable knowledge and insights, and lead to personal and financial success. Make it a habit to continually invest in yourself through reading</p>
           </div>
 
           </div>

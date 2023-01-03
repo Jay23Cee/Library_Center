@@ -3,26 +3,16 @@ import {
   Table,
   Input,
   InputNumber,
-  Popconfirm,
   Form,
-  Typography,
-  Button,
-  Space,
-  InputRef,
   Breadcrumb,
 } from "antd";
 
 import { Book } from "../models/books";
-import { deleteBook, edit_book, getbooks } from "../controllers/book_handler";
-import type { ColumnsType, ColumnType, TableProps } from "antd/es/table";
+import {getbooks } from "../controllers/book_handler";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { loginSuccess, logOut } from "../redux/userSlice";
-import { Check_Login } from "../controllers/user_handler";
-import UseAuth from "../ProtectedRoutes"
-import { UploadFile } from "antd/lib/upload/interface";
-import bookSlice, { addBook } from "../redux/bookSlice";
-import librarySlice, { addBulkBooks } from "../redux/librarySlice";
+import {  useNavigate } from "react-router-dom";
+import { addBulkBooks } from "../redux/librarySlice";
+import { addBook, clearBooks } from "../redux/bookSlice";
 
 export interface BookTableProps {
   Title: string;
@@ -45,14 +35,12 @@ export const Private_Table: React.FC<{}> = () => {
     const [form] = Form.useForm();
     const [data, setData] = useState(originData);
     const [editingKey, setEditingKey] = useState("");
-    const [searchText, setSearchText] = useState("");
-    const [searchedColumn, setSearchedColumn] = useState("");
-    const searchInput = useRef<InputRef>(null);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
+
     const library = useSelector((state: any) => state.library);
 
     useEffect(function effectFunction() {
+dispatch(clearBooks())
+      
           async function fetchBooks() {
             var data = await getbooks();
             setData(data);
@@ -75,16 +63,6 @@ export const Private_Table: React.FC<{}> = () => {
 
 
 
-     const handlePreview = async (file: UploadFile) => {
-  
- 
-
-    setPreviewImage(file.url || (file.preview as string));
-    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-
-
-   
-  };
   
 
   const handleTitleClick = (record: Book) => {
@@ -100,76 +78,12 @@ export const Private_Table: React.FC<{}> = () => {
     const isEditing = (record: Book) => record.ID === editingKey;
     const isDeleting = (record: Book) => record.ID === editingKey;
 
-    const onEdit = (record: Partial<Book> & { ID: React.Key }) => {
-      form.setFieldsValue({ Title: "", Author: "", Date: "", ...record });
-      setEditingKey(record.ID);
-    };
 
-    const onDelete = async (record: Partial<Book> & { ID: React.Key }) => {
-      setEditingKey(record.ID);
-  
-      try {
-        const row = (await form.validateFields()) as Book;
-
-        const newData = [...data];
-        const index = newData.findIndex((item) => record.ID === item.ID);
-
-        if (index > -1) {
-          const temp_book = { book: newData[index] };
-          const JSON_string = JSON.stringify(temp_book);
-
-          deleteBook(JSON_string);
-
-          const update = await getbooks();
-          setData(update);
-          setData(update);
-          // action.startEditBook(newData[index]);
-          setEditingKey("");
-        } else {
-          newData.push(row);
-
-          const update = await getbooks();
-          setData(update);
-          setData(update);
-          setEditingKey("");
-        }
-      } catch (errInfo) {
-        console.error("Validate Failed:", errInfo);
-      }
-    };
 
     const cancel = () => {
       setEditingKey("");
     };
 
-    const save = async (id: React.Key) => {
-      try {
-        const row = (await form.validateFields()) as Book;
-
-        const newData = [...data];
-        const index = newData.findIndex((item) => id === item.ID);
-
-        if (index > -1) {
-          const item = newData[index];
-          newData.splice(index, 1, {
-            ...item,
-            ...row,
-          });
-          const temp_book = { book: newData[index] };
-          const JSON_string = JSON.stringify(temp_book);
-
-          edit_book(JSON_string);
-          setData(newData);
-          setEditingKey("");
-        } else {
-          newData.push(row);
-          setData(newData);
-          setEditingKey("");
-        }
-      } catch (errInfo) {
-        console.error("Validate Failed:", errInfo);
-      }
-    };
 
 
 
@@ -192,14 +106,7 @@ export const Private_Table: React.FC<{}> = () => {
           render:  (_: any, record: Book) => {
           return <img onClick={() => handleCoverClick(record)} alt={record.Img_url} style={{ width: '60%' ,height:'100%'}} src={record.Img_url} /> }
         },
-        // render: (_: any, record: Book) => (
-        //   <img
-        //     onClick={() => handleCoverClick(record)}
-        //     src={record.Img_url}
-        //     alt={record.Img_url}
-        //   />
-        // ),
-      // },
+
 
         {
           title: "Title",
@@ -253,12 +160,6 @@ export const Private_Table: React.FC<{}> = () => {
         console.error(error.message())
       }
     
-      const Getcolumn =(() => {
-          
-
-       
-          return  mergedColumns;
-        })
 
       return {
         ...col,
@@ -303,9 +204,6 @@ export const Private_Table: React.FC<{}> = () => {
   );
 };
 
-interface LinkStateProps {
-  originData: Book[];
-}
 
 interface LinkDispatchProps {
   startEditBook: (book: Book) => void;
@@ -366,14 +264,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
-const onChange: TableProps<Book>["onChange"] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log("params", pagination, filters, sorter, extra);
-};
 
 export const Bookintro = () => {
   return (
@@ -384,6 +274,8 @@ export const Bookintro = () => {
 };
 
 export default Private_Table;
-function dispatch(arg0: any) {
+
+function setPreviewImage(arg0: string) {
   throw new Error("Function not implemented.");
 }
+

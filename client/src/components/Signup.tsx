@@ -79,10 +79,14 @@ const SignUp = () => {
         onFinish={onFinish}
         
       >
-        <Form.Item label="First_name" name={["users", "First_name"]}>
+        <Form.Item label="First_name" name={["users", "First_name"]}
+          rules={[    {      required: true,      message: "Please enter your first name",    },  ]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item label="Last_name" name={["users", "Last_name"]}>
+        <Form.Item label="Last_name" name={["users", "Last_name"]}
+        rules={[    {      required: true,      message: "Please enter your last name",    },  ]}
+        >
           <Input />
         </Form.Item>
         <Form.Item label="Phone" name={["users", "Phone"]}
@@ -109,7 +113,9 @@ const SignUp = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item label="Password" name={["users", "Password"]}>
+        <Form.Item label="Password" name={["users", "Password"]}
+        rules={[    {      required: true,      message: "Please enter a password",    },  ]}
+        >
           <Input.Password />
         </Form.Item>
 
