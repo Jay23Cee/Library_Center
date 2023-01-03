@@ -173,11 +173,6 @@ const Template = () => {
                 </Menu.Item>
               )}
 
-{CheckAuth(user, ["ADMIN"]) && (
-                <Menu.Item key="6">
-                  <Link to="/Advance_Edit">Advance Edit</Link>
-                </Menu.Item>
-              )}
 
               {CheckAuth(user, ["ADMIN", "USER"]) && (
                 <Menu.Item key="3">
