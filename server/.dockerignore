@@ -3,3 +3,4 @@ Dockerfile.web
 .git
 .gitignore
 .env
+server/database/devops.go
