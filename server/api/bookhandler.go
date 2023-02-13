@@ -138,7 +138,7 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 // }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("delete function hit")
+//	fmt.Println("delete function hit")
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Recovered from panic:", r)
@@ -398,7 +398,7 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadGateway)
 		return
 	}
-	fmt.Println(book)
+//	fmt.Println(book)
 	collection := client.Database("BookAPI").Collection("book")
 
 	id, _ := primitive.ObjectIDFromHex(book.ID)

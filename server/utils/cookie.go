@@ -87,7 +87,7 @@ func getKey() []byte {
 }
 
 func MakeToken(email string, firstName string, lastName string, userType string, uid string) (signedToken string, signedRefreshToken string, err error) {
-	fmt.Printf("\n\n email,%v, || firstname:%v, || Lastnamse:%v, || usertype,:%v, || uid: :%v", email, firstName, lastName, userType, uid)
+	//	fmt.Printf("\n\n email,%v, || firstname:%v, || Lastnamse:%v, || usertype,:%v, || uid: :%v", email, firstName, lastName, userType, uid)
 	claims := &SignedDetails{
 		Email:     email,
 		Uid:       uid,
@@ -194,9 +194,9 @@ func Getcookie(w http.ResponseWriter, r *http.Request) (*jwt.Token, error) {
 	// var user models.Userlogin
 	cookieName := "Token"
 	cookie, err := r.Cookie(cookieName)
-	fmt.Println("I'M ON COOKIES")
+	//fmt.Println("I'M ON COOKIES")
 	if err != nil {
-		fmt.Println("Cookie not found")
+		//	fmt.Println("Cookie not found")
 		return nil, errors.New("Error retrieving token")
 	}
 

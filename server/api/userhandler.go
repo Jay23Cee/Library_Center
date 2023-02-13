@@ -483,7 +483,7 @@ func IsAuth(w http.ResponseWriter, r *http.Request, rtype []string) bool {
 
 	valid := false
 	for x := 0; x < len(rtype); x++ {
-		fmt.Println(rtype[x], " TYPE OF ARRAY AD")
+	//	fmt.Println(rtype[x], " TYPE OF ARRAY AD")
 		err = utils.CheckAuth(*user.User_type, rtype[x])
 		if err != nil {
 			valid = false
@@ -492,7 +492,7 @@ func IsAuth(w http.ResponseWriter, r *http.Request, rtype []string) bool {
 		valid = true
 		return valid
 	}
-	fmt.Println(valid)
+//	fmt.Println(valid)
 
 	return valid
 
@@ -549,7 +549,7 @@ func Refreshcookie(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error retrieving r token", http.StatusBadGateway)
 
 	}
-	fmt.Println("getting token")
+	//rintln("getting token")
 	token, err := jwt.ParseWithClaims(cookie.Value, &utils.SignedDetails{}, func(token *jwt.Token) (interface{}, error) {
 		jwtKey := getKey()
 		return jwtKey, nil
@@ -564,7 +564,7 @@ func Refreshcookie(w http.ResponseWriter, r *http.Request) {
 
 	if claims.ExpiresAt < time.Now().Local().Unix() {
 		// msg := fmt.Sprintf("token is expired")
-		fmt.Println("error")
+	//	fmt.Println("error")
 		http.Error(w, "Error r token Expired", http.StatusBadGateway)
 
 	}

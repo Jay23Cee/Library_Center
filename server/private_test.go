@@ -152,6 +152,6 @@ func TestGetPrivate(t *testing.T) {
 		}
 
 	}
-	fmt.Printf("SUCESS Getuser ")
+	//fmt.Printf("SUCESS Getuser ")
 
 }
