@@ -136,7 +136,7 @@ const Template = () => {
       <Layout className="layout">
         <Header>
           <div className="layout-menu">
-            <h3 className="layout-title">Library Center</h3>
+            <h3 className="layout-title">Library Xpress</h3>
 
             <Menu theme="dark" mode="horizontal">
                
