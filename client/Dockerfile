@@ -4,7 +4,7 @@ WORKDIR /client/app
 COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
-ENV REACT_APP_URL="https://librarycenter-production.up.railway.app/"
+ENV REACT_APP_URL="https://librarycenter-production.up.railway.app"
 RUN npm install --force
 RUN npm run build
 EXPOSE $PORT
