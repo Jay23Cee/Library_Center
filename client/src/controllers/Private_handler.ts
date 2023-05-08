@@ -28,6 +28,7 @@ export async function Private_Login(values: UserLogin) {
       };
       const JSON_string = JSON.stringify('');
       let link = process.env.REACT_APP_URL as string;
+      console.log(link, " THIS IS THE LINK")
       let url = link + `/private/login/demo`;
       const res = axios
         .post(url, JSON_string, { withCredentials: true, headers })
