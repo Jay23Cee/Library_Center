@@ -28,6 +28,7 @@ export async function User_Login_DEMO() {
     };
     const JSON_string = JSON.stringify('');
     let link = process.env.REACT_APP_URL as string;
+    console.log(link)
     let url = link + `/login/demo`;
     const res = axios
       .post(url, JSON_string, { withCredentials: true, headers })
