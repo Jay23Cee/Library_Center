@@ -1,3 +1,6 @@
+@import '../basics/colors';
+
+
 header {
   position: fixed;
   width: 100%;
@@ -6,7 +9,7 @@ header {
 }
 
 .layout-title {
-  color: rgb(3, 192, 255);
+  color: $navy-color;
   align-items: center;
   background: transparent !important;
   width: 10em;
@@ -38,7 +41,7 @@ header {
 
 @media screen and (max-width: 650px) {
   .layout-title {
-    color: rgb(3, 192, 255);
+   
     align-items: center;
     width: 10em;
     font-size: 2em;
@@ -78,4 +81,9 @@ header {
       align-items: center;
     }
   }
+}
+
+.ant-layout-header , .ant-menu{
+  background: $apricot-color !important;
+  color:$navy-color;
 }

@@ -216,6 +216,9 @@ for (let i = 0; i < items.length - 1; i++) {
   };
 
   return (
+    <div className="advance-edit-container">
+      <h1>Book Editing</h1>
+    
     <div className="form-container">
       <Card
         className="Card-img"
@@ -290,6 +293,7 @@ for (let i = 0; i < items.length - 1; i++) {
         </Form.Item>
         </div>
       </Form>
+    </div>
     </div>
   );
 };

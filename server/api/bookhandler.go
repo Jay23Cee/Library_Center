@@ -21,7 +21,7 @@ import (
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 
 func Makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-	//	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	// Here get the login URL.
 
@@ -91,7 +91,7 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 // func Deletebook(w http.ResponseWriter, r *http.Request) {
-// 	//	database.Devops()
+// 	//database.Devops()
 // 	link := Getlink()
 // 	// Here get the login URL.
 
@@ -138,7 +138,7 @@ func GetBooks(w http.ResponseWriter, r *http.Request) {
 // }
 
 func Deletebook(w http.ResponseWriter, r *http.Request) {
-//	fmt.Println("delete function hit")
+	//	fmt.Println("delete function hit")
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Recovered from panic:", r)
@@ -146,7 +146,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	//	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	// Here get the login URL.
 
@@ -207,7 +207,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
 
-	//	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -265,7 +265,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
-	//	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -315,7 +315,7 @@ func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
 
 func BookImg(w http.ResponseWriter, r *http.Request) {
 
-	//	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -372,7 +372,7 @@ func BookImg(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	//	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 
@@ -398,7 +398,7 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadGateway)
 		return
 	}
-//	fmt.Println(book)
+	//	fmt.Println(book)
 	collection := client.Database("BookAPI").Collection("book")
 
 	id, _ := primitive.ObjectIDFromHex(book.ID)

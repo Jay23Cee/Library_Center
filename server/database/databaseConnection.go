@@ -2,19 +2,19 @@ package database
 
 import (
 	"context"
-	"fmt"
+
 	"log"
 	"os"
 	"time"
 
-	// "github.com/joho/godotenv"
+
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func DBinstance() *mongo.Client {
-	//	Devops()
+	Devops()
 
 	MongoDb := os.Getenv("REACT_APP_GO_URL")
 
@@ -29,7 +29,7 @@ func DBinstance() *mongo.Client {
 	if err != nil {
 		log.Fatal(err)
 	}
-//	fmt.Println("Connected to MongoDB!")
+	//	fmt.Println("Connected to MongoDB!")
 
 	return client
 }

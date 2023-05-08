@@ -1,4 +1,4 @@
-
+@import '../basics/colors';
 // .Book-form-edit{
 //     width:100%;
   
@@ -21,5 +21,14 @@
 
 .Book-form-edit{
   width:100%;
-  background:red;
+  background:$apricot-light-color !important; 
+
+}
+
+
+.advance-edit-container{
+  color:$navy-color !important;
+  h1{
+    margin-bottom: 20px;
+  }
 }

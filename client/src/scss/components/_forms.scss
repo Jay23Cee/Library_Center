@@ -1,4 +1,5 @@
-// BOOKVIEW & Advance Edit Form.
+@import '../basics//colors';
+
 
 .form-container{
     display: flex;
@@ -7,7 +8,8 @@
 
  
     width: 100%;
-    background: rgba($color: #f1fefc, $alpha: 1.0);
+    background:$light-gray-color;
+    background: linear-gradient(180deg, $apricot-light-color 0%, $apricot-color 48%,  $apricot-light-color 93%);
     flex: 0 0 0% !important;    
 
     .ant-card {

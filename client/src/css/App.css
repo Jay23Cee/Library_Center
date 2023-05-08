@@ -15,7 +15,7 @@ header {
 }
 
 .layout-title {
-  color: rgb(3, 192, 255);
+  color: #1d4e89;
   align-items: center;
   background: transparent !important;
   width: 10em;
@@ -45,7 +45,6 @@ header {
 
 @media screen and (max-width: 650px) {
   .layout-title {
-    color: rgb(3, 192, 255);
     align-items: center;
     width: 10em;
     font-size: 2em;
@@ -81,10 +80,15 @@ header {
     align-items: center;
   }
 }
+.ant-layout-header, .ant-menu {
+  background: #fbd1a2 !important;
+  color: #1d4e89;
+}
+
 .site-layout-content {
   min-height: 280px;
   padding-top: 64px;
-  background: #fff;
+  background: linear-gradient(132deg, #f6dec4 0%, #fbd1a2 48%, #f6dec4 93%);
 }
 .site-layout-content h1 {
   text-align: center;
@@ -95,7 +99,7 @@ header {
   width: 120px;
   height: 31px;
   margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+  background: #00b2ca;
 }
 
 .ant-row-rtl #components-layout-demo-top .logo {
@@ -130,9 +134,11 @@ header {
   align-items: center;
   text-align: center;
   padding-left: 25px;
+  color: #00b2ca;
 }
 .intro-text p {
   font-size: 0.5em;
+  color: #1d4e89;
 }
 .intro-text h3 {
   font-size: 1.2em;
@@ -152,7 +158,7 @@ header {
   height: 80vh;
   display: flex;
   flex-direction: row;
-  background: rgba(237, 237, 237, 0.66);
+  background: #7dcfb6;
   justify-content: center;
   align-content: center;
   font-family: "Lucida Console", "Courier New", monospace;
@@ -182,7 +188,8 @@ header {
 .Ideas {
   width: 100% !important;
   height: 80vh;
-  background: rgb(245, 245, 245);
+  background: #f6dec4;
+  background: linear-gradient(132deg, #fbd1a2 0%, #f6dec4 48%, #fbd1a2 93%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -207,7 +214,8 @@ header {
 .ideas-example-1, .ideas-example-2, .ideas-example-3 {
   width: 40vh;
   height: auto;
-  background: white;
+  background: #e5e5e5;
+  color: #1d4e89;
   z-index: 2 !important;
   margin: 25px;
 }
@@ -223,6 +231,7 @@ header {
 @media screen and (max-width: 650px) and (min-width: 400px) {
   .ant-layout-content {
     padding: 0 !important;
+    background: red !important;
   }
   .intro {
     width: 100vw;
@@ -285,7 +294,11 @@ header {
   }
 }
 .x {
-  color: red;
+  color: #1d4e89;
+}
+
+main.ant-layout-content {
+  background: #7dcfb6 !important;
 }
 
 .Login-Form {
@@ -368,18 +381,13 @@ header {
 }
 
 .Book_Table button {
-  color: black;
-  background: rgba(232, 10, 10, 0.709);
+  color: #1d4e89;
+  background: #7dcfb6;
   border-radius: 21.3px;
   width: 85px;
 }
-
-.blue-button {
-  background: rgb(86, 184, 245) !important;
-  color: white;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+.Book_Table .ant-card-body:hover {
+  background-color: #fbd1a2;
 }
 
 .ant-table-tbody > tr > td {
@@ -391,7 +399,8 @@ header {
   flex-direction: row-reverse;
   justify-content: flex-start;
   width: 100%;
-  background: #f1fefc;
+  background: #e5e5e5;
+  background: linear-gradient(180deg, #f6dec4 0%, #fbd1a2 48%, #f6dec4 93%);
   flex: 0 0 0% !important;
 }
 .form-container .ant-card {
@@ -404,9 +413,9 @@ header {
 }
 @media (max-width: 480px) {
   .form-container .ant-form-item-label label,
-.form-container .ant-form-item-control input,
-.form-container .ant-form-item-control textarea,
-.form-container .ant-form-item-control select {
+  .form-container .ant-form-item-control input,
+  .form-container .ant-form-item-control textarea,
+  .form-container .ant-form-item-control select {
     font-size: 1.5em;
     overflow: hidden;
     height: auto;
@@ -414,9 +423,9 @@ header {
 }
 @media (min-width: 481px) and (max-width: 768px) {
   .form-container .ant-form-item-label label,
-.form-container .ant-form-item-control input,
-.form-container .ant-form-item-control textarea,
-.form-container .ant-form-item-control select {
+  .form-container .ant-form-item-control input,
+  .form-container .ant-form-item-control textarea,
+  .form-container .ant-form-item-control select {
     font-size: 1.75em;
     overflow: hidden;
     height: auto;
@@ -424,9 +433,9 @@ header {
 }
 @media (min-width: 769px) {
   .form-container .ant-form-item-label label,
-.form-container .ant-form-item-control input,
-.form-container .ant-form-item-control textarea,
-.form-container .ant-form-item-control select {
+  .form-container .ant-form-item-control input,
+  .form-container .ant-form-item-control textarea,
+  .form-container .ant-form-item-control select {
     font-size: 1.8em;
     overflow: hidden;
     height: auto;
@@ -473,7 +482,14 @@ header {
 
 .Book-form-edit {
   width: 100%;
-  background: red;
+  background: #f6dec4 !important;
+}
+
+.advance-edit-container {
+  color: #1d4e89 !important;
+}
+.advance-edit-container h1 {
+  margin-bottom: 20px;
 }
 
 /*# sourceMappingURL=App.css.map */
