@@ -1,96 +1,73 @@
-# Library_Center
-This is a library's web-based, RESTful API. Admin may currently generate new, read, change, and delete stored data. Data is stored using mongodb. The frontend development uses Ant design, Typescript, and React. This application can act as a RESTful API because its backend is written in Golang using chi as middleware.
+# Library Xpress
 
+Library Xpress is a versatile web application designed to streamline the management of a library's collection. It provides users with a seamless browsing experience, allowing them to explore the library's catalog, borrow books, and effortlessly manage their accounts. Meanwhile, administrators have access to powerful tools for managing the library's collection and user accounts.
 
-12/30/22
-Created a redux store for the bulk of books.
-Now the booktable is able to get the data used from the redux store. Instead of always 
-calling the database.
+## Languages
 
-12/26/22: 
-We need a database only for testing and a database only for Production.
-We need front end better detail. no table. for USER. 
+- Go-lang
+- Typescript
 
+## Features
 
-09/29/22:
-Add category to book.
-Limist File size to be uploaded.
-possibly adjust width and height?
+- **Efficient Data Storage:** Library Xpress leverages MongoDB, a robust NoSQL database, to ensure efficient and secure storage of all library-related data.
 
+- **Comprehensive API:** The project includes a comprehensive C.R.U.D. API that empowers administrators to efficiently manage the library's collection. This API facilitates seamless updates and modifications to the catalog.
 
+- **Secure Authentication:** User authentication and authorization are handled with utmost security using JSON Web Tokens (JWT) and cookies. This ensures that only authorized users can access the system's features and resources.
 
-9/24/22
-Private Table. Delete is not working. DONE
-Private Table Edit > Cancel not working DONE
-Add Img to booktable.  DONE
-ADD CATEGORY TO BOOK
-Make sure only  one Image is uploaded.  DONE
+- **Dockerized Deployment:** Library Xpress is deployed using a Docker container, enabling easy setup and deployment in various environments. The containerization ensures consistency and simplifies installation processes.
 
-9/23/22 : REMOVE Comment from Access validation on addbook. bookhandler.go
+- **Responsive Design:** The project features a responsive design, allowing Library Xpress to adapt flawlessly to different screen sizes and devices. Users can enjoy a seamless browsing experience whether they access the application on desktops, laptops, or mobile devices.
 
+- **Client and Admin Authentication:** The application implements client and admin authentication mechanisms to control access to protected resources. This ensures that users and administrators can securely access their respective features without compromising data privacy and security.
 
-9/14/22
-Need to add image to mongodb.
+## Installation
 
-add image to the table.
-Or Maybe Remove the tables. and add images and boxes for each book.
+To install and set up Library Xpress, follow the steps below:
+
+1. Clone the repository:
+git clone https://github.com/your-username/library-xpress.git
 
 
 
 
+2. Install the required dependencies for both the server and client:
+
+```shell
+cd library-xpress/server
+npm install
+
+cd ../client
+npm install
 
 
 
-9/6/2022
-PUSHING TO PRODUCTION:
-Comment all the //Devops()
-and the getdotenv..
+Configure the environment variables:
 
-9/1/2022:
-Need Test for All of User Routes and Book Routes.
-    Need to find a way to get Cookies inserted in the test area. 
+Create a .env file in the server directory and define the following variables:
 
-+ Add a Homepage for both users. (College maybe?)
-+ Add a Get All Admins + All Users list. (Teacher, Students?)
+makefile
+Copy code
+PORT=3000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
 
 
-8/26/2022
-BOOKTABLE: an Approach for USER and ADMIN action column can be to check which user I currently have 
-in order to make a column. 
-ONE column for ADMIN another just for USER.
-Instead of creating an entire page for the table to beview.
-Depending on the user Role the person would be able to see the ACTION  bar.
+Start the server and client:
 
-8/24/2022:
-We need to adjust the same thing to PRIVATE as we did for USER.
-the Private login to send back the NECESSARY data only.
+shell
+Copy code
+cd ../server
+npm start
 
-
-8/22/2022:
-Golang : R (refresh_token) needs a way to get revoked during logout.
+cd ../client
+npm start
 
 
-8/21/2022:
-Private Route (go) for Owner and Manager.
-Owner: 500
-Manager: 800
-Create manager form.
+Open your preferred web browser and access http://localhost:3000 to launch Library Xpress.
 
-Permission.
+Contributing
+Contributions to Library Xpress are welcome! If you find any issues or have suggestions for improvements, please feel free to submit a pull request. Make sure to follow the established coding conventions and write clear commit messages for better collaboration.
 
-Only admin can change admin
-..
-
-frontside needs to add FIRST NAME , LAST NAME, PHONE, 
-
-8/12/2022: 
-Todo:
-Adjust password hash before sending to goserver.
-
-validate url link.
-
-organize GOLANG routers, controllers, models folder
-
-
-
-
+License
+This project is licensed under the MIT License. You are free to use, modify, and distribute it in accordance with the license terms.
