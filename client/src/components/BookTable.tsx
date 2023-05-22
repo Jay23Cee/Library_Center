@@ -25,7 +25,7 @@ export interface BookTableProps {
   Key: string;
 }
 
-const Private_Table: React.FC<{}> = () => {
+const BookTable: React.FC<{}> = () => {
   const user = useSelector((state:any) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -351,4 +351,4 @@ function setPreviewImage(arg0: string) {
   throw new Error("Function not implemented.");
 }
 
-export default Private_Table;
+export default BookTable;

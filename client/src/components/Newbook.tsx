@@ -169,7 +169,7 @@ const NewBook = () => {
 
       await add_book(JSON_string, payload);
       dispatch(clearBulkBooks());
-       navigate("/Btable")
+       navigate("/booktable")
       // form.resetFields();
     } catch (error) {
       console.error(error);

@@ -34,7 +34,7 @@ const Login_form: React.FC = () => {
       //console.log(res.data);
       dispatch(loginSuccess(res.data));
 
-      navigate("/Btable");
+      navigate("/booktable");
     } catch (error) {
       dispatch(loginFailure());
       setErrMsg("Email or Password are not correct");
@@ -50,7 +50,7 @@ const Login_form: React.FC = () => {
    var res = await User_Login_DEMO();
     dispatch(loginSuccess(res.data));
    
-    navigate("/Btable");
+    navigate("/booktable");
   };
 
   const PrivateDemo = async() => {
@@ -59,7 +59,7 @@ const Login_form: React.FC = () => {
 
     dispatch(loginSuccess(res.data));
 
-    navigate("/Btable");
+    navigate("/booktable");
   };
   return (
     <section className="Login-Form">

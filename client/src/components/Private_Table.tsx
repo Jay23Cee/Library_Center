@@ -6,6 +6,10 @@ import { deleteBook, edit_book, getbooks } from "../controllers/book_handler";
 import { useNavigate } from "react-router-dom";
 import { addBook, clearBooks } from "../redux/bookSlice";
 import { addBulkBooks, clearBulkBooks } from "../redux/librarySlice";
+import { LoadingOutlined } from '@ant-design/icons';
+
+
+
 
 const { Meta } = Card;
 
@@ -22,6 +26,7 @@ export const Private_Table: React.FC<{}> = () => {
   const user = useSelector((state: any) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   const originData: Book[] = [];
 
@@ -33,16 +38,27 @@ export const Private_Table: React.FC<{}> = () => {
     useEffect(function effectFunction() {
       dispatch(clearBooks());
       async function fetchBooks() {
-        var data = await getbooks();
-        setData(data);
-        dispatch(addBulkBooks(data));
+        try {
+          setIsLoading(true); // Start loading animation
+
+          var data = await getbooks();
+          setData(data);
+          dispatch(addBulkBooks(data));
+        } catch (error) {
+          // Handle error
+        } finally {
+          setIsLoading(false); // Stop loading animation
+        }
       }
+
+
       if (!library.library.length) {
         fetchBooks();
       } else {
         setData(library.library);
       }
     }, []);
+
 
     const cardList = data.map((book: Book) => (
       <Card
@@ -106,11 +122,18 @@ export const Private_Table: React.FC<{}> = () => {
     return (
       user && (
         <Form form={form} component={false}>
-          <div style={{ display: "flex", flexWrap: "wrap" }}>{cardList}</div>
+          {isLoading ? ( // Display loading spinner while isLoading is true
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+              <LoadingOutlined style={{ fontSize: 24 }} spin />
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>{cardList}</div>
+          )}
         </Form>
       )
     );
   };
+
 
   return (
     <div className="Book_Table">

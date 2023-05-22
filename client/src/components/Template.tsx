@@ -176,7 +176,7 @@ const Template = () => {
 
               {CheckAuth(user, ["ADMIN", "USER"]) && (
                 <Menu.Item key="3">
-                  <Link to="/Btable">BookTable</Link>
+                  <Link to="/booktable">BookTable</Link>
                 </Menu.Item>
               )}
 
@@ -201,17 +201,17 @@ const Template = () => {
           <div className="site-layout-content">
           <Routes>
             {/* <Route path="/New" element={<NewItem />} /> */}
-            <Route path="/Btable" element={<Bookintro />} />
+            <Route path="/booktable" element={<Bookintro />} />
           </Routes>
             
             <Routes>
               
 
               <Route
-                path="/btable"
+                path="/booktable"
                 element={<ProtectedRoutes props={["ADMIN", "USER"]} direction={"/"} />}
               >
-                <Route path="/btable" element={<BookTable />} />
+                <Route path="/booktable" element={<BookTable />} />
               </Route>
 
 
