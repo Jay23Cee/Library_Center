@@ -98,14 +98,24 @@ export const Private_Table: React.FC<{}> = () => {
         const index = newData.findIndex((item) => record.ID === item.ID);
         console.log(index);
         if (index > -1) {
-          const temp_book = { book: newData[index] };
+          const temp_book = {
+            book:{ 
+            ID: newData[index].ID,
+            Title: "",
+            Author: "",
+            Publisher: "",
+            Year: "",
+            Img: "",
+            Img_url: "",
+            Summary: "" }
+          };
           const JSON_string = JSON.stringify(temp_book);
           console.log(JSON_string);
-          dispatch(clearBulkBooks());
           console.log(library, " HERE IS LIBRARY");
-          deleteBook(JSON_string);
-
-          navigate("/PrivateTable");
+          await deleteBook(JSON_string);
+          
+          dispatch(clearBulkBooks());
+        //  navigate("/PrivateTable");
         } else {
           newData.push(row);
 

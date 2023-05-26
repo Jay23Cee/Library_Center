@@ -62,15 +62,16 @@ export async function User_Logout() {
 
 export async function User_Signup(values:any) {
   const headers = {
-    'Content-Type': 'multipart/form-data'
+    "Content-Type": "text/plain",
   };
   const JSON_string = JSON.stringify(values);
   let link = process.env.REACT_APP_URL as string;
   let url = link + `/signup`;
-  let res = await axios.post(url, values, { headers }).catch((error) => {
+  let res = await axios.post(url, JSON_string, { headers }).catch((error) => {
     return Promise.reject(error);
   });
 
+  console.log(res)
 }
 
 export async function Check_Login() {

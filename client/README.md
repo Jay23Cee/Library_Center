@@ -1,46 +1,97 @@
-# Getting Started with Create React App
+# Library_Center
+This is a library's web-based, RESTful API. Admin may currently generate new, read, change, and delete stored data. Data is stored using mongodb. The frontend development uses Ant design, Typescript, and React. This application can act as a RESTful API because its backend is written in Golang using chi as middleware.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+12/30/22
+Created a redux store for the bulk of books.
+Now the booktable is able to get the data used from the redux store. Instead of always 
+calling the database.
 
-In the project directory, you can run:
+12/26/22: 
+We need a database only for testing and a database only for Production.
+We need front end better detail. no table. for USER. 
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+09/29/22:
+Add category to book.
+Limist File size to be uploaded.
+possibly adjust width and height?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+9/24/22
+Private Table. Delete is not working. DONE
+Private Table Edit > Cancel not working DONE
+Add Img to booktable.  DONE
+ADD CATEGORY TO BOOK
+Make sure only  one Image is uploaded.  DONE
 
-### `npm run build`
+9/23/22 : REMOVE Comment from Access validation on addbook. bookhandler.go
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+9/14/22
+Need to add image to mongodb.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+add image to the table.
+Or Maybe Remove the tables. and add images and boxes for each book.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+9/6/2022
+PUSHING TO PRODUCTION:
+Comment all the //Devops()
+and the getdotenv..
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+9/1/2022:
+Need Test for All of User Routes and Book Routes.
+    Need to find a way to get Cookies inserted in the test area. 
+
++ Add a Homepage for both users. (College maybe?)
++ Add a Get All Admins + All Users list. (Teacher, Students?)
+
+
+8/26/2022
+BOOKTABLE: an Approach for USER and ADMIN action column can be to check which user I currently have 
+in order to make a column. 
+ONE column for ADMIN another just for USER.
+Instead of creating an entire page for the table to beview.
+Depending on the user Role the person would be able to see the ACTION  bar.
+
+8/24/2022:
+We need to adjust the same thing to PRIVATE as we did for USER.
+the Private login to send back the NECESSARY data only.
+
+
+8/22/2022:
+Golang : R (refresh_token) needs a way to get revoked during logout.
+
+
+8/21/2022:
+Private Route (go) for Owner and Manager.
+Owner: 500
+Manager: 800
+Create manager form.
+
+Permission.
+
+Only admin can change admin
+..
+
+frontside needs to add FIRST NAME , LAST NAME, PHONE, 
+
+8/12/2022: 
+Todo:
+Adjust password hash before sending to goserver.
+
+validate url link.
+
+organize GOLANG routers, controllers, models folder
+
+
+
+
+==============

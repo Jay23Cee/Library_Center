@@ -168,8 +168,8 @@ const NewBook = () => {
     try {
 
       await add_book(JSON_string, payload);
-      dispatch(clearBulkBooks());
-       navigate("/booktable")
+    //  dispatch(clearBulkBooks());
+    //   navigate("/booktable")
       // form.resetFields();
     } catch (error) {
       console.error(error);

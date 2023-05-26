@@ -66,6 +66,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.195",
     "@types/react-highlight-words": "^0.16.4",
     "sass": "^1.57.1"
   }

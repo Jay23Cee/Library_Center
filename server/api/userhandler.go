@@ -2,6 +2,8 @@ package api
 
 import (
 	"bookapi/authenticator"
+	"bookapi/database"
+
 	// "bookapi/database"
 	"bookapi/models"
 	"bookapi/utils"
@@ -17,10 +19,8 @@ import (
 
 	"github.com/golang-jwt/jwt"
 
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -43,7 +43,7 @@ func FindUser(collection *mongo.Collection, email string) (err error) {
 }
 
 func Getlink() string {
-	//database.Devops()()
+	database.Devops()
 	link := os.Getenv("REACT_APP_CLIENT_URL")
 	// Here get the login URL.
 
@@ -62,7 +62,7 @@ func GetURL() string {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	//database.Devops()()
+	database.Devops()
 
 	link := Getlink()
 	// Here get the login URL.
@@ -119,7 +119,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	//database.Devops()()
+	database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -312,7 +312,7 @@ func Login_Demo(w http.ResponseWriter, r *http.Request) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	//database.Devops()()
+	database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -342,24 +342,24 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 func Signup(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Expose-Headers", "Authorization")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	body, err := ioutil.ReadAll(r.Body)
-
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
-	//database.Devops()()
+	database.Devops()
 
-	// get
+	fmt.Printf("THIS IS THE BODY \n", body)
 	url := os.Getenv("REACT_APP_GO_URL")
 	if url == "" {
 		fmt.Fprintf(w, "error")
 	}
 	jsonMap := make(map[string]models.Users)
 	err = json.Unmarshal([]byte(body), &jsonMap)
+	fmt.Println("HERE @ erorr IS THE SIGN UP SHEET", string(body))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 
@@ -439,7 +439,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 func IsAuth(w http.ResponseWriter, r *http.Request, rtype []string) bool {
-	//database.Devops()()
+	database.Devops()
 	var user models.Users
 
 	token, err := utils.Getcookie(w, r)
@@ -500,7 +500,7 @@ func IsAuth(w http.ResponseWriter, r *http.Request, rtype []string) bool {
 }
 
 func RefreshUser(w http.ResponseWriter, r *http.Request, claims string) models.User {
-	//database.Devops()()
+	database.Devops()
 	var user models.User
 
 	url := GetURL()

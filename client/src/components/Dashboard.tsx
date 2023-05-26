@@ -72,7 +72,7 @@ export const Dashboard: React.FC<{}> = () => {
           const temp_book = { book: newData[index] };
           const JSON_string = JSON.stringify(temp_book);
 
-          deleteBook(JSON_string);
+          await deleteBook(JSON_string);
 
           const update = await getbooks();
           setData(update);
