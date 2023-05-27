@@ -36,13 +36,11 @@ export const Private_Table: React.FC<{}> = () => {
     const library = useSelector((state: any) => state.library);
 
     useEffect(function effectFunction() {
-      dispatch(clearBooks());
       async function fetchBooks() {
         try {
           setIsLoading(true); // Start loading animation
-
+    
           var data = await getbooks();
-          setData(data);
           dispatch(addBulkBooks(data));
         } catch (error) {
           // Handle error
@@ -50,14 +48,15 @@ export const Private_Table: React.FC<{}> = () => {
           setIsLoading(false); // Stop loading animation
         }
       }
-
-
+    
       if (!library.library.length) {
         fetchBooks();
       } else {
         setData(library.library);
+        setIsLoading(false); // Stop loading animation
       }
-    }, []);
+    }, [library.library]);
+    
 
 
     const cardList = data.map((book: Book) => (

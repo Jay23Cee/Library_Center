@@ -206,7 +206,7 @@ for (let i = 0; i < items.length - 1; i++) {
       console.log("FUNCTION BEFORE DISPATCH");
 
       dispatch(clearBulkBooks());
-      dispatch(clearBooks)
+      //dispatch(clearBooks)
       console.log("AFTER DISPATCH");
       navigate("/PrivateTable");
       // form.resetFields();
@@ -284,7 +284,7 @@ for (let i = 0; i < items.length - 1; i++) {
           <Button
             type="default"
             onClick={() => {
-              dispatch(clearBooks())
+             // dispatch(clearBooks())
               navigate("/privatetable");
             }}
           >

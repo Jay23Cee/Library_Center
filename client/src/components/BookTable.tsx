@@ -36,7 +36,7 @@ const BookTable: React.FC<{}> = () => {
   const library = useSelector((state: any) => state.library);
 
   useEffect(function effectFunction() {
-    dispatch(clearBooks());
+    // dispatch(clearBooks());
 
     async function fetchBooks() {
       const data = await getbooks();
