@@ -42,6 +42,7 @@ const BookTable: React.FC<{}> = () => {
       const data = await getbooks();
       setData(data);
       dispatch(addBulkBooks(data));
+      console.log(data, "THIS IS DATA THAT COMES FROM GETBOOKS")
     }
 
     // Check if the library data is present in the store

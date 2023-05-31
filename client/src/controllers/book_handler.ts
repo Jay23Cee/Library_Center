@@ -33,31 +33,39 @@ const cache = new Map<string, Book[]>();
 
 
  export function getbooks(): Promise<Book[]> {
-  return axiosInstance
-    .get<Book[]>('/api/read')
-    .then((response: AxiosResponse<Book[]>) => {
-      const books = response.data.map((book) => {
+
+
+
+  const headers = {
+    withCredentials: true,
+    'Content-Type': 'text/plain',
+  };
+
+  let link = process.env.REACT_APP_URL as string;
+
+  let url = link + '/api/read';
+  // Make the HTTP request using the `then` method
+  return axios
+    .get(url, headers)
+    .then((response: AxiosResponse<any>) => {
+      // Use the `Array.map` method to transform the data
+      const books = Object.keys(response.data).map((key) => {
+        const book = response.data[key];
         if (book.Img.length > 0) {
-          try {
-            book.Img = JSON.parse(book.Img);
-          } catch (error) {
-            console.error('Error parsing book image data:', error);
-          }
+          book.Img = JSON.parse(book.Img);
         }
         return book;
       });
 
+      // Add the results to the cache
       cache.set('books', books);
       return books;
     })
     .catch((error) => {
       console.error(error);
-      // You can decide to return an empty array or keep the Promise.reject based on your application's error handling strategy.
-      // return [];
       return Promise.reject(error);
     });
 }
-
 // export async function deleteBook(jsonString: string) {
 //   const headers = {
 //     "Content-Type": "application/json",

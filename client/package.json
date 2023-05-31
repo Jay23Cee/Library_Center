@@ -24,12 +24,8 @@
     "core-js": "^3.27.0",
     "crypto-browserify": "^3.12.0",
     "express": "^4.18.2",
-<<<<<<< HEAD
     "firebase": "^9.22.1",
     "node-sass": "^8.0.0",
-=======
-  
->>>>>>> 0aa63a38706191c18e7ce8575c8929dfbf748141
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-highlight-words": "^0.18.0",
