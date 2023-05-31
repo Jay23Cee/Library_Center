@@ -141,40 +141,60 @@ const NewBook = () => {
 
   const [form] = Form.useForm();
   
-
   const onFinish = async (values: Book) => {
-
-    const books =  {
-     
-          Title: values.Title,
-          Author: values.Author,
-          Publisher: values.Publisher,
-          Year: values.Year,
-          Summary: values.Summary,
-          Img_url: files_url as string,
-          Img: JSON.stringify(fileList[0])
-        }
-    
-    
-
-        const payload = {
-          books
-        };
-        
-        console.log(books)
-   
-    const JSON_string = JSON.stringify(payload);
-    
+    const formData = new FormData();
+    formData.append("Title", values.Title);
+    formData.append("Author", values.Author);
+    formData.append("Publisher", values.Publisher);
+    formData.append("Year", values.Year);
+    formData.append("Summary", values.Summary);
+    if (fileList[0]?.originFileObj) { // Check if originFileObj is defined
+      formData.append("Img", fileList[0].originFileObj); // Append the file if it exists
+    }
+  
     try {
-
-      await add_book(JSON_string, payload);
-    //  dispatch(clearBulkBooks());
-    //   navigate("/booktable")
-      // form.resetFields();
+      await add_book({ books: formData });
+      navigate("/booktable");
+      form.resetFields();
     } catch (error) {
       console.error(error);
     }
   };
+  
+
+  // const onFinish = async (values: Book) => {
+
+  //   const books =  {
+     
+  //         Title: values.Title,
+  //         Author: values.Author,
+  //         Publisher: values.Publisher,
+  //         Year: values.Year,
+  //         Summary: values.Summary,
+  //         Img_url: files_url as string,
+  //         Img: JSON.stringify(fileList[0])
+  //       }
+    
+    
+
+  //       const payload = {
+  //         books
+  //       };
+        
+  //       console.log(books)
+   
+  //   const JSON_string = JSON.stringify(payload);
+    
+  //   try {
+
+  //     await add_book(JSON_string, payload);
+  //   //  dispatch(clearBulkBooks());
+  //   //   navigate("/booktable")
+  //     // form.resetFields();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
 
   const handleupload =(file:any, fileList:any)=>{

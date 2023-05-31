@@ -160,67 +160,84 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 }
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
+    // Start your MongoDB connection and configuration setup
+    database.Devops()
+    link := Getlink()
+    w.Header().Set("Access-Control-Allow-Origin", link)
+    w.Header().Set("Access-Control-Allow-Credentials", "true")
+    w.Header().Set("Access-Control-Allow-Methods", "POST")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	database.Devops()
-	link := Getlink()
-	w.Header().Set("Access-Control-Allow-Origin", link)
-	w.Header().Set("Access-Control-Allow-Credentials", "true")
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+    url := os.Getenv("REACT_APP_GO_URL")
+    clientOptions := options.Client().ApplyURI(url)
+    ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+    defer cancel()
 
-	// access := IsAuth(w, r, []string{"ADMIN"})
-	// if !access {
-	// 	http.Error(w, "Unauthorize access", http.StatusBadGateway)
-	// 	return
-	// }
-	url := os.Getenv("REACT_APP_GO_URL")
-	clientOptions := options.Client().ApplyURI(url)
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
+    client, err := mongo.Connect(ctx, clientOptions)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadGateway)
+        return
+    }
 
-	jsonMap := make(map[string]models.Book)
+    collection := client.Database("BookAPI").Collection("book")
 
-	client, err := mongo.Connect(ctx, clientOptions)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadGateway)
-		return
-	}
+    // Parse multipart form, 10 << 20 specifies a maximum upload of 10 MB files
+    err = r.ParseMultipartForm(10 << 20)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
 
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+    // Get the 'books' form data
+    booksData := r.FormValue("books")
+    var book models.Book
+    err = json.Unmarshal([]byte(booksData), &book)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
 
-	// Unmarshal the JSON body into the book variable
-	err = json.Unmarshal([]byte(body), &jsonMap)
-	var book models.Book
-	book = jsonMap["books"]
+    // Get the file from the form
+    file, handler, err := r.FormFile("bookImage")
+    if err != nil {
+        http.Error(w, "Error Retrieving the File", http.StatusInternalServerError)
+        return
+    }
+    defer file.Close()
 
-	fmt.Println(" THIS IS BOOK DATA", jsonMap["books"])
+    // Firebase Storage
+    ctx = context.Background()
+    bucket, err := FirebaseClient.Storage(ctx)
+    if err != nil {
+        http.Error(w, "Failed to get default GCS Bucket", http.StatusInternalServerError)
+        return
+    }
 
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+    // Upload the file to Firebase Storage
+    wc := bucket.Object(handler.Filename).NewWriter(ctx)
+    if _, err = io.Copy(wc, file); err != nil {
+        http.Error(w, "Unable to write data to bucket", http.StatusInternalServerError)
+        return
+    }
+    if err := wc.Close(); err != nil {
+        http.Error(w, "Unable to close bucket writer", http.StatusInternalServerError)
+        return
+    }
 
-	defer cancel()
-	if err != nil {
+    // At this point, the image file is uploaded to Firebase, and the file's name is 'handler.Filename'.
+    // Store the file's name in MongoDB document
 
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	collection := client.Database("BookAPI").Collection("book")
-	fmt.Println(book)
-	// Use the book object to create the doc variable
-	doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}, {"Summary", book.Summary}}
-	result, err := collection.InsertOne(ctx, doc)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
+    // Use the book object to create the doc variable
+    doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", handler.Filename}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}, {"Summary", book.Summary}}
+    result, err := collection.InsertOne(ctx, doc)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+
+    fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
+
 
 func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
 	database.Devops()

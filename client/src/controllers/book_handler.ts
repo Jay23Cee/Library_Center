@@ -4,7 +4,10 @@ import axios, { AxiosResponse } from "axios";
 
 import { UploadFile } from "antd/lib/upload/interface";
 import { useSelector } from 'react-redux';
-
+const axiosInstance = axios.create({
+  baseURL: process.env.REACT_APP_URL,
+  withCredentials: true,
+});
 
 const handlePreview = (file: UploadFile) => {
   // console.log(file)
@@ -30,36 +33,27 @@ const cache = new Map<string, Book[]>();
 
 
  export function getbooks(): Promise<Book[]> {
-
-
-
-  const headers = {
-    withCredentials: true,
-    'Content-Type': 'text/plain',
-  };
-
-  let link = process.env.REACT_APP_URL as string;
-
-  let url = link + '/api/read';
-  // Make the HTTP request using the `then` method
-  return axios
-    .get(url, headers)
-    .then((response: AxiosResponse<any>) => {
-      // Use the `Array.map` method to transform the data
-      const books = Object.keys(response.data).map((key) => {
-        const book = response.data[key];
+  return axiosInstance
+    .get<Book[]>('/api/read')
+    .then((response: AxiosResponse<Book[]>) => {
+      const books = response.data.map((book) => {
         if (book.Img.length > 0) {
-          book.Img = JSON.parse(book.Img);
+          try {
+            book.Img = JSON.parse(book.Img);
+          } catch (error) {
+            console.error('Error parsing book image data:', error);
+          }
         }
         return book;
       });
 
-      // Add the results to the cache
       cache.set('books', books);
       return books;
     })
     .catch((error) => {
       console.error(error);
+      // You can decide to return an empty array or keep the Promise.reject based on your application's error handling strategy.
+      // return [];
       return Promise.reject(error);
     });
 }
@@ -129,23 +123,28 @@ export async function edit_book(JSON_string: string) {
     });
 }
 
-export async function add_book(JSON_string: string, values: { books: any; }) {
-  // console.log(values)
-  const headers = {
-    "Content-Type": "text/plain",
-  };
+export async function add_book(values: { books: any; }) {
   let link = process.env.REACT_APP_URL as string;
   let url = link + `/api/add`;
 
+  const formData = new FormData();
+  
+  Object.keys(values.books).forEach((key) => {
+    if (key === "Img") {  // assuming Img is the file you're uploading
+      formData.append(key, values.books[key], values.books[key].name);
+    } else {
+      formData.append(key, values.books[key]);
+    }
+  });
 
-console.log(JSON_string)
   await axios
-    .post(url, values, { withCredentials: true, headers })
+    .post(url, formData, { withCredentials: true })
     .then((response) => {})
     .catch((error) => {
       console.error("Error ========>", error);
     });
 }
+
 
 
 export async function add_bulkbook(JSON_string: string, values: any) {
