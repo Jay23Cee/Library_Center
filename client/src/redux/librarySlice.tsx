@@ -36,7 +36,11 @@ const librarySlice = createSlice({
     ,
     clearBulkBooks(state) {
       state.library = [];
-    }
+    },
+    removeBook: (state, action: PayloadAction<string>) => {
+      state.library = state.library.filter(book => book.ID !== action.payload);
+    },
+    
 
 
 
@@ -49,6 +53,7 @@ export const {
   fetchBooksError,
   addBulkBooks,
   clearBulkBooks,
+  removeBook
 } = librarySlice.actions;
 
 export default librarySlice.reducer;

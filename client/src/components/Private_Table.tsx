@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteBook, edit_book, getbooks } from "../controllers/book_handler";
 import { useNavigate } from "react-router-dom";
 import { addBook, clearBooks } from "../redux/bookSlice";
-import { addBulkBooks, clearBulkBooks } from "../redux/librarySlice";
+import { addBulkBooks, clearBulkBooks, removeBook } from "../redux/librarySlice";
 import { LoadingOutlined } from '@ant-design/icons';
 
 
@@ -32,31 +32,29 @@ export const Private_Table: React.FC<{}> = () => {
 
   const EditableTable = () => {
     const [form] = Form.useForm();
-    const [data, setData] = useState(originData);
+    const [data, setData] = useState<Book[]>(originData);
     const library = useSelector((state: any) => state.library);
-
-    useEffect(function effectFunction() {
-      async function fetchBooks() {
+  
+    useEffect(() => {
+      const fetchBooks = async () => {
         try {
           setIsLoading(true); // Start loading animation
-    
-          var data = await getbooks();
-          dispatch(addBulkBooks(data));
+          const fetchedBooks = await getbooks();
+          dispatch(addBulkBooks(fetchedBooks));
         } catch (error) {
           // Handle error
         } finally {
           setIsLoading(false); // Stop loading animation
         }
-      }
-    
-      if (!library.library.length) {
+      };
+  
+      if (library.library.length === 0) {
         fetchBooks();
       } else {
         setData(library.library);
         setIsLoading(false); // Stop loading animation
       }
     }, [library.library]);
-    
 
 
     const cardList = data.map((book: Book) => (
@@ -88,8 +86,9 @@ export const Private_Table: React.FC<{}> = () => {
       navigate("/Advance_Edit", { state: { record } });
     };
 
+
     const onDelete = async (record: Book) => {
-      console.log("DELETe");
+      console.log("DELETE");
       try {
         const row = (await form.validateFields()) as Book;
         console.log(row);
@@ -98,35 +97,44 @@ export const Private_Table: React.FC<{}> = () => {
         console.log(index);
         if (index > -1) {
           const temp_book = {
-            book:{ 
-            ID: newData[index].ID,
-            Title: "",
-            Author: "",
-            Publisher: "",
-            Year: "",
-            Img: "",
-            Img_url: "",
-            Summary: "" }
+            book: {
+              ID: newData[index].ID,
+              Title: "",
+              Author: "",
+              Publisher: "",
+              Year: "",
+              Img: "",
+              Img_url: "",
+              Summary: ""
+            }
           };
           const JSON_string = JSON.stringify(temp_book);
           console.log(JSON_string);
           console.log(library, " HERE IS LIBRARY");
+    
+          // Delete the book from the database
           await deleteBook(JSON_string);
-          
-          dispatch(clearBulkBooks());
-        //  navigate("/PrivateTable");
+    
+          // Update the Redux store by dispatching the removeBook action
+          dispatch(removeBook(record.ID));
+    
+          // Update the local state to reflect the changes in the UI
+          newData.splice(index, 1);
+          setData(newData);
         } else {
           newData.push(row);
-
+    
           const update = await getbooks();
-
+    
           setData(update);
         }
       } catch (errInfo) {
         console.error("Validate Failed:", errInfo);
       }
     };
-
+    
+    
+    
 
     return (
       user && (
