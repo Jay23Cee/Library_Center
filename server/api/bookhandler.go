@@ -1,11 +1,13 @@
 package api
 
 import (
+	"bookapi/config"
 	"bookapi/database"
 	"bookapi/models"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -160,82 +162,95 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 }
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
-    // Start your MongoDB connection and configuration setup
-    database.Devops()
-    link := Getlink()
-    w.Header().Set("Access-Control-Allow-Origin", link)
-    w.Header().Set("Access-Control-Allow-Credentials", "true")
-    w.Header().Set("Access-Control-Allow-Methods", "POST")
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	// Start your MongoDB connection and configuration setup
+	database.Devops()
+	link := Getlink()
+	w.Header().Set("Access-Control-Allow-Origin", link)
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-    url := os.Getenv("REACT_APP_GO_URL")
-    clientOptions := options.Client().ApplyURI(url)
-    ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-    defer cancel()
+	url := os.Getenv("REACT_APP_GO_URL")
+	clientOptions := options.Client().ApplyURI(url)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 
-    client, err := mongo.Connect(ctx, clientOptions)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusBadGateway)
-        return
-    }
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadGateway)
+		return
+	}
 
-    collection := client.Database("BookAPI").Collection("book")
+	collection := client.Database("BookAPI").Collection("book")
 
-    // Parse multipart form, 10 << 20 specifies a maximum upload of 10 MB files
-    err = r.ParseMultipartForm(10 << 20)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
+	// Parse multipart form, 10 << 20 specifies a maximum upload of 10 MB files
+	err = r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-    // Get the 'books' form data
-    booksData := r.FormValue("books")
-    var book models.Book
-    err = json.Unmarshal([]byte(booksData), &book)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusBadRequest)
-        return
-    }
+	// Get the 'books' form data
+	booksData := r.FormValue("books")
+	var book models.Book
+	err = json.Unmarshal([]byte(booksData), &book)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-    // Get the file from the form
-    file, handler, err := r.FormFile("bookImage")
-    if err != nil {
-        http.Error(w, "Error Retrieving the File", http.StatusInternalServerError)
-        return
-    }
-    defer file.Close()
+	// Get the file from the form
+	file, handler, err := r.FormFile("bookImage")
+	if err != nil {
+		http.Error(w, "Error Retrieving the File", http.StatusInternalServerError)
+		return
+	}
+	defer file.Close()
 
-    // Firebase Storage
-    ctx = context.Background()
-    bucket, err := FirebaseClient.Storage(ctx)
-    if err != nil {
-        http.Error(w, "Failed to get default GCS Bucket", http.StatusInternalServerError)
-        return
-    }
+	// Firebase Storage
+	ctx := context.Background()
+	bucket, err := FirebaseClient.Storage(ctx)
+	if err != nil {
+		http.Error(w, "Failed to get default GCS Bucket", http.StatusInternalServerError)
+		return
+	}
 
-    // Upload the file to Firebase Storage
-    wc := bucket.Object(handler.Filename).NewWriter(ctx)
-    if _, err = io.Copy(wc, file); err != nil {
-        http.Error(w, "Unable to write data to bucket", http.StatusInternalServerError)
-        return
-    }
-    if err := wc.Close(); err != nil {
-        http.Error(w, "Unable to close bucket writer", http.StatusInternalServerError)
-        return
-    }
+	// Upload the file to Firebase Storage
+	wc := bucket.Bucket("YOUR_BUCKET_NAME").Object(handler.Filename).NewWriter(ctx)
+	if _, err = io.Copy(wc, file); err != nil {
+		http.Error(w, "Unable to write data to bucket", http.StatusInternalServerError)
+		return
+	}
+	if err := wc.Close(); err != nil {
+		http.Error(w, "Unable to close bucket writer", http.StatusInternalServerError)
+		return
+	}
 
-    // At this point, the image file is uploaded to Firebase, and the file's name is 'handler.Filename'.
-    // Store the file's name in MongoDB document
+	// At this point, the image file is uploaded to Firebase, and the file's name is 'handler.Filename'.
+	// Store the file's name and URL in MongoDB document
 
-    // Use the book object to create the doc variable
-    doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", handler.Filename}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}, {"Summary", book.Summary}}
-    result, err := collection.InsertOne(ctx, doc)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusBadRequest)
-        return
-    }
+	// Construct the file URL based on Firebase Storage configuration
+	fileURL := "https://storage.googleapis.com/YOUR_BUCKET_NAME/" + handler.Filename
+	book.Img_url = fileURL
 
-    fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
+	// Use the book object to create the doc variable
+	doc := bson.D{
+		{"Title", book.Title},
+		{"Author", book.Author},
+		{"Publisher", book.Publisher},
+		{"Year", book.Year},
+		{"Img", handler.Filename},
+		{"Img_url", book.Img_url},
+		{"_id", primitive.NewObjectID()},
+		{"Summary", book.Summary},
+	}
+	result, err := collection.InsertOne(ctx, doc)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 
 
