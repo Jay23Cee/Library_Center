@@ -43,9 +43,13 @@ const bookSlice = createSlice({
     addBook: (state, action: PayloadAction<Book>) => {
       state.data = [action.payload];
     },
-    removeBook : (state, action: PayloadAction<Book>) => {
-      state.data = state.data.filter(book => book.ID !== action.payload.ID);
-    },
+    // removeBook: (state, action: PayloadAction<string>) => {
+    //   state.data = state.data.filter(book => book.ID !== action.payload);
+    // },
+    
+    
+    
+    
     clearBooks: (state) => {
       // Clear the data array
       state.data = [{
@@ -70,7 +74,7 @@ export const {
   fetchBooksSuccess,
   fetchBooksError,
   addBook,
-  removeBook,
+  // removeBook,
   clearBooks,
   
 } = bookSlice.actions;
