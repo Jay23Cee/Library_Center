@@ -172,10 +172,10 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 
 	url := os.Getenv("REACT_APP_GO_URL")
 	clientOptions := options.Client().ApplyURI(url)
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctxMongo, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	client, err := mongo.Connect(ctx, clientOptions)
+	client, err := mongo.Connect(ctxMongo, clientOptions)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadGateway)
 		return
@@ -208,15 +208,18 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	// Firebase Storage
-	ctx := context.Background()
-	bucket, err := FirebaseClient.Storage(ctx)
+	ctxFirebase := context.Background()
+	bucket, err := config.FirebaseClient.Storage(ctxFirebase)
 	if err != nil {
 		http.Error(w, "Failed to get default GCS Bucket", http.StatusInternalServerError)
 		return
 	}
 
+	// Define the bucket with the given bucket name
+	bucketHandle, _ := bucket.Bucket("gs://library-xpress.appspot.com")
+
 	// Upload the file to Firebase Storage
-	wc := bucket.Bucket("YOUR_BUCKET_NAME").Object(handler.Filename).NewWriter(ctx)
+	wc := bucketHandle.Object(handler.Filename).NewWriter(ctxFirebase)
 	if _, err = io.Copy(wc, file); err != nil {
 		http.Error(w, "Unable to write data to bucket", http.StatusInternalServerError)
 		return
@@ -244,7 +247,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 		{"_id", primitive.NewObjectID()},
 		{"Summary", book.Summary},
 	}
-	result, err := collection.InsertOne(ctx, doc)
+	result, err := collection.InsertOne(ctxMongo, doc)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -252,7 +255,6 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
-
 
 func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
 	database.Devops()
