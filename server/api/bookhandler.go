@@ -14,6 +14,7 @@ import (
 	"os"
 	"time"
 
+	"cloud.google.com/go/storage"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -231,6 +232,12 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := wc.Close(); err != nil {
 		http.Error(w, "Unable to close bucket writer", http.StatusInternalServerError)
+		return
+	}
+
+	// Set the access control for the uploaded file to public
+	if err := bucketHandle.Object(handler.Filename).ACL().Set(ctxFirebase, storage.AllUsers, storage.RoleReader); err != nil {
+		http.Error(w, "Failed to set file access control", http.StatusInternalServerError)
 		return
 	}
 
