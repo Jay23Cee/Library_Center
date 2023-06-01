@@ -2,7 +2,6 @@ package api
 
 import (
 	"bookapi/config"
-	"bookapi/database"
 	"bookapi/models"
 	"context"
 	"encoding/json"
@@ -25,7 +24,7 @@ import (
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 
 func Makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	// Here get the login URL.
 
@@ -103,7 +102,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	// Here get the login URL.
 
@@ -164,7 +163,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
 	// Start your MongoDB connection and configuration setup
-	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -269,7 +268,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
-	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -319,7 +318,7 @@ func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
 
 func BookImg(w http.ResponseWriter, r *http.Request) {
 
-	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -376,7 +375,7 @@ func BookImg(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	database.Devops()
+	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 
