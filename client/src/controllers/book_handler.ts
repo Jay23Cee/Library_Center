@@ -131,27 +131,22 @@ export async function edit_book(JSON_string: string) {
     });
 }
 
-export async function add_book(values: { books: any; }) {
+export async function add_book(values: FormData) {
   let link = process.env.REACT_APP_URL as string;
   let url = link + `/api/add`;
 
-  const formData = new FormData();
-  
-  Object.keys(values.books).forEach((key) => {
-    if (key === "Img") {  // assuming Img is the file you're uploading
-      formData.append(key, values.books[key], values.books[key].name);
-    } else {
-      formData.append(key, values.books[key]);
-    }
-  });
+  console.log(" INSIDE ADDBOOK");
+  console.log(values, " INSIDE ADDBOOK");
 
+  console.log([...values.entries()], " INSIDE ADDBOOK");
   await axios
-    .post(url, formData, { withCredentials: true })
+    .post(url, values, { withCredentials: true })
     .then((response) => {})
     .catch((error) => {
       console.error("Error ========>", error);
     });
 }
+
 
 
 

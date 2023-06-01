@@ -2,6 +2,7 @@ package api
 
 import (
 	"bookapi/config"
+	"bookapi/database"
 	"bookapi/models"
 	"context"
 	"encoding/json"
@@ -23,7 +24,7 @@ import (
 // We add jwt.StandardClaims as an embedded type, to provide fields like expiry time
 
 func Makeconnection(w http.ResponseWriter, r *http.Request) *mongo.Client {
-	//database.Devops()
+	database.Devops()
 	link := Getlink()
 	// Here get the login URL.
 
@@ -101,7 +102,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	//database.Devops()
+	database.Devops()
 	link := Getlink()
 	// Here get the login URL.
 
@@ -162,7 +163,7 @@ func Deletebook(w http.ResponseWriter, r *http.Request) {
 
 func Addbooks(w http.ResponseWriter, r *http.Request) {
 	// Start your MongoDB connection and configuration setup
-	//database.Devops()
+	database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -189,17 +190,17 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get the 'books' form data
-	booksData := r.FormValue("books")
-	var book models.Book
-	err = json.Unmarshal([]byte(booksData), &book)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
+	// Get the book form values directly
+	book := models.Book{
+		Title:     r.PostFormValue("Title"),
+		Author:    r.PostFormValue("Author"),
+		Publisher: r.PostFormValue("Publisher"),
+		Year:      r.PostFormValue("Year"),
+		Summary:   r.PostFormValue("Summary"),
 	}
 
 	// Get the file from the form
-	file, handler, err := r.FormFile("bookImage")
+	file, handler, err := r.FormFile("Img")
 	if err != nil {
 		http.Error(w, "Error Retrieving the File", http.StatusInternalServerError)
 		return
@@ -210,12 +211,17 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	ctxFirebase := context.Background()
 	bucket, err := config.FirebaseClient.Storage(ctxFirebase)
 	if err != nil {
-		http.Error(w, "Failed to get default GCS Bucket", http.StatusInternalServerError)
+		fmt.Errorf(err.Error())
+		http.Error(w, "Failed to get default GCS Bucket "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	// Define the bucket with the given bucket name
-	bucketHandle, _ := bucket.Bucket("gs://library-xpress.appspot.com")
+	bucketHandle, err := bucket.Bucket("library-xpress.appspot.com")
+	if err != nil {
+		http.Error(w, "Failed to get bucket handle", http.StatusInternalServerError)
+		return
+	}
 
 	// Upload the file to Firebase Storage
 	wc := bucketHandle.Object(handler.Filename).NewWriter(ctxFirebase)
@@ -232,7 +238,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 	// Store the file's name and URL in MongoDB document
 
 	// Construct the file URL based on Firebase Storage configuration
-	fileURL := "https://storage.googleapis.com/YOUR_BUCKET_NAME/" + handler.Filename
+	fileURL := "https://storage.googleapis.com/library-xpress.appspot.com/" + handler.Filename
 	book.Img_url = fileURL
 
 	// Use the book object to create the doc variable
@@ -256,7 +262,7 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
-	//database.Devops()
+	database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -306,7 +312,7 @@ func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
 
 func BookImg(w http.ResponseWriter, r *http.Request) {
 
-	//database.Devops()
+	database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -363,7 +369,7 @@ func BookImg(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
 func Editbook(w http.ResponseWriter, r *http.Request) {
-	//database.Devops()
+	database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
 

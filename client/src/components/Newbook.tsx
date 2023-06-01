@@ -112,7 +112,7 @@ const NewBook = () => {
      setPreviewOpen(true);
      setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
   
-     // console.log(files_url , " last 91")
+      console.log(files_url , " last 91")
 
     
    };
@@ -142,24 +142,31 @@ const NewBook = () => {
   const [form] = Form.useForm();
   
   const onFinish = async (values: Book) => {
+    console.log(values)
+    console.log(values.Title)
     const formData = new FormData();
+    console.log(formData)
     formData.append("Title", values.Title);
+    console.log(formData)
     formData.append("Author", values.Author);
+    console.log(formData)
     formData.append("Publisher", values.Publisher);
+    console.log(formData)
     formData.append("Year", values.Year);
     formData.append("Summary", values.Summary);
     if (fileList[0]?.originFileObj) { // Check if originFileObj is defined
-      formData.append("Img", fileList[0].originFileObj); // Append the file if it exists
+      formData.append("Img", fileList[0].originFileObj, fileList[0].name); // Append the file if it exists
     }
-  
+    console.log([...formData.entries()]);
     try {
-      await add_book({ books: formData });
-      navigate("/booktable");
-      form.resetFields();
+      await add_book( formData );
+      // navigate("/booktable");
+      // form.resetFields();
     } catch (error) {
       console.error(error);
     }
   };
+  
   
 
   // const onFinish = async (values: Book) => {
@@ -254,17 +261,18 @@ const NewBook = () => {
          
         
 
-      <Upload
-      className="upload-button"
-action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-listType="picture-card"
-accept=".jpg ,.jpeg, .png"
-onPreview={handlePreview}
-onChange={handleChange}
-beforeUpload={handleupload}
+        <Upload
+  className="upload-button"
+  listType="picture-card"
+  accept=".jpg,.jpeg,.png"
+  onPreview={handlePreview}
+  onChange={handleChange}
+  beforeUpload={handleupload}
 >
-        {fileList.length >= 8 ? null : uploadButton}
-      </Upload>
+  {fileList.length >= 8 ? null : uploadButton}
+</Upload>
+
+
       
       <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
 

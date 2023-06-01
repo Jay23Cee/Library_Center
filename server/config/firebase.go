@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 
 	firebase "firebase.google.com/go/v4"
 	"google.golang.org/api/option"
@@ -13,9 +14,10 @@ var FirebaseClient *firebase.App
 // Initialize the Firebase client
 func InitializeFirebase() {
 	ctx := context.Background()
-	opt := option.WithCredentialsFile("path/to/serviceAccountKey.json") // Update with the actual path to your service account key file
+	opt := option.WithCredentialsFile("./config/library-xpress-firebase.json") // Update with the actual path to your service account key file
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
+		fmt.Println(err.Error())
 		panic(err)
 	}
 	FirebaseClient = app
@@ -30,7 +32,7 @@ func UploadFileToStorage(file []byte, filename string) (string, error) {
 		return "", err
 	}
 
-	bucketName := "gs://library-xpress.appspot.com" // Replace with your Firebase Storage bucket name
+	bucketName := "library-xpress.appspot.com" // Replace with your Firebase Storage bucket name
 
 	bucket, err := client.DefaultBucket()
 	if err != nil {
@@ -52,4 +54,3 @@ func UploadFileToStorage(file []byte, filename string) (string, error) {
 	url := "https://storage.googleapis.com/" + bucketName + "/" + filename
 	return url, nil
 }
-
