@@ -33,9 +33,6 @@ const cache = new Map<string, Book[]>();
 
 
  export function getbooks(): Promise<Book[]> {
-
-
-
   const headers = {
     withCredentials: true,
     'Content-Type': 'text/plain',
@@ -51,8 +48,16 @@ const cache = new Map<string, Book[]>();
       // Use the `Array.map` method to transform the data
       const books = Object.keys(response.data).map((key) => {
         const book = response.data[key];
+        console.log(book, "THIS IS THE GETBOOK CLIENT SIDE CALL")
         if (book.Img.length > 0) {
-          book.Img = JSON.parse(book.Img);
+          try {
+            book.Img = JSON.parse(book.Img);
+          } catch (error) {
+            console.error('Error parsing image:', error);
+            // Handle the case where `Img` is not in JSON format
+            // For now, you can skip processing or assign a default value
+            book.Img = ""; // Assign an empty string or a default image URL
+          }
         }
         return book;
       });
@@ -66,6 +71,7 @@ const cache = new Map<string, Book[]>();
       return Promise.reject(error);
     });
 }
+
 // export async function deleteBook(jsonString: string) {
 //   const headers = {
 //     "Content-Type": "application/json",
