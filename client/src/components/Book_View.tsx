@@ -122,7 +122,7 @@ const Book_View = () => {
     const JSON_string = JSON.stringify(payload);
 
     try {
-      await edit_book(JSON_string);
+      // await edit_book(JSON_string);
       message.success("Success ====>");
       console.log("FUNCTION BEFORE DISPATCH");
 

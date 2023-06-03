@@ -72,38 +72,6 @@ const cache = new Map<string, Book[]>();
     });
 }
 
-// export async function deleteBook(jsonString: string) {
-//   const headers = {
-//     "Content-Type": "application/json",
-//   };
-//   let link = process.env.REACT_APP_URL;
-//   if (link == null) {
-//     throw new Error("REACT_APP_URL is not set in the environment");
-//   }
-//   let url = link + "/api/delete";
-
-//   try {
-//     const response = await axios.post(url, jsonString, { withCredentials: true, headers });
-//     console.log(response);
-//   } catch (error) {
-//     if (error.response) {
-//       // The request was made and the server responded with a status code
-//       // that falls out of the range of 2xx
-//       console.log(error.response.data);
-//       console.log(error.response.status);
-//       console.log(error.response.headers);
-//     } else if (error.request) {
-//       // The request was made but no response was received
-//       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-//       // http.ClientRequest in node.js
-//       console.log(error.request);
-//     } else {
-//       // Something happened in setting up the request that triggered an Error
-//       console.log('Error', error.message);
-//     }
-//     console.log(error.config);
-//   }
-// }
 
 export async function deleteBook(JSON_string: string) {
   const headers = {
@@ -121,7 +89,7 @@ export async function deleteBook(JSON_string: string) {
     });
 }
 
-export async function edit_book(JSON_string: string) {
+export async function edit_book(JSON_string:FormData) {
   const headers = {
     "Content-Type": "text/plain",
   };
@@ -152,8 +120,6 @@ export async function add_book(values: FormData) {
       console.error("Error ========>", error);
     });
 }
-
-
 
 
 export async function add_bulkbook(JSON_string: string, values: any) {

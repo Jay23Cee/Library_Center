@@ -112,7 +112,7 @@ export const Dashboard: React.FC<{}> = () => {
           const temp_book = { book: newData[index] };
           const JSON_string = JSON.stringify(temp_book);
 
-          edit_book(JSON_string);
+          // edit_book(JSON_string);
           setData(newData);
           setEditingKey("");
         } else {

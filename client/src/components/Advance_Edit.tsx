@@ -92,53 +92,43 @@ const AdvanceEdit = () => {
     setFiles_url(bookRaw.Img_url);
   };
 
-  const handlePreview = async (file: UploadFile) => {
-    console.log(file);
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as RcFile);
-    }
+ // Deleted getBase64() function
 
-    let url = file.preview as string;
+ const handlePreview = async (file: UploadFile) => {
+  if (!file.url && !file.preview) {
+    file.preview = await getBase64(file.originFileObj as RcFile);
+   }
 
-    setFiles_url(url);
-    setPreviewImage(file.url || (file.preview as string));
-    setPreviewTitle(
-      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
-    );
-    setPreviewOpen(false);
-    setPreviewOpen(true);
+   let url = file.preview as string
+  
+  //  setFiles(url )
+   setPreviewImage(file.url || (file.preview as string));
+   setPreviewOpen(true);
+   setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
 
-    setModal(null);
+   // console.log(files_url , " last 91")
+  // console.log(previewTitle)
+  // console.log(previewImage)
+  
+ };
 
-    setModal(
-      <Modal
-        open={previewOpen}
-        title={previewTitle}
-        footer={null}
-        onCancel={handleCancel}
-      >
-        <img alt="example" style={{ width: "100%" }} src={previewImage} />
-      </Modal>
-    );
-  };
-
-  const handleImage = async (file: UploadFile) => {
-    console.log(file);
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as RcFile);
+ const handleImage = async (file: UploadFile) => {
+   if (!file.url && !file.preview) {
+     file.preview = await getBase64(file.originFileObj as RcFile);
     }
     // console.log(file.preview)
-    let url = file.preview as string;
-    // console.log(url)
-    setFiles_url(url);
+    let url = file.preview as string
+   // console.log(url)
+    // setFiles(url )
     setPreviewImage(file.url || (file.preview as string));
-    //  setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
-    );
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+ 
+     console.log(files_url , " last 91")
 
-    // console.log(files_url , " last 91")
+   
   };
+
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     // Reset fileList
@@ -180,36 +170,25 @@ for (let i = 0; i < items.length - 1; i++) {
   const [form] = Form.useForm();
 
   const onFinish = async (values: Book) => {
-    const book = {
-      Title: values.Title,
-      Author: values.Author,
-      Publisher: values.Publisher,
-      Year: values.Year,
-      Summary: values.Summary,
-      Img_url: files_url,
-      Img: JSON.stringify(fileList[0]),
-      ID: bookRaw.ID,
-    };
-
-    const payload = {
-      book,
-    };
-
-    console.log(book, "| new payload");
-    console.log(bookRaw, " |\n RawBook");
-
-    const JSON_string = JSON.stringify(payload);
+    const formData = new FormData();
+    formData.append('Title', values.Title);
+    formData.append('Author', values.Author);
+    formData.append('Publisher', values.Publisher);
+    formData.append('Year', values.Year);
+    formData.append('Summary', values.Summary);
+    formData.append('ID', bookRaw.ID);
+    if (fileList.length > 0) {
+      formData.append("Img", fileList[0].originFileObj as any, fileList[0].name); // append file to formData
+    }
 
     try {
-      await edit_book(JSON_string);
+      await edit_book(formData);
       message.success("Success ====>");
       console.log("FUNCTION BEFORE DISPATCH");
 
       dispatch(clearBulkBooks());
-      //dispatch(clearBooks)
       console.log("AFTER DISPATCH");
       navigate("/PrivateTable");
-      // form.resetFields();
     } catch (error) {
       console.error(error);
     }

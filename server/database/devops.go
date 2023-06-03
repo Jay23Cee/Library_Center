@@ -8,4 +8,9 @@ package database
 
 func Devops() {
 
+	// err := godotenv.Load(".env")
+	// if err != nil {
+	// 	fmt.Errorf("ERROR ON LOAD %v", err)
+	// 	panic(err)
+	// }
 }

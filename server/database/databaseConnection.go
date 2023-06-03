@@ -7,14 +7,12 @@ import (
 	"os"
 	"time"
 
-
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func DBinstance() *mongo.Client {
-	Devops()
+	// Devops()
 
 	MongoDb := os.Getenv("REACT_APP_GO_URL")
 

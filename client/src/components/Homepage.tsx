@@ -1,5 +1,5 @@
 import React from 'react'
-import library_image from '../images/library.jpg'
+import library_image from '../images/library1.jpg'
 import mind_image from '../images/mind.jpg'
 import idea from '../images/idea.jpg'
 import cube from '../images/cube.jpg'

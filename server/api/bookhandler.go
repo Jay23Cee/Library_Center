@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"time"
@@ -374,49 +375,191 @@ func BookImg(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "\nBook has been added %v", result.InsertedID)
 }
+
+// Additional helper functions
+func respondWithError(w http.ResponseWriter, code int, msg string) {
+	respondWithJSON(w, code, map[string]string{"message": msg})
+}
+
+func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.Marshal(payload)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(response)
+}
+
 func Editbook(w http.ResponseWriter, r *http.Request) {
 	//database.Devops()
 	link := Getlink()
 	w.Header().Set("Access-Control-Allow-Origin", link)
-
 	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-	jsonMap := make(map[string]models.Book)
-	body, err := ioutil.ReadAll(r.Body)
-	err = json.Unmarshal([]byte(body), &jsonMap)
-	var book models.Book
-	book = jsonMap["book"]
-
 	url := os.Getenv("REACT_APP_GO_URL")
-
-	clientOptions := options.Client().
-		ApplyURI(url)
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	clientOptions := options.Client().ApplyURI(url)
+	ctxMongo, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, clientOptions)
-	if err != nil {
 
-		http.Error(w, err.Error(), http.StatusBadGateway)
+	client, err := mongo.Connect(ctxMongo, clientOptions)
+	if err != nil {
+		respondWithError(w, http.StatusBadGateway, err.Error())
 		return
 	}
-	//	fmt.Println(book)
+
 	collection := client.Database("BookAPI").Collection("book")
 
-	id, _ := primitive.ObjectIDFromHex(book.ID)
-	result, err := collection.UpdateOne(
-		ctx,
-		bson.M{"_id": id},
-		bson.D{
-			{"$set", bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"Summary", book.Summary}}},
-		},
-	)
+	// Parse multipart form, 10 << 20 specifies a maximum upload of 10 MB files
+	err = r.ParseMultipartForm(10 << 20)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	fmt.Fprintf(w, "Updated %v Documents!\n", result.ModifiedCount)
+	objectID, err := primitive.ObjectIDFromHex(r.PostFormValue("ID"))
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid ID format")
+		return
+	}
 
+	// Get the current book document from MongoDB
+	var currentBook models.Book
+	err = collection.FindOne(ctxMongo, bson.M{"_id": objectID}).Decode(&currentBook)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Failed to find book with given ID")
+		return
+	}
+
+	// Get the book form values directly
+	book := models.Book{
+		Title:     r.PostFormValue("Title"),
+		Author:    r.PostFormValue("Author"),
+		Publisher: r.PostFormValue("Publisher"),
+		Year:      r.PostFormValue("Year"),
+		Summary:   r.PostFormValue("Summary"),
+		ID:        r.PostFormValue("ID"),
+	}
+
+	// Get the file from the form
+	file, handler, err := r.FormFile("Img")
+	if err != nil {
+		// No image file included, update other fields only
+		result, err := collection.UpdateOne(
+			ctxMongo,
+			bson.M{"_id": objectID},
+			bson.D{
+				{"$set", bson.D{
+					{"Title", book.Title},
+					{"Author", book.Author},
+					{"Publisher", book.Publisher},
+					{"Year", book.Year},
+					{"Summary", book.Summary},
+				}},
+			},
+		)
+		if err != nil {
+			respondWithError(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		respondWithJSON(w, http.StatusOK, map[string]string{"message": fmt.Sprintf("Updated %v Documents!", result.ModifiedCount)})
+		return
+	}
+	defer file.Close()
+
+	// Firebase Storage
+	ctxFirebase := context.Background()
+	bucket, err := config.FirebaseClient.Storage(ctxFirebase)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Failed to get default GCS Bucket "+err.Error())
+		return
+	}
+
+	// Define the bucket with the given bucket name
+	bucketHandle, err := bucket.Bucket("library-xpress.appspot.com")
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Failed to get bucket handle")
+		return
+	}
+
+	// Delete the old image from Firebase Storage
+	// o := bucketHandle.Object(currentBook.Img)
+	// if err := o.Delete(ctxFirebase); err != nil {
+	// 		respondWithError(w, http.StatusInternalServerError, "Failed to delete old image from Firebase Storage")
+	// 		return
+	// }
+
+	// Upload the file to Firebase Storage
+	wc := bucketHandle.Object(handler.Filename).NewWriter(ctxFirebase)
+	if _, err = io.Copy(wc, file); err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Unable to write data to bucket")
+		return
+	}
+	if err := wc.Close(); err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Unable to close bucket writer")
+		return
+	}
+
+	// Set the access control for the uploaded file to public
+	if err := bucketHandle.Object(handler.Filename).ACL().Set(ctxFirebase, storage.AllUsers, storage.RoleReader); err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Failed to set file access control")
+		return
+	}
+
+	// Construct the file URL based on Firebase Storage configuration
+	fileURL := "https://storage.googleapis.com/library-xpress.appspot.com/" + handler.Filename
+	book.Img_url = fileURL
+
+	// Use the book object to create the doc variable
+	doc := bson.D{
+		{"Title", book.Title},
+		{"Author", book.Author},
+		{"Publisher", book.Publisher},
+		{"Year", book.Year},
+		{"Img", handler.Filename},
+		{"Img_url", book.Img_url},
+		{"Summary", book.Summary},
+	}
+
+	result, err := collection.UpdateOne(
+		ctxMongo,
+		bson.M{"_id": objectID},
+		bson.D{{"$set", doc}},
+	)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, map[string]string{"message": fmt.Sprintf("Updated %v Documents!", result.ModifiedCount)})
+}
+
+func uploadImageToFirebase(file multipart.File, handler *multipart.FileHeader) (string, error) {
+	ctxFirebase := context.Background()
+	bucket, err := config.FirebaseClient.Storage(ctxFirebase)
+	if err != nil {
+		return "", fmt.Errorf("failed to get default GCS Bucket: %v", err)
+	}
+
+	bucketHandle, err := bucket.Bucket("library-xpress.appspot.com")
+	if err != nil {
+		return "", fmt.Errorf("failed to get bucket handle: %v", err)
+	}
+
+	wc := bucketHandle.Object(handler.Filename).NewWriter(ctxFirebase)
+	if _, err = io.Copy(wc, file); err != nil {
+		return "", fmt.Errorf("unable to write data to bucket: %v", err)
+	}
+
+	if err := wc.Close(); err != nil {
+		return "", fmt.Errorf("unable to close bucket writer: %v", err)
+	}
+
+	if err := bucketHandle.Object(handler.Filename).ACL().Set(ctxFirebase, storage.AllUsers, storage.RoleReader); err != nil {
+		return "", fmt.Errorf("failed to set file access control: %v", err)
+	}
+
+	fileURL := "https://storage.googleapis.com/library-xpress.appspot.com/" + handler.Filename
+	return fileURL, nil
 }
