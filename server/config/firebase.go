@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"fmt"
+	"log"
 
 	firebase "firebase.google.com/go/v4"
 	"google.golang.org/api/option"
@@ -12,45 +13,44 @@ import (
 var FirebaseClient *firebase.App
 
 // Initialize the Firebase client
-func InitializeFirebase() {
+func InitializeFirebase() error {
 	ctx := context.Background()
 	opt := option.WithCredentialsFile("./config/library-xpress-firebase.json") // Update with the actual path to your service account key file
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
-		fmt.Println(err.Error())
-		panic(err)
+		return fmt.Errorf("failed to initialize Firebase: %v", err)
 	}
 	FirebaseClient = app
+	return nil
 }
 
-// UploadFileToStorage uploads the file to Firebase Storage
 // UploadFileToStorage uploads the file to Firebase Storage
 func UploadFileToStorage(file []byte, filename string) (string, error) {
 	ctx := context.Background()
 	client, err := FirebaseClient.Storage(ctx)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get Firebase Storage client: %v", err)
 	}
 
 	bucketName := "library-xpress.appspot.com" // Replace with your Firebase Storage bucket name
 
 	bucket, err := client.DefaultBucket()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get default Firebase Storage bucket: %v", err)
 	}
 
 	obj := bucket.Object(filename)
 	writer := obj.NewWriter(ctx)
-	defer writer.Close()
+	defer func() {
+		if err := writer.Close(); err != nil {
+			log.Printf("failed to close Firebase Storage writer: %v", err)
+		}
+	}()
 
 	if _, err := writer.Write(file); err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to write file to Firebase Storage: %v", err)
 	}
 
-	if err := writer.Close(); err != nil {
-		return "", err
-	}
-
-	url := "https://storage.googleapis.com/" + bucketName + "/" + filename
+	url := fmt.Sprintf("https://storage.googleapis.com/%s/%s", bucketName, filename)
 	return url, nil
 }
