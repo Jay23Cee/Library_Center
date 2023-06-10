@@ -126,7 +126,7 @@ const Template = () => {
     <div className="w-full">
       <div className="w-full bg-main-primary  fixed top-0 h-[70px] flex justify-center items-center z-20">
         <div className="w-full max-w-[1340px] flex flex-row m-auto justify-between items-center z-20 px-10 sm:px-4">
-          <div className="hidden md:flex gap-10 justify-center items-center">
+          <div className="hidden md:flex gap-10 justify-center items-center ">
             <Link
               key={0}
               to="/"
@@ -203,7 +203,7 @@ const Template = () => {
             )}
           </div>
           {/* =====> drawer for small screen */}
-          <div className="md:hidden flex justify-center items-center relative">
+          <div className="md:hidden flex justify-center items-center relative text-center">
             <Hamburger
               color="#1d4e89"
               rounded
@@ -213,8 +213,8 @@ const Template = () => {
             />
             <div className={`nav-menu ${isOpen ? "open" : ""}`}>
               {/* =========>links */}
-              <div className="flex w-full flex-col gap-4 justify-center items-start px-4 py-6">
-                <div>
+              <div className="flex w-full flex-col gap-4 justify-center items-end px-4 py-6 text-center">
+                <div className="flex w-full flex-col gap-4 justify-center items-end px-4 py-6 text-end">
                   <Link key={0} to="/" onClick={() => setIsOpen(false)}>
                     Main
                   </Link>
@@ -234,14 +234,14 @@ const Template = () => {
                   </div>
                 )}
                 {CheckAuth(user, ["ADMIN"]) && (
-                  <div>
+                  <div className="text-center flex justify-center items-center">
                     <Link key={3} to="/new" onClick={() => setIsOpen(false)}>
                       New
                     </Link>
                   </div>
                 )}
                 {CheckAuth(user, ["ADMIN"]) && (
-                  <div>
+                  <div className="text-center">
                     <Link
                       key={4}
                       to="/newbulk"
@@ -252,7 +252,7 @@ const Template = () => {
                   </div>
                 )}
                 {CheckAuth(user, ["ADMIN"]) && (
-                  <div>
+                  <div className="text-center">
                     <Link
                       key={5}
                       to="/PrivateTable"

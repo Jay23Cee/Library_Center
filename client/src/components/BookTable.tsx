@@ -58,8 +58,8 @@ const BookTable: React.FC<{}> = () => {
     <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4" key={book.ID}>
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div
-          className="h-48 lg:h-64 xl:h-72 2xl:h-80 flex items-center justify-center bg-gray-300 shadow-md hover:shadow-xl hover:bg-gray-200 transition duration-300"
-          onClick={() => handleCoverClick(book)} // handleCoverClick function is used here
+          className="h-98 lg:h-94 xl:h-82 2xl:h-98 flex items-center justify-center bg-gray-300 shadow-md hover:shadow-xl hover:bg-gray-200 transition duration-300 cursor-pointer" // Added cursor-pointer
+          onClick={() => handleCoverClick(book)}
         >
           <img
             alt={book.Img_url}
@@ -70,8 +70,8 @@ const BookTable: React.FC<{}> = () => {
         </div>
         <div className="p-4 bg-gray-100">
           <div
-            className="text-xl font-semibold mb-2"
-            onClick={() => handleTitleClick(book)} // handleTitleClick function is used here
+            className="text-xl font-semibold mb-2 cursor-pointer" // Added cursor-pointer
+            onClick={() => handleTitleClick(book)}
           >
             {book.Author} - {book.Publisher}
           </div>
@@ -80,7 +80,8 @@ const BookTable: React.FC<{}> = () => {
         </div>
       </div>
     </div>
-));
+  ));
+  
 
 
   return (

@@ -78,7 +78,7 @@ export const Private_Table: React.FC<{}> = () => {
   const cardList = data.map((book: any) => (
     <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4" key={book.ID}>
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="h-48 lg:h-64 xl:h-72 2xl:h-80 flex items-center justify-center bg-gray-400 shadow-md hover:shadow-xl hover:bg-gray-200 transition duration-300">
+        <div className="h-98  flex items-center justify-center bg-gray-400 shadow-md hover:shadow-xl hover:bg-gray-200 transition duration-300">
           <img
             alt={book.Img_url}
             className="h-full w-full object-contain hover:scale-110 transition duration-300"

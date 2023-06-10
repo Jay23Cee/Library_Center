@@ -11,35 +11,38 @@ import { Link, useNavigate } from "react-router-dom";
 function Homepage() {
   const navigate = useNavigate();
   return (
-    <div className="w-full flex flex-col">
-      <section className="w-full max-w-[1340px] bg-main-primary p-12 md:p-20 grid grid-cols-1 md:grid-cols-[1.2fr,1fr] justify-center items-center overflow-hidden">
+    <div className="w-full flex flex-col items-center">
+      
+      {/* First section */}
+      <section className="w-full max-w-6xl bg-main-primary p-8 md:p-16 grid grid-cols-1 md:grid-cols-2 gap-8 items-center overflow-hidden">
         <img
-          className="opacity-80 order-0 w-full h-auto md:h-[350px]"
+          className="opacity-80 w-full h-auto md:max-h-96 object-cover"
           src={library_image}
           alt="library"
         />
-        <div className="w-full flex flex-col justify-center items-center text-center text-secondary">
-          <h3 className="font-bold text-2xl md:text-4xl mt-8 md:mt-0">
+        <div className="flex flex-col justify-center items-center text-center text-secondary">
+          <h3 className="font-bold text-2xl md:text-4xl">
             Library <span className="text-accent">X</span>press
           </h3>
-          <p className="font-courier text-sm md:text-base mt-2 md:mt-4">
+          <p className="font-courier text-sm md:text-base mt-4">
             Discover endless knowledge at Library <br />
             <span className="font-bold text-lg md:text-xl">X</span>press
           </p>
         </div>
       </section>
 
-      <section className="w-full bg-main-highlight py-16 md:py-24">
+      {/* Second section */}
+      <section className="w-full max-w-6xl bg-main-highlight py-16 px-4 md:px-0">
         <h1 className="text-2xl md:text-4xl font-bold text-primary text-center mb-12">
           The benefits of reading...
         </h1>
-        <div className="w-full max-w-6xl grid gap-10 md:grid-cols-2 lg:grid-cols-3 mx-auto">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {benefitsOfReadingData.map((item, index) => (
             <div
               key={index}
               className="bg-main-primary p-6 rounded-lg shadow-md text-secondary"
             >
-              <img className="w-full h-44 mb-4" src={item.img} alt="library" />
+              <img className="w-full h-44 object-cover mb-4" src={item.img} alt="library" />
               <h1 className="text-xl md:text-2xl font-bold mb-2">{item.title}</h1>
               <p>{item.description}</p>
             </div>
@@ -47,15 +50,13 @@ function Homepage() {
         </div>
       </section>
 
-      <section className="w-full py-24 bg-main-primary grid gap-8 md:gap-4 grid-cols-1 md:grid-cols-[1.5fr,1fr] justify-center items-center">
-        <a className="w-full flex justify-center md:justify-end items-center">
+      {/* Third section */}
+      <section className="w-full max-w-6xl py-24 bg-main-primary grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <a className="w-full flex justify-center items-center cursor-pointer" onClick={() => navigate("/signup")}>
           <img
-            className="opacity-80 w-full max-w-md md:max-w-lg"
+            className="opacity-80 max-w-md object-cover"
             src={panda}
             alt="library"
-            onClick={() => {
-              navigate("/signup");
-            }}
           />
         </a>
         <div className="w-full font-courier flex flex-col justify-center items-center md:items-start text-secondary">
@@ -70,6 +71,7 @@ function Homepage() {
           </h1>
         </div>
       </section>
+      
     </div>
   );
 }
