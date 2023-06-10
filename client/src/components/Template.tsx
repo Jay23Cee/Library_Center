@@ -1,14 +1,13 @@
-import { Layout,Menu } from "antd";
+import { Layout, Menu } from "antd";
 
 import React, { useEffect, useState } from "react";
-import "../css/App.css";
 
 import BookTable, { Bookintro } from "./BookTable";
 import BookView from "./Book_View";
 import PrivateLogin from "./PrivateLogin";
-import { Private_Table } from "./Private_Table";
-import Newform, { NewItem } from "./Newbook";
-import { Link, Route, Router, Routes, useNavigate } from "react-router-dom";
+// import { Private_Table } from "./Private_Table";
+import Newform from "./Newbook";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Login_form from "./Login";
 import SignUp from "./Signup";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,20 +15,21 @@ import { loginSuccess, logOut } from "../redux/userSlice";
 import {
   Check_Login,
   Check_Refresh,
-  User_Login,
   User_Logout,
 } from "../controllers/user_handler";
-import NewBook from "./Newbook";
-import { UserLogin } from "../models/users";
 import ProtectedRoutes from "../ProtectedRoutes";
-import { Private_Login } from "../controllers/Private_handler";
 import Homepage from "./Homepage";
-import Menu_icon from "../images/menu.png";
 import AdvanceEdit from "./Advance_Edit";
 import NewBulkBook from "./Newbulkbooks";
+import NewBook from "./Newbook";
+import Dashboard from "./Dashboard";
 
+// ====> drawer amd hamburger
+import { Spin as Hamburger } from "hamburger-react";
 
-
+import "react-modern-drawer/dist/index.css";
+import Book_View from "./Book_View";
+import { Private_Table } from "./Private_Table";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // ROUTER needs to be improve
@@ -43,33 +43,25 @@ const Template = () => {
 
   async function IsLogin(loop = false) {
     try {
-   
       var token = await Check_Login();
-    
 
       if (token.Email) {
         dispatch(loginSuccess(token));
       } else {
-
-    
         await Check_Refresh();
         await sleep(2000);
 
         var token2 = await Check_Login();
-     
 
         if (token2.Email) {
           dispatch(loginSuccess(token2));
         } else {
           dispatch(logOut());
           navigate("/");
-          return
-
+          return;
         }
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   const user = useSelector((state: any) => state.user.currentUser);
@@ -93,7 +85,6 @@ const Template = () => {
 
     dispatch(logOut());
     navigate("/");
- 
   };
 
   const CheckAuth = (role: any, Utype: string[]) => {
@@ -117,7 +108,6 @@ const Template = () => {
     }
     //console.log("FALSE");
     return false;
- 
   };
 
   function nav_trigger() {
@@ -130,151 +120,263 @@ const Template = () => {
       }
     }
   }
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
-      <Layout className="layout">
-        <Header>
-          <div className="layout-menu">
-            <h3 className="layout-title">Library Xpress</h3>
+    <div className="w-full">
+      <div className="w-full bg-main-primary  fixed top-0 h-[70px] flex justify-center items-center z-20">
+        <div className="w-full max-w-[1340px] flex flex-row m-auto justify-between items-center z-20 px-10 sm:px-4">
+          <div className="hidden md:flex gap-10 justify-center items-center">
+            <Link
+              key={0}
+              to="/"
+              className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+            >
+              Main
+            </Link>
+            {!user && (
+              <Link
+                key={1}
+                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                to="/login"
+              >
+                Log In
+              </Link>
+            )}
+            {!user && (
+              <Link
+                key={2}
+                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                to="/signup"
+              >
+                Sign Up
+              </Link>
+            )}
+            {CheckAuth(user, ["ADMIN"]) && (
+              <Link
+                key={3}
+                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                to="/new"
+              >
+                New
+              </Link>
+            )}
 
-            <Menu theme="dark" mode="horizontal">
-               
-                <Menu.Item key="0">
-                  <Link to="/">Main</Link>
-                </Menu.Item>
-              
-              {!user && (
-                <Menu.Item key="1">
-                  <Link to="/login">Log In</Link>
-                </Menu.Item>
-              )}
-              {!user && (
-                <Menu.Item key="4">
-                  <Link to="/signup">Sign Up</Link>
-                </Menu.Item>
-              )}
+            {CheckAuth(user, ["ADMIN"]) && (
+              <Link
+                key={4}
+                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                to="/newbulk"
+              >
+                New Bulk
+              </Link>
+            )}
 
-              {CheckAuth(user, ["ADMIN"]) && (
-                <Menu.Item key="2">
-                  <Link to="/new">New</Link>
-                </Menu.Item>
-              )}
+            {CheckAuth(user, ["ADMIN"]) && (
+              <Link
+                key={5}
+                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                to="/PrivateTable"
+              >
+                Private Table
+              </Link>
+            )}
 
-{CheckAuth(user, ["ADMIN"]) && (
-                <Menu.Item key="2">
-                  <Link to="/newbulk">New Bulk</Link>
-                </Menu.Item>
-              )}
+            {CheckAuth(user, ["ADMIN", "USER"]) && (
+              <Link
+                key={6}
+                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                to="/booktable"
+              >
+                BookTable
+              </Link>
+            )}
 
-              {CheckAuth(user, ["ADMIN"]) && (
-                <Menu.Item key="6">
-                  <Link to="/PrivateTable">Private Table</Link>
-                </Menu.Item>
-              )}
-
-
-              {CheckAuth(user, ["ADMIN", "USER"]) && (
-                <Menu.Item key="3">
-                  <Link to="/booktable">BookTable</Link>
-                </Menu.Item>
-              )}
-
-
-
-
-              {user && (
-                <Menu.Item key="5">
-                  <span onClick={logout}>Logout</span>
-                </Menu.Item>
-              )}
-            </Menu>
+            {user && (
+              <span
+                key={7}
+                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                onClick={logout}
+              >
+                Logout
+              </span>
+            )}
           </div>
-        </Header>
-        <Content style={{ padding: "0 50px" }}>
-          {/* <Breadcrumb style={{ margin: '16px 0' }}>
-<Breadcrumb.Item>Home</Breadcrumb.Item>
-<Breadcrumb.Item>List</Breadcrumb.Item>
-<Breadcrumb.Item>App</Breadcrumb.Item>
-</Breadcrumb>
-*/}{" "}
-          <div className="site-layout-content">
+          {/* =====> drawer for small screen */}
+          <div className="md:hidden flex justify-center items-center relative">
+            <Hamburger
+              color="#1d4e89"
+              rounded
+              size={30}
+              toggled={isOpen}
+              toggle={setIsOpen}
+            />
+            <div className={`nav-menu ${isOpen ? "open" : ""}`}>
+              {/* =========>links */}
+              <div className="flex w-full flex-col gap-4 justify-center items-start px-4 py-6">
+                <div>
+                  <Link key={0} to="/" onClick={() => setIsOpen(false)}>
+                    Main
+                  </Link>
+                </div>
+                {!user && (
+                  <div>
+                    <Link key={1} to="/login" onClick={() => setIsOpen(false)}>
+                      Log In
+                    </Link>
+                  </div>
+                )}
+                {!user && (
+                  <div>
+                    <Link key={2} to="/signup" onClick={() => setIsOpen(false)}>
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
+                {CheckAuth(user, ["ADMIN"]) && (
+                  <div>
+                    <Link key={3} to="/new" onClick={() => setIsOpen(false)}>
+                      New
+                    </Link>
+                  </div>
+                )}
+                {CheckAuth(user, ["ADMIN"]) && (
+                  <div>
+                    <Link
+                      key={4}
+                      to="/newbulk"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      New Bulk
+                    </Link>
+                  </div>
+                )}
+                {CheckAuth(user, ["ADMIN"]) && (
+                  <div>
+                    <Link
+                      key={5}
+                      to="/PrivateTable"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Private Table
+                    </Link>
+                  </div>
+                )}
+                {CheckAuth(user, ["ADMIN", "USER"]) && (
+                  <div>
+                    <Link
+                      key={6}
+                      to="/booktable"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      BookTable
+                    </Link>
+                  </div>
+                )}
+                {user && (
+                  <div key={7} onClick={logout}>
+                    <span>Logout</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <h3 className="text-[2em] font-bold md:text-[1.9rem] z-20 bg-transparent items-center text-blue-main">
+            Library Xpress
+          </h3>
+        </div>
+      </div>
+      <Content className="px-0 sm:px-[50px] bg-[#7dcfb6]">
+        {/* <Breadcrumb style={{ margin: '16px 0' }}>
+              <Breadcrumb.Item>Home</Breadcrumb.Item>
+              <Breadcrumb.Item>List</Breadcrumb.Item>
+              <Breadcrumb.Item>App</Breadcrumb.Item>
+              </Breadcrumb>
+              */}{" "}
+        <div className="">
           <Routes>
             {/* <Route path="/New" element={<NewItem />} /> */}
             <Route path="/booktable" element={<Bookintro />} />
           </Routes>
-            
-            <Routes>
-              
 
-              <Route
-                path="/booktable"
-                element={<ProtectedRoutes props={["ADMIN", "USER"]} direction={"/"} />}
-              >
-                <Route path="/booktable" element={<BookTable />} />
-              </Route>
+          <Routes>
+            {/* <Route path="/New" element={<NewItem />} /> */}
+            <Route path="/" element={<Homepage />} />
+          </Routes>
 
+          <Routes>
+            <Route
+              path="/booktable"
+              element={
+                <ProtectedRoutes props={["ADMIN", "USER"]} direction={"/"} />
+              }
+            >
+              <Route path="/booktable" element={<BookTable />} />
+            </Route>
 
-              <Route
-                path="/bookview"
-                element={<ProtectedRoutes props={["ADMIN", "USER"]} direction={"/"} />}
-              >
-                <Route path="/bookview" element={<BookView />} />
-              </Route>
+            <Route
+              path="/bookview"
+              element={
+                <ProtectedRoutes props={["ADMIN", "USER"]} direction={"/"} />
+              }
+            >
+              <Route path="/bookview" element={<BookView />} />
+            </Route>
 
+            <Route
+              path="/new"
+              element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+            >
+              <Route path="/new" element={<Newform />} />
+            </Route>
 
+            <Route
+              path="/newbulk"
+              element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+            >
+              <Route path="/newbulk" element={<NewBulkBook />} />
+            </Route>
 
-              <Route
-                path="/new"
-                element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
-              >
-                <Route path="/new" element={<Newform />} />
-              </Route>
+            <Route
+              path="/PrivateTable"
+              element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+            >
+              <Route path="/PrivateTable" element={<Private_Table />} />
+            </Route>
 
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/private/login" element={<PrivateLogin />} />
 
-              <Route
-                path="/newbulk"
-                element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
-              >
-                <Route path="/newbulk" element={<NewBulkBook />} />
-              </Route>
-            
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/private/login" element={<PrivateLogin />} />
+            {/* <Route
+              path="/PrivateTable"
+              element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+            >
+              <Route path="/PrivateTable" element={<Private_Table />} />
+            </Route> */}
 
-              <Route
-                path="/PrivateTable"
-                element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
-              >
-                <Route path="/PrivateTable" element={<Private_Table />} />
-              </Route>
+            <Route
+              path="/advance_edit"
+              element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+            >
+              <Route path="/advance_edit" element={<AdvanceEdit />} />
+            </Route>
 
-                
-                <Route
-                path="/advance_edit"
-                element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
-              >
-               <Route path="/advance_edit"  element={<AdvanceEdit />} />
-              </Route>
+            <Route
+              path="/advance_edit"
+              element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
+            ></Route>
 
-              <Route
-                path="/advance_edit"
-                element={<ProtectedRoutes props={["ADMIN"]} direction={"/"} />}
-              >
-              
-              </Route>
-              
+            <Route path="/login" element={<Login_form />} />
 
-              <Route path="/login" element={<Login_form />} />
-
-              <Route path="/" element={<Homepage />} />
-            </Routes>
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
-        </Footer>
-      </Layout>
+            {/* <Route path="/" element={<Dashboard />} /> */}
+            {/* <Route path="/" element={<Private_Table />} /> */}
+          </Routes>
+        </div>
+      </Content>
+      <p className="text-black text-[14px] bg-[#f5f5f5] text-center h-[60px] flex justify-center items-center">
+        Ant Design ©2018 Created by Ant UED
+      </p>
     </div>
   );
 };

@@ -8,10 +8,10 @@ import { formatTimeStr } from "antd/lib/statistic/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, logOut } from "../redux/userSlice";
 import { Check_Login } from "../controllers/user_handler";
-import { PlusOutlined } from '@ant-design/icons';
-import { Modal, Upload } from 'antd';
-import type { RcFile, UploadProps } from 'antd/es/upload';
-import type { UploadFile } from 'antd/es/upload/interface';
+import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Upload } from "antd";
+import type { RcFile, UploadProps } from "antd/es/upload";
+import type { UploadFile } from "antd/es/upload/interface";
 import TextArea from "antd/lib/input/TextArea";
 import { json } from "body-parser";
 import { clearBooks } from "../redux/bookSlice";
@@ -22,14 +22,9 @@ export const getBase64 = (file: RcFile): Promise<string> =>
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 
-
-
-
-
-  
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -48,9 +43,9 @@ export const NewItem = () => {
 export const NewMenu = () => {
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-      <Menu items={[{key:"1" }]} >Home</Menu>
+      <Menu items={[{ key: "1" }]}>Home</Menu>
       <Link to="/new">
-        <Menu items={[{key:"2" }]} >New</Menu>
+        <Menu items={[{ key: "2" }]}>New</Menu>
       </Link>
     </Menu>
   );
@@ -75,54 +70,52 @@ const NewBulkBook = () => {
   const [jsonData, setJsonData] = useState("");
 
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState<UploadFile[]>([
-
-  ]);
-  const [files_url, setFiles] =useState<string>("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [files_url, setFiles] = useState<string>("");
 
   const handleCancel = () => setPreviewOpen(false);
- const handlePreview = async (file: UploadFile) => {
-   if (!file.url && !file.preview) {
-     file.preview = await getBase64(file.originFileObj as RcFile);
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
     }
 
-    let url = file.preview as string
-   
-    setFiles(url )
+    let url = file.preview as string;
+
+    setFiles(url);
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
- 
+    setPreviewTitle(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
+
     // console.log(files_url , " last 91")
-   // console.log(previewTitle)
-   // console.log(previewImage)
-   
+    // console.log(previewTitle)
+    // console.log(previewImage)
   };
 
   const handleImage = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as RcFile);
-     }
-     // console.log(file.preview)
-     let url = file.preview as string
+    }
+    // console.log(file.preview)
+    let url = file.preview as string;
     // console.log(url)
-     setFiles(url )
-     setPreviewImage(file.url || (file.preview as string));
-     setPreviewOpen(true);
-     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-  
-     // console.log(files_url , " last 91")
+    setFiles(url);
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
 
-    
-   };
+    // console.log(files_url , " last 91")
+  };
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>{ 
-
+  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-    handleImage(fileList[0])
-  }
+    handleImage(fileList[0]);
+  };
 
   const uploadButton = (
     <div>
@@ -131,49 +124,44 @@ const NewBulkBook = () => {
     </div>
   );
 
-
-
   useEffect(function effectFunction() {
     async function fetchUser() {}
     fetchUser();
   }, []);
-  
-  const user = useSelector((state:any) => state.user.currentUser);
+
+  const user = useSelector((state: any) => state.user.currentUser);
 
   const [form] = Form.useForm();
-  
 
-  const onFinish = async (values:any) => {
-    console.log(jsonData)
-   console.log(values)
-   
-const books: Book[] = JSON.parse(jsonData);
-console.log(books)
-  add_bulkbook(jsonData, books )
+  const onFinish = async (values: any) => {
+    console.log(jsonData);
+    console.log(values);
+
+    const books: Book[] = JSON.parse(jsonData);
+    console.log(books);
+    add_bulkbook(jsonData, books);
   };
 
-
-  const handleupload =(file:any, fileList:any)=>{
-
-  }
+  const handleupload = (file: any, fileList: any) => {};
 
   return (
-    <div className="NewBulkBook_Form">
- <Form form={form} onFinish={onFinish}>
-      <Form.Item label="JSON Data" name="jsonData">
-        
-<TextArea
-  placeholder="Enter JSON data here"
-  onChange={(e) => setJsonData(e.target.value)}
-/>
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-      
+    <div className="mt-[5.8rem] min-h-[calc(100vh-130px)] p-4 loginBg">
+      <Form form={form} onFinish={onFinish}>
+        <Form.Item label="JSON Data" name="jsonData">
+          <TextArea
+            placeholder="Enter JSON data here"
+            onChange={(e) => setJsonData(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item>
+          <button
+            className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[40px]"
+            type="submit"
+          >
+            Submit
+          </button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

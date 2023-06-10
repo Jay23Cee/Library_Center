@@ -29,7 +29,7 @@ export interface BookTableProps {
 }
 
 export const Dashboard: React.FC<{}> = () => {
-  const user = useSelector((state:any) => state.user.currentUser);
+  const user = useSelector((state: any) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -316,9 +316,7 @@ const onChange: TableProps<Book>["onChange"] = (
   filters,
   sorter,
   extra
-) => {
-
-};
+) => {};
 
 export const Bookintro = () => {
   return (

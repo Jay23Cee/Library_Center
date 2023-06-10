@@ -1,14 +1,13 @@
-import { Form, Input, Menu, Breadcrumb, Card,} from "antd";
-import React, {  useState, } from "react";
+import { Form, Input, Menu, Breadcrumb, Card } from "antd";
+import React, { useState } from "react";
 import { message } from "antd";
 import { Book } from "../models/books";
 import { Link, useNavigate } from "react-router-dom";
-import {edit_book } from "../controllers/book_handler";
+import { edit_book } from "../controllers/book_handler";
 import { useDispatch, useSelector } from "react-redux";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
 import { clearBooks } from "../redux/bookSlice";
-
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -71,22 +70,20 @@ const Book_View = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [files_url, setFiles_url] = useState<string>(bookRaw.Img_url);
 
-
   const handleImage = async (file: UploadFile) => {
     console.log(file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as RcFile);
     }
-  
+
     let url = file.preview as string;
- 
+
     setFiles_url(url);
     setPreviewImage(file.url || (file.preview as string));
- 
+
     setPreviewTitle(
       file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
     );
-
   };
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
@@ -97,7 +94,7 @@ const Book_View = () => {
   ////////////////////
   //////Text Area/////
   ////////////////////
-  const TextArea = Input.TextArea
+  const TextArea = Input.TextArea;
   const [form] = Form.useForm();
 
   const onFinish = async (values: Book) => {
@@ -137,51 +134,59 @@ const Book_View = () => {
   };
 
   return (
-    <div className="form-container">
-
-<Card className="Card-img"
-          cover={<img src={previewImage} alt={previewImage} />}
-       
-        ></Card>
-
+    <div className="w-full min-h-[calc(100vh-130px)] grid grid-cols-1 lg:gap-0 gap-10 lg:grid-cols-2 justify-center items-center ite mt-[5.8rem] py-10 loginBg">
       <Form
-        className="Book-form-view"
+        className=" w-full flex flex-col justify-center items-center"
         {...layout}
         initialValues={bookRaw}
         form={form}
         onFinish={onFinish}
         validateMessages={validateMessages}
       >
-        <Form.Item name="Title" label="Title" >
-        
-          <TextArea name="Title-input" readOnly autoSize/>
-        </Form.Item>
-        <Form.Item name="Author" label="Author" >
-        <TextArea readOnly autoSize/>
+        <Form.Item className="bookView" name="Title" label="Title">
+          <TextArea name="Title-input" readOnly autoSize />
         </Form.Item>
         <Form.Item
+          className="bookView -mt-4 md:-mt-0"
+          name="Author"
+          label="Author"
+        >
+          <TextArea readOnly autoSize />
+        </Form.Item>
+        <Form.Item
+          className="bookView -mt-4 md:-mt-0"
           name="Publisher"
           label="Publisher"
-       
         >
-           <TextArea readOnly autoSize/>
-        
+          <TextArea readOnly autoSize />
         </Form.Item>
-        <Form.Item name="Year" label="Year" >
-        <TextArea readOnly autoSize/>
+        <Form.Item className="bookView -mt-4 md:-mt-0" name="Year" label="Year">
+          <TextArea readOnly autoSize />
         </Form.Item>
-        <Form.Item name="Summary" label="Summary" >
-
-        <TextArea readOnly autoSize
-     className="summary-textarea" value={bookRaw.Summary} />
-        
-
-
+        <Form.Item
+          className="bookView -mt-4 md:-mt-0"
+          name="Summary"
+          label="Summary"
+        >
+          <TextArea
+            readOnly
+            autoSize
+            className="summary-textarea"
+            value={bookRaw.Summary}
+          />
         </Form.Item>
-
-
-
       </Form>
+      <Card
+        className=" w-full bg-transparent h-full flex justify-center items-center"
+        cover={
+          <img
+            className="w-full max-w-[400px] h-[450px]"
+            src={previewImage}
+          
+            alt={previewImage}
+          />
+        }
+      ></Card>
     </div>
   );
 };

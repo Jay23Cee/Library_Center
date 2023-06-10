@@ -12,7 +12,7 @@ import (
 )
 
 func DBinstance() *mongo.Client {
-	// Devops()
+	//Devops()
 
 	MongoDb := os.Getenv("REACT_APP_GO_URL")
 

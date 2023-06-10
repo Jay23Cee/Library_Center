@@ -21,7 +21,7 @@ const PrivateLogin: React.FC = () => {
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
-  useEffect(() => { 
+  useEffect(() => {
     setErrMsg("");
   }, [user, pwd]);
 
@@ -46,8 +46,8 @@ const PrivateLogin: React.FC = () => {
   };
 
   return (
-    <section>
-      <h1 className="LogIn-Title">Log In</h1>
+    <section className="flex min-h-[calc(100vh-130px)] loginBg flex-col gap-3 mt-[5.8rem] justify-center items-center px-10 sm:px-4">
+      <h1 className="text-[30px] font-bold">Log In</h1>
       <p
         ref={errRef}
         className={errMsg ? "errmsg" : "offscreen"}
@@ -56,9 +56,8 @@ const PrivateLogin: React.FC = () => {
         {errMsg}
       </p>
       <Form
+        className="w-full flex-col flex justify-center items-center"
         name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -75,29 +74,29 @@ const PrivateLogin: React.FC = () => {
             { required: true, message: "Please input your Email!" },
           ]}
         >
-          <Input />
+          <Input className="w-[300px] h-[45px]" />
         </Form.Item>
 
         <Form.Item
           label="Password"
           name={["users", "Password"]}
+          className="-mt-4"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
-          <Input.Password />
+          <Input.Password className="w-[300px] h-[45px]" />
         </Form.Item>
 
-        <Form.Item
-          name={["users", "Remember"]}
-          valuePropName="checked"
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
+        <Form.Item name={["users", "Remember"]} valuePropName="checked">
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+        <Form.Item>
+          <button
+            className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[44px]"
+            type="submit"
+          >
             Submit
-          </Button>
+          </button>
         </Form.Item>
       </Form>
     </section>

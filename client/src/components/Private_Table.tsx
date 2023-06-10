@@ -1,26 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Form, InputRef, Breadcrumb, Button, Card } from "antd";
+import React, { useState, useEffect } from "react";
 import { Book } from "../models/books";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteBook, edit_book, getbooks } from "../controllers/book_handler";
+import { deleteBook, getbooks } from "../controllers/book_handler";
 import { useNavigate } from "react-router-dom";
 import { addBook, clearBooks } from "../redux/bookSlice";
 import { addBulkBooks, clearBulkBooks, removeBook } from "../redux/librarySlice";
-import { LoadingOutlined } from '@ant-design/icons';
-
-
-
-
-const { Meta } = Card;
-
-export interface BookTableProps {
-  Title: string;
-  Author: string;
-  Year: string;
-  Publisher: string;
-  Id: string;
-  Key: string;
-}
 
 export const Private_Table: React.FC<{}> = () => {
   const user = useSelector((state: any) => state.user.currentUser);
@@ -30,140 +14,155 @@ export const Private_Table: React.FC<{}> = () => {
 
   const originData: Book[] = [];
 
-  const EditableTable = () => {
-    const [form] = Form.useForm();
-    const [data, setData] = useState<Book[]>(originData);
-    const library = useSelector((state: any) => state.library);
-  
-    useEffect(() => {
-      const fetchBooks = async () => {
-        try {
-          setIsLoading(true); // Start loading animation
-          const fetchedBooks = await getbooks();
-          dispatch(addBulkBooks(fetchedBooks));
-        } catch (error) {
-          // Handle error
-        } finally {
-          setIsLoading(false); // Stop loading animation
-        }
-      };
-  
-      if (library.library.length === 0) {
-        fetchBooks();
-      } else {
-        setData(library.library);
+  const [data, setData] = useState<Book[]>(originData);
+  const library = useSelector((state: any) => state.library);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        setIsLoading(true); // Start loading animation
+        const fetchedBooks = await getbooks();
+        setData(fetchedBooks);
+        dispatch(addBulkBooks(fetchedBooks));
+      } finally {
         setIsLoading(false); // Stop loading animation
       }
-    }, [library.library]);
-
-
-    const cardList = data.map((book: Book) => (
-      <Card
-        key={book.ID}
-        hoverable
-        style={{ width: 240 }}
-        cover={<img alt={book.Img_url} src={book.Img_url} />}
-        actions={[
-          <Button type="text" onClick={() => onAdvanceEdit(book)}>
-            Edit
-          </Button>,
-          <Button type="text" onClick={() => onDelete(book)}>
-            Delete
-          </Button>,
-        ]}
-      >
-        <Meta
-          // title={<a onClick={() => handleTitleClick(book)}>{book.Title}</a>}
-          description={`${book.Author} - ${book.Publisher} (${book.Year})`}
-        />
-      </Card>
-    ));
-
-
-    const onAdvanceEdit = (record: Partial<Book> & { ID: React.Key }) => {
-      console.log(record);
-      dispatch(addBook(record as Book));
-      navigate("/Advance_Edit", { state: { record } });
     };
 
+    if (library.library.length === 0) {
+      fetchBooks();
+    } else {
+      setData(library.library);
+      setIsLoading(false); // Stop loading animation
+    }
+  }, [library.library]);
 
-    const onDelete = async (record: Book) => {
-      console.log("DELETE");
-      try {
-        const row = (await form.validateFields()) as Book;
-        console.log(row);
-        const newData = [...data];
-        const index = newData.findIndex((item) => record.ID === item.ID);
-        console.log(index);
-        if (index > -1) {
-          const temp_book = {
-            book: {
-              ID: newData[index].ID,
-              Title: "",
-              Author: "",
-              Publisher: "",
-              Year: "",
-              Img: "",
-              Img_url: "",
-              Summary: ""
-            }
-          };
-          const JSON_string = JSON.stringify(temp_book);
-          console.log(JSON_string);
-          console.log(library, " HERE IS LIBRARY");
-    
-          // Delete the book from the database
-          await deleteBook(JSON_string);
-    
-          // Update the Redux store by dispatching the removeBook action
-          dispatch(removeBook(record.ID));
-    
-          // Update the local state to reflect the changes in the UI
-          newData.splice(index, 1);
-          setData(newData);
-        } else {
-          newData.push(row);
-    
-          const update = await getbooks();
-    
-          setData(update);
-        }
-      } catch (errInfo) {
-        console.error("Validate Failed:", errInfo);
+  const onDelete = async (record: Book) => {
+    console.log("DELETE");
+    try {
+      const newData = [...data];
+      const index = newData.findIndex((item) => record.ID === item.ID);
+      console.log(index);
+      if (index > -1) {
+        const temp_book = {
+          book: {
+            ID: newData[index].ID,
+            Title: "",
+            Author: "",
+            Publisher: "",
+            Year: "",
+            Img: "",
+            Img_url: "",
+            Summary: "",
+          },
+        };
+        const JSON_string = JSON.stringify(temp_book);
+        console.log(JSON_string);
+        console.log(library, " HERE IS LIBRARY");
+
+        // Delete the book from the database
+        await deleteBook(JSON_string);
+
+        // Update the Redux store by dispatching the removeBook action
+        dispatch(removeBook(record.ID));
+
+        // Update the local state to reflect the changes in the UI
+        newData.splice(index, 1);
+        setData(newData);
       }
-    };
-    
-    
-    
-
-    return (
-      user && (
-        <Form form={form} component={false}>
-          {isLoading ? ( // Display loading spinner while isLoading is true
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-              <LoadingOutlined style={{ fontSize: 24 }} spin />
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>{cardList}</div>
-          )}
-        </Form>
-      )
-    );
+    } catch (errInfo) {
+      console.error("Delete Failed:", errInfo);
+    }
   };
 
-
-  return (
-    <div className="Book_Table">
-      <EditableTable />
+  const cardList = data.map((book: any) => (
+    <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4" key={book.ID}>
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="h-48 lg:h-64 xl:h-72 2xl:h-80 flex items-center justify-center bg-gray-400 shadow-md hover:shadow-xl hover:bg-gray-200 transition duration-300">
+          <img
+            alt={book.Img_url}
+            className="h-full w-full object-contain hover:scale-110 transition duration-300"
+            src={book.Img_url}
+          />
+        </div>
+        <div className="p-4 bg-gray-100">
+          <div className="text-xl font-semibold mb-2">
+            {book.Author} - {book.Publisher}
+          </div>
+          <div className="text-gray-600 text-sm">{book.Year}</div>
+          <div className="flex justify-end mt-4">
+          </div>
+          <div className="flex justify-end mt-4">
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 mr-2 rounded-lg border border-blue-500 hover:border-blue-600 transition duration-300"
+              onClick={() => onAdvanceEdit(book)}
+            >
+              Edit
+            </button>
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg border border-red-500 hover:border-red-600 transition duration-300"
+              onClick={() => onDelete(book)}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-  );
-};
+));
 
 
-export const Bookintro = () => {
+
+//   const cardList = data.map((book: any) => (
+//     <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4" key={book.ID}>
+//       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+//         <div className="h-64 lg:h-48 flex items-center justify-center bg-gray-200 shadow-md hover:shadow-xl transition duration-300">
+//         <img
+//   alt={book.Img_url}
+//   className="h-full w-full object-contain hover:scale-105 transition duration-300"
+//   src={book.Img_url}
+// />
+
+//         </div>
+//         <div className="p-4 bg-gray-100">
+//           <div className="text-xl font-semibold mb-2">
+//             {book.Author} - {book.Publisher}
+//           </div>
+//           <div className="text-gray-600 text-sm">{book.Year}</div>
+//           <div className="flex justify-end mt-4">
+//             <button
+//               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 mr-2 rounded-lg border border-blue-500 hover:border-blue-600 transition duration-300"
+//               onClick={() => onAdvanceEdit(book)}
+//             >
+//               Edit
+//             </button>
+//             <button
+//               className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg border border-red-500 hover:border-red-600 transition duration-300"
+//               onClick={() => onDelete(book)}
+//             >
+//               Delete
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   ));
+
+  const onAdvanceEdit = (record: Partial<Book> & { ID: React.Key }) => {
+    console.log(record);
+    dispatch(addBook(record as Book));
+    navigate("/Advance_Edit", { state: { record } });
+  };
+
   return (
-    <Breadcrumb style={{ margin: "16px 0" }}>
-      <Breadcrumb.Item>Welcome to Library Center</Breadcrumb.Item>
-    </Breadcrumb>
+    <div className="Book_Table mt-20 pt-20">
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap -mx-4">{cardList}</div>
+        </div>
+      )}
+    </div>
   );
 };

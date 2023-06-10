@@ -1,3 +1,82 @@
+/* =====> fonts */
+@import url(https://allfont.net/allfont.css?fonts=courier-new-bold);
+@import url(https://allfont.net/allfont.css?fonts=courier-new);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+.homegbg {
+  background: linear-gradient(
+    132deg,
+    #f6dec4 30%,
+    #fbd1a2 68%,
+    #f6dec4 200%
+  ) !important;
+}
+.ant-row {
+  display: block !important;
+}
+.loginBg {
+  background: linear-gradient(132deg, #f6dec4, #fbd1a2 48%, #f6dec4 93%);
+}
+.newBook textarea {
+  max-width: unset !important;
+  width: 500px !important;
+  min-height: unset !important;
+  height: 45px !important;
+  padding-top: 10px !important;
+}
+/* // =====> advance edit style */
+.advanceEdit textarea {
+  max-width: unset !important;
+  width: 430px !important;
+}
+@media screen and (max-width: 500px) {
+  .advanceEdit textarea {
+    width: 300px !important;
+  }
+}
+.ant-card-body {
+  padding: 0px !important;
+}
+/* //===========newBook style */
+.newBook textarea {
+  max-width: unset !important;
+  width: 500px !important;
+}
+
+@media screen and (max-width: 480px) {
+  .newBook textarea {
+    width: 300px !important;
+  }
+}
+
+/* // ====> bookview style */
+.bookView textarea {
+  max-width: unset !important;
+  width: 430px !important;
+}
+@media screen and (max-width: 500px) {
+  .bookView textarea {
+    width: 300px !important;
+  }
+}
+/* =======> booktable style */
+.bookTable img {
+  display: flex !important;
+  width: 240px !important;
+}
 /* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +89,54 @@
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-} *//*# sourceMappingURL=index.css.map */
+} */
+
+/* body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */ /*# sourceMappingURL=index.css.map */
+.nav-menu {
+  position: absolute;
+  top: 50px; /* adjust this value as needed */
+  left: 0;
+  transform: translateX(-100%);
+  transition: transform 300ms ease-in-out;
+  z-index: 50;
+  background-color: #1d4e89; /* giving it a background color */
+  width: 250px; /* or whatever width you want */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* adding shadow */
+  border-radius: 0 0 4px 4px; /* rounding the bottom corners */
+}
+
+.nav-menu.open {
+  transform: translateX(0);
+}
+
+.nav-menu .flex div {
+  padding: 12px 16px; /* padding around the links */
+}
+
+.nav-menu .flex div:hover {
+  background-color: #153954; /* background on hover */
+  cursor: pointer;
+}
+
+.nav-menu .flex div a, .nav-menu .flex div span {
+  color: #ffffff; /* text color */
+  font-weight: bold; /* making text bold */
+  text-decoration: none; /* removing underline */
+  transition: color 300ms ease-in-out; /* smooth color transition */
+}
+
+.nav-menu .flex div a:hover, .nav-menu .flex div span:hover {
+  color: #aad4ea; /* text color on hover */
+}

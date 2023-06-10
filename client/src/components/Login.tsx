@@ -45,88 +45,97 @@ const Login_form: React.FC = () => {
     console.error("Failed:", errorInfo);
   };
 
-  const UserDemo = async() => {
-
-   var res = await User_Login_DEMO();
+  const UserDemo = async () => {
+    var res = await User_Login_DEMO();
     dispatch(loginSuccess(res.data));
-   
+
     navigate("/booktable");
   };
 
-  const PrivateDemo = async() => {
-
-   var res = await Private_Login_DEMO()
+  const PrivateDemo = async () => {
+    var res = await Private_Login_DEMO();
 
     dispatch(loginSuccess(res.data));
 
     navigate("/booktable");
   };
   return (
-    <section className="Login-Form">
-      <h1 className="LogIn-Title">Log In</h1>
-      <p
-        ref={errRef}
-        className={errMsg ? "errmsg" : "offscreen"}
-        aria-live="assertive"
-      >
-        {errMsg}
-      </p>
-      <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Form.Item
-          label="Email"
-          name={["users", "Email"]}
-          rules={[
-            {
-              type: "email",
-              message: "The input is not valid E-mail!",
-            },
-            { required: true, message: "Please input your Email!" },
-          ]}
+    <section className="flex min-h-[calc(100vh-130px)] loginBg flex-col mt-[5.8rem] justify-center items-center px-10 sm:px-4">
+      <div className="max-w-[450px] w-full flex gap-4 justify-center items-center flex-col">
+        <h1 className="text-[30px] font-bold">Log In</h1>
+        <p
+          ref={errRef}
+          className={errMsg ? "errmsg" : "offscreen"}
+          aria-live="assertive"
         >
-          <Input />
-        </Form.Item>
+          {errMsg}
+        </p>
+        <Form
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+          className=" w-full block flex-col justify-center items-center"
+        >
+          <Form.Item
+            label="Email"
+            className="w-full flex justify-center items-center"
+            name={["users", "Email"]}
+            rules={[
+              {
+                type: "email",
+                message: "The input is not valid E-mail!",
+              },
+              { required: true, message: "Please input your Email!" },
+            ]}
+          >
+            <Input className="w-[300px] h-[45px]" />
+          </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name={["users", "Password"]}
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password />
-        </Form.Item>
+          <Form.Item
+            className="w-full flex justify-center items-center -mt-8 md:-mt-4"
+            label="Password"
+            name={["users", "Password"]}
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password className="w-[300px] h-[45px]" />
+          </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }} className="login-button">
-          <Button type="primary" htmlType="submit">
-            Login
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item className="w-full flex justify-center items-center">
+            <button
+              className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[44px]"
+              type="submit"
+            >
+              Login
+            </button>
+          </Form.Item>
+        </Form>
 
-      <div className="Demo-Login">
-        <h1> Demo: Login as</h1>
-        <Button
-          type="primary"
-          onClick={() => {
-            UserDemo();
-          }}
-        >
-          *Client*
-        </Button>
-        <Button
-          type="primary"
-          onClick={() => {
-            PrivateDemo();
-          }}
-        >
-          *Admin*
-        </Button>
+        <h1 className="text-[26px] font-bold text-black -mt-4">
+          {" "}
+          Demo: Login as
+        </h1>
+        <div className="flex justify-center items-center gap-4">
+          <button
+            onClick={() => {
+              UserDemo();
+            }}
+            className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[44px]"
+          >
+            *Client*
+          </button>
+          <button
+            className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[44px]"
+            onClick={() => {
+              PrivateDemo();
+            }}
+          >
+            *Admin*
+          </button>
+        </div>
       </div>
     </section>
   );

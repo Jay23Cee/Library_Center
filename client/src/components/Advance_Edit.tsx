@@ -71,7 +71,7 @@ const validateMessages = {
 const AdvanceEdit = () => {
   const { state } = useLocation();
   const bookRaw = useSelector((state: RootState) => state.book.data[0]); // Read values passed on state
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -83,7 +83,6 @@ const AdvanceEdit = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [files_url, setFiles_url] = useState<string>(bookRaw.Img_url);
 
-
   const handleCancel = () => {
     setPreviewOpen(false);
     setFileList([]);
@@ -92,52 +91,54 @@ const AdvanceEdit = () => {
     setFiles_url(bookRaw.Img_url);
   };
 
- // Deleted getBase64() function
+  // Deleted getBase64() function
 
- const handlePreview = async (file: UploadFile) => {
-  if (!file.url && !file.preview) {
-    file.preview = await getBase64(file.originFileObj as RcFile);
-   }
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
+    }
 
-   let url = file.preview as string
-  
-  //  setFiles(url )
-   setPreviewImage(file.url || (file.preview as string));
-   setPreviewOpen(true);
-   setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+    let url = file.preview as string;
 
-   // console.log(files_url , " last 91")
-  // console.log(previewTitle)
-  // console.log(previewImage)
-  
- };
+    //  setFiles(url )
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
 
- const handleImage = async (file: UploadFile) => {
-   if (!file.url && !file.preview) {
-     file.preview = await getBase64(file.originFileObj as RcFile);
+    // console.log(files_url , " last 91")
+    // console.log(previewTitle)
+    // console.log(previewImage)
+  };
+
+  const handleImage = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
     }
     // console.log(file.preview)
-    let url = file.preview as string
-   // console.log(url)
+    let url = file.preview as string;
+    // console.log(url)
     // setFiles(url )
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
- 
-     console.log(files_url , " last 91")
+    setPreviewTitle(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
 
-   
+    console.log(files_url, " last 91");
   };
-
 
   const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     // Reset fileList
 
     if (newFileList.length > 1) {
-      const items = document.querySelectorAll(".ant-upload-list-item-container");
-for (let i = 0; i < items.length - 1; i++) {
-  items[i].remove();
-}
+      const items = document.querySelectorAll(
+        ".ant-upload-list-item-container"
+      );
+      for (let i = 0; i < items.length - 1; i++) {
+        items[i].remove();
+      }
 
       const singleFileList = [newFileList[newFileList.length - 1]];
       setFileList(singleFileList);
@@ -150,7 +151,7 @@ for (let i = 0; i < items.length - 1; i++) {
 
     console.log(newFileList.length > 1);
     console.log(newFileList);
-    console.log(fileList)
+    console.log(fileList);
   };
 
   const uploadButton = (
@@ -171,14 +172,18 @@ for (let i = 0; i < items.length - 1; i++) {
 
   const onFinish = async (values: Book) => {
     const formData = new FormData();
-    formData.append('Title', values.Title);
-    formData.append('Author', values.Author);
-    formData.append('Publisher', values.Publisher);
-    formData.append('Year', values.Year);
-    formData.append('Summary', values.Summary);
-    formData.append('ID', bookRaw.ID);
+    formData.append("Title", values.Title);
+    formData.append("Author", values.Author);
+    formData.append("Publisher", values.Publisher);
+    formData.append("Year", values.Year);
+    formData.append("Summary", values.Summary);
+    formData.append("ID", bookRaw.ID);
     if (fileList.length > 0) {
-      formData.append("Img", fileList[0].originFileObj as any, fileList[0].name); // append file to formData
+      formData.append(
+        "Img",
+        fileList[0].originFileObj as any,
+        fileList[0].name
+      ); // append file to formData
     }
 
     try {
@@ -195,56 +200,73 @@ for (let i = 0; i < items.length - 1; i++) {
   };
 
   return (
-    <div className="advance-edit-container">
-      <h1>Book Editing</h1>
-    
-    <div className="form-container">
-      <Card
-        className="Card-img"
-        cover={<img src={previewImage} alt={previewImage} />}
-      ></Card>
-      <Form
-        className="Book-form-edit"
-        {...layout}
-        initialValues={bookRaw}
-        form={form}
-        onFinish={onFinish}
-        validateMessages={validateMessages}
-      >
-        <Form.Item name="Title" label="Title" rules={[{ required: true }]}>
-        <TextArea autoSize />
-        </Form.Item>
-        <Form.Item name="Author" label="Author" rules={[{ required: true }]}>
-        <TextArea autoSize />
-        </Form.Item>
-        <Form.Item
-          name="Publisher"
-          label="Publisher"
-          style={{ overflow: "auto" }}
-          rules={[{ required: true }]}
-        >
-           <TextArea autoSize />
-        </Form.Item>
-        <Form.Item name="Year" label="Year" rules={[{ required: true }]}    >
-        <TextArea autoSize />
-        </Form.Item>
-        <Form.Item name="Summary" label="Summary" rules={[{ required: true }]}>
-          <TextArea autoSize />
-        </Form.Item>
-
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-        <Form.Item>
-          <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            fileList={fileList}
-            listType="picture-card"
-            accept=".jpg ,.jpeg, .png"
-            onPreview={handlePreview}
-            onChange={handleChange}
+    <div className="w-full min-h-[calc(100vh-130px)] flex flex-col gap-4 justify-center items-center ite mt-[5.8rem] py-10 loginBg">
+      <h1 className="text-[26px] font-semibold text-blue-main">Book Editing</h1>
+      <div className="w-full grid lg:gap-0 gap-10 grid-cols-1 justify-center items-center lg:grid-cols-2">
+        <div className="w-full flex justify-center items-center">
+          <Form
+            className=" w-full flex flex-col justify-center items-center"
+            {...layout}
+            initialValues={bookRaw}
+            form={form}
+            onFinish={onFinish}
+            validateMessages={validateMessages}
           >
-            {fileList.length >=2 ? null : uploadButton}
-          </Upload>
-          {/* <Modal
+            <Form.Item
+              className="advanceEdit"
+              name="Title"
+              label="Title"
+              rules={[{ required: true }]}
+            >
+              <TextArea autoSize />
+            </Form.Item>
+            <Form.Item
+              className="advanceEdit -mt-4 md:-mt-0"
+              name="Author"
+              label="Author"
+              rules={[{ required: true }]}
+            >
+              <TextArea autoSize />
+            </Form.Item>
+            <Form.Item
+              className="advanceEdit -mt-4 md:-mt-0"
+              name="Publisher"
+              label="Publisher"
+              style={{ overflow: "auto" }}
+              rules={[{ required: true }]}
+            >
+              <TextArea autoSize />
+            </Form.Item>
+            <Form.Item
+              className="advanceEdit -mt-4 md:-mt-0"
+              name="Year"
+              label="Year"
+              rules={[{ required: true }]}
+            >
+              <TextArea autoSize />
+            </Form.Item>
+            <Form.Item
+              className="advanceEdit -mt-4 md:-mt-0"
+              name="Summary"
+              label="Summary"
+              rules={[{ required: true }]}
+            >
+              <TextArea autoSize />
+            </Form.Item>
+
+            <div className="w-full flex md:flex-row flex-col gap-3 justify-center items-center">
+              <div>
+                <Upload
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  fileList={fileList}
+                  listType="picture-card"
+                  accept=".jpg ,.jpeg, .png"
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                >
+                  {fileList.length >= 2 ? null : uploadButton}
+                </Upload>
+                {/* <Modal
             open={previewOpen}
             title={previewTitle}
             footer={null}
@@ -253,26 +275,38 @@ for (let i = 0; i < items.length - 1; i++) {
             <img alt="example" style={{ width: "100%" }} src={previewImage} />
           </Modal>
            */}
-          {modal}
-        </Form.Item>
+                {modal}
+              </div>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-          <Button
-            type="default"
-            onClick={() => {
-             // dispatch(clearBooks())
-              navigate("/privatetable");
-            }}
-          >
-            Cancel
-          </Button>
-        </Form.Item>
+              <div className="flex gap-2">
+                <button
+                  className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[44px]"
+                  type="submit"
+                >
+                  Submit
+                </button>
+                <button
+                  className="bg-transparent border-[2px] border-blue-main hover:text-white-main rounded-[6px] text-black-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center w-[110px] h-[44px]"
+                  type="button"
+                  onClick={() => {
+                    // dispatch(clearBooks())
+                    navigate("/privatetable");
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </Form>
         </div>
-      </Form>
-    </div>
+        <Card
+          className=" w-full bg-transparent h-full flex justify-center items-center"
+          cover={<img src={previewImage} alt={previewImage} />}
+          // cover={
+          //   <img className="h-[450px]" src="/book.jpeg" alt={previewImage} />
+          // }
+        ></Card>
+      </div>
     </div>
   );
 };

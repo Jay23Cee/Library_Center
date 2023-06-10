@@ -1,6 +1,0 @@
-build:
-  context: server/
-  docker:
-    web: Dockerfile
-run:
-  web: ./main

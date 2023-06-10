@@ -8,10 +8,10 @@ import { formatTimeStr } from "antd/lib/statistic/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, logOut } from "../redux/userSlice";
 import { Check_Login } from "../controllers/user_handler";
-import { PlusOutlined } from '@ant-design/icons';
-import { Modal, Upload } from 'antd';
-import type { RcFile, UploadProps } from 'antd/es/upload';
-import type { UploadFile } from 'antd/es/upload/interface';
+import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Upload } from "antd";
+import type { RcFile, UploadProps } from "antd/es/upload";
+import type { UploadFile } from "antd/es/upload/interface";
 import TextArea from "antd/lib/input/TextArea";
 import { json } from "body-parser";
 import { clearBooks } from "../redux/bookSlice";
@@ -22,14 +22,9 @@ export const getBase64 = (file: RcFile): Promise<string> =>
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 
-
-
-
-
-  
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -48,9 +43,9 @@ export const NewItem = () => {
 export const NewMenu = () => {
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-      <Menu items={[{key:"1" }]} >Home</Menu>
+      <Menu items={[{ key: "1" }]}>Home</Menu>
       <Link to="/new">
-        <Menu items={[{key:"2" }]} >New</Menu>
+        <Menu items={[{ key: "2" }]}>New</Menu>
       </Link>
     </Menu>
   );
@@ -72,56 +67,53 @@ const NewBook = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState<UploadFile[]>([
-
-  ]);
-  const [files_url, setFiles] =useState<string>("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [files_url, setFiles] = useState<string>("");
 
   const handleCancel = () => setPreviewOpen(false);
- const handlePreview = async (file: UploadFile) => {
-   if (!file.url && !file.preview) {
-     file.preview = await getBase64(file.originFileObj as RcFile);
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
     }
 
-    let url = file.preview as string
-   
-    setFiles(url )
+    let url = file.preview as string;
+
+    setFiles(url);
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
- 
+    setPreviewTitle(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
+
     // console.log(files_url , " last 91")
-   // console.log(previewTitle)
-   // console.log(previewImage)
-   
+    // console.log(previewTitle)
+    // console.log(previewImage)
   };
 
   const handleImage = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as RcFile);
-     }
-     // console.log(file.preview)
-     let url = file.preview as string
+    }
+    // console.log(file.preview)
+    let url = file.preview as string;
     // console.log(url)
-     setFiles(url )
-     setPreviewImage(file.url || (file.preview as string));
-     setPreviewOpen(true);
-     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-  
-      console.log(files_url , " last 91")
+    setFiles(url);
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
 
-    
-   };
+    console.log(files_url, " last 91");
+  };
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>{ 
-
+  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-    handleImage(fileList[0])
-  }
+    handleImage(fileList[0]);
+  };
 
   const uploadButton = (
     <div>
@@ -130,49 +122,46 @@ const NewBook = () => {
     </div>
   );
 
-
-
   useEffect(function effectFunction() {
     async function fetchUser() {}
     fetchUser();
   }, []);
-  
-  const user = useSelector((state:any) => state.user.currentUser);
+
+  const user = useSelector((state: any) => state.user.currentUser);
 
   const [form] = Form.useForm();
-  
+
   const onFinish = async (values: Book) => {
-    console.log(values)
-    console.log(values.Title)
+    console.log(values);
+    console.log(values.Title);
     const formData = new FormData();
-    console.log(formData)
+    console.log(formData);
     formData.append("Title", values.Title);
-    console.log(formData)
+    console.log(formData);
     formData.append("Author", values.Author);
-    console.log(formData)
+    console.log(formData);
     formData.append("Publisher", values.Publisher);
-    console.log(formData)
+    console.log(formData);
     formData.append("Year", values.Year);
     formData.append("Summary", values.Summary);
-    if (fileList[0]?.originFileObj) { // Check if originFileObj is defined
+    if (fileList[0]?.originFileObj) {
+      // Check if originFileObj is defined
       formData.append("Img", fileList[0].originFileObj, fileList[0].name); // Append the file if it exists
     }
     console.log([...formData.entries()]);
     try {
-      await add_book( formData );
+      await add_book(formData);
       // navigate("/booktable");
       // form.resetFields();
     } catch (error) {
       console.error(error);
     }
   };
-  
-  
 
   // const onFinish = async (values: Book) => {
 
   //   const books =  {
-     
+
   //         Title: values.Title,
   //         Author: values.Author,
   //         Publisher: values.Publisher,
@@ -181,17 +170,15 @@ const NewBook = () => {
   //         Img_url: files_url as string,
   //         Img: JSON.stringify(fileList[0])
   //       }
-    
-    
 
   //       const payload = {
   //         books
   //       };
-        
+
   //       console.log(books)
-   
+
   //   const JSON_string = JSON.stringify(payload);
-    
+
   //   try {
 
   //     await add_book(JSON_string, payload);
@@ -203,90 +190,74 @@ const NewBook = () => {
   //   }
   // };
 
-
-  const handleupload =(file:any, fileList:any)=>{
-
-  }
+  const handleupload = (file: any, fileList: any) => {};
 
   return (
-    <div className="NewBook_Form">
-     
-        <Form
-          {...layout}
-          form={form}
-          name="NewBook_Form_Input"
-          onFinish={onFinish}
-          validateMessages={validateMessages}
+    <div className="w-full min-h-[calc(100vh-130px)] flex justify-center ite mt-[5.8rem] py-10 loginBg">
+      <Form
+        className="w-full flex flex-col justify-center items-center"
+        {...layout}
+        form={form}
+        name="NewBook_Form_Input"
+        onFinish={onFinish}
+        validateMessages={validateMessages}
+      >
+        <Form.Item name="Title" label="Title" rules={[{ required: true }]}>
+          <Input className="w-[300px] sm:w-[500px] h-[45px]" />
+        </Form.Item>
+        <Form.Item name="Author" label="Author" rules={[{ required: true }]}>
+          <Input className="w-[300px] sm:w-[500px] h-[45px]" />
+        </Form.Item>
+        <Form.Item
+          name="Publisher"
+          label="Publisher"
+          rules={[{ required: true }]}
         >
-          <Form.Item
-            name="Title"
-            label="Title"
-            rules={[{ required: true }]}
+          <Input className="w-[300px] sm:w-[500px] h-[45px]" />
+        </Form.Item>
+        <Form.Item name="Year" label="Year" rules={[{ required: true }]}>
+          <Input className="w-[300px] sm:w-[500px] h-[45px]" />
+        </Form.Item>
+        <Form.Item
+          className="newBook"
+          name="Summary"
+          label="Summary"
+          rules={[{ required: true }]}
+        >
+          <TextArea className="" />
+        </Form.Item>
+
+        <Form.Item>
+          <Upload
+            className="upload-button"
+            listType="picture-card"
+            accept=".jpg,.jpeg,.png"
+            onPreview={handlePreview}
+            onChange={handleChange}
+            beforeUpload={handleupload}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="Author"
-            label="Author"
-            rules={[{ required: true }]}
+            {fileList.length >= 8 ? null : uploadButton}
+          </Upload>
+
+          <Modal
+            open={previewOpen}
+            title={previewTitle}
+            footer={null}
+            onCancel={handleCancel}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="Publisher"
-            label="Publisher"
-            rules={[{ required: true }]}
+            <img alt="example" style={{ width: "100%" }} src={previewImage} />
+          </Modal>
+        </Form.Item>
+
+        <Form.Item>
+          <button
+            className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[44px]"
+            type="submit"
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="Year"
-            label="Year"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="Summary"
-            label="Summary"
-            rules={[{ required: true }]}
-          >
-          <TextArea/>
-          </Form.Item>
-
-
-
-        <Form.Item >
-         
-         
-        
-
-        <Upload
-  className="upload-button"
-  listType="picture-card"
-  accept=".jpg,.jpeg,.png"
-  onPreview={handlePreview}
-  onChange={handleChange}
-  beforeUpload={handleupload}
->
-  {fileList.length >= 8 ? null : uploadButton}
-</Upload>
-
-
-      
-      <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
-    </Form.Item>
-
-    <Form.Item >
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-            </Form.Item >
-        </Form>
-      
+            Submit
+          </button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

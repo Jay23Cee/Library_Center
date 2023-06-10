@@ -1,5 +1,6 @@
 import { Navigate , Outlet, Route, useLocation, } from "react-router-dom";
 import connect, { useSelector } from"react-redux";
+import React from "react";
 
 
 export const UseAuth=(s :string)=>{
