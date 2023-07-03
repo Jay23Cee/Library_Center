@@ -122,22 +122,53 @@ const Template = () => {
   }
   const [isOpen, setIsOpen] = useState(false);
 
+
+useEffect(() => {
+    const handleScroll = () => {
+        const mainIntro = document.querySelector('.main-intro') as HTMLElement;
+        const navTop = document.querySelector('.nav-top') as HTMLElement;
+
+        if (mainIntro && navTop) {
+            const triggerHeight = mainIntro.offsetTop + mainIntro.offsetHeight / 2;
+            const scrollPosition = window.scrollY;
+            const maxOpacity = 1;
+
+            // Calculate the opacity based on how far the user has scrolled
+            let opacity = scrollPosition / triggerHeight * maxOpacity;
+
+            // Cap the opacity at the maximum value
+            if (opacity > maxOpacity) {
+                opacity = maxOpacity;
+            }
+
+            // Set the background color with the calculated opacity
+            navTop.style.backgroundColor = `rgba(12,36,64, ${opacity})`; // Change the RGB values according to your desired color
+        }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+
+
+
   return (
     <div className="w-full">
-      <div className="w-full bg-main-primary  fixed top-0 h-[70px] flex justify-center items-center z-20">
-        <div className="w-full max-w-[1340px] flex flex-row m-auto justify-between items-center z-20 px-10 sm:px-4">
+      <div className="w-full nav-top  fixed top-0 h-[70px] flex justify-center items-center z-20">
+        <div className=" w-full max-w-[1340px] flex flex-row m-auto justify-between items-center z-20  sm:px-4">
           <div className="hidden md:flex gap-10 justify-center items-center ">
             <Link
               key={0}
               to="/"
-              className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+              className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
             >
               Main
             </Link>
             {!user && (
               <Link
                 key={1}
-                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
                 to="/login"
               >
                 Log In
@@ -146,7 +177,7 @@ const Template = () => {
             {!user && (
               <Link
                 key={2}
-                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
                 to="/signup"
               >
                 Sign Up
@@ -155,7 +186,7 @@ const Template = () => {
             {CheckAuth(user, ["ADMIN"]) && (
               <Link
                 key={3}
-                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
                 to="/new"
               >
                 New
@@ -165,7 +196,7 @@ const Template = () => {
             {CheckAuth(user, ["ADMIN"]) && (
               <Link
                 key={4}
-                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
                 to="/newbulk"
               >
                 New Bulk
@@ -175,7 +206,7 @@ const Template = () => {
             {CheckAuth(user, ["ADMIN"]) && (
               <Link
                 key={5}
-                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
                 to="/PrivateTable"
               >
                 Private Table
@@ -185,7 +216,7 @@ const Template = () => {
             {CheckAuth(user, ["ADMIN", "USER"]) && (
               <Link
                 key={6}
-                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
                 to="/booktable"
               >
                 BookTable
@@ -195,7 +226,7 @@ const Template = () => {
             {user && (
               <span
                 key={7}
-                className="text-blue-main text-[16px] hover:text-white-main hover:duration-500"
+                className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
                 onClick={logout}
               >
                 Logout
@@ -282,12 +313,14 @@ const Template = () => {
             </div>
           </div>
 
-          <h3 className="text-[2em] font-bold md:text-[1.9rem] z-20 bg-transparent items-center text-blue-main">
+        
+        </div>
+          <h3 className="absolute left-1/2 transform -translate-x-1/2 text-[2em] font-bold md:text-[1.9rem] text-orange-400">
             Library Xpress
           </h3>
-        </div>
       </div>
-      <Content className="px-0 sm:px-[50px] bg-[#7dcfb6]">
+      <Content className="px-0 sm:px-[50px] bg-gradient">
+
         {/* <Breadcrumb style={{ margin: '16px 0' }}>
               <Breadcrumb.Item>Home</Breadcrumb.Item>
               <Breadcrumb.Item>List</Breadcrumb.Item>
@@ -373,7 +406,7 @@ const Template = () => {
             {/* <Route path="/" element={<Private_Table />} /> */}
           </Routes>
         </div>
-      </Content>
+        </Content>
       <p className="text-black text-[14px] bg-[#f5f5f5] text-center h-[60px] flex justify-center items-center">
         Ant Design ©2018 Created by Ant UED
       </p>

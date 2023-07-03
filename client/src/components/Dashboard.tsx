@@ -30,6 +30,7 @@ export interface BookTableProps {
 
 export const Dashboard: React.FC<{}> = () => {
   const user = useSelector((state: any) => state.user.currentUser);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -221,7 +222,7 @@ export const Dashboard: React.FC<{}> = () => {
     });
 
     return (
-      user && (
+      user ? (
         <Form form={form} component={false}>
           <Table
             rowKey={(record) => record.ID}
@@ -239,7 +240,7 @@ export const Dashboard: React.FC<{}> = () => {
             }}
           />
         </Form>
-      )
+      ):null
     );
   };
 

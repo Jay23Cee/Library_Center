@@ -103,7 +103,7 @@ code {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-} */ /*# sourceMappingURL=index.css.map */
+} */ 
 .nav-menu {
   position: absolute;
   top: 50px; /* adjust this value as needed */
@@ -152,4 +152,68 @@ code {
   cursor: default;
   border: none;
   resize: none;
+}
+
+
+.main-intro {
+  background-image: url("./images/w1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* You can set a default height here if you want */
+  height: 50vh; /* example: 50% of the viewport height */
+}
+
+
+
+
+
+
+.nav-top {
+  transition: background-color 0.30s ease-in-out;
+}
+
+.nav-top.scrolled {
+  background-color:#006ca6;
+}
+
+.intro-glow {
+  text-shadow: 0 0 10px #0496ff, 0 0 20px #0496ff, 0 0 30px #ffbc42, 0 0 40px #ffbc42, 0 0 50px #ffbc42, 0 0 60px #ffbc42;
+}
+
+
+.sign-up{
+  background-image: url("./images/w8.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* You can set a default height here if you want */
+  height: 50vh; /* example: 50% of the viewport height */
+}
+
+
+.bg-gradient{
+  background: rgb(12,36,64);
+  background: linear-gradient(3deg, rgba(12,36,64,1) 0%, rgba(0,107,166,1) 100%);
+}
+
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.text-shadow-glow {
+  
+
+    text-shadow: 0 -1px 4px #0a0907, 0 -2px 10px #006ba6, 0 -10px 20px #006ba6, 0 -18px 40px #0a0907;
+  
+    
+}
+
+.text-shadow-orange-glow {
+  
+
+  text-shadow: 0 -1px 4px #ffffff, 0 -2px 10px #ffbc42, 0 -10px 20px #ffbc42, 0 -18px 40px #ffbc42;
+
+  
 }
