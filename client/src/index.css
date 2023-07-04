@@ -165,7 +165,16 @@ code {
 }
 
 
-
+@media screen and (max-width: 500px) {
+  .main-intro {
+    background-position: right;
+  }
+}
+@media screen and (max-width: 480px) {
+ .main-intro {
+  background-position: right;
+  }
+}
 
 
 
