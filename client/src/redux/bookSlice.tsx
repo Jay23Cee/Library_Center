@@ -18,7 +18,9 @@ const initialState: BookState = {
     Img: '',
     Img_url: '',
     Img_title: '',
-    Summary: ''
+    Summary: '',
+    Category:'',
+    Link:''
   }],
   errors: undefined,
   loading: false
@@ -61,7 +63,9 @@ const bookSlice = createSlice({
         Img: '',
         Img_url: '',
         Img_title: '',
-        Summary: ''
+        Summary: '',
+        Category:'',
+        Link:''
       }];
     }
 

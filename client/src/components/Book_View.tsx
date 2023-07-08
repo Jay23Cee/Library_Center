@@ -1,5 +1,5 @@
-import { Form, Input, Menu, Breadcrumb, Card } from "antd";
-import React, { useState } from "react";
+import { Form, Input, Menu, Breadcrumb, Card, Select, Button } from "antd";
+import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { Book } from "../models/books";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,6 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
 import { clearBooks } from "../redux/bookSlice";
+import { bookCategories } from "./Newbook";
+import "react-modern-drawer/dist/index.css";
+import { Navcolor } from "./Template";
+
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -69,6 +73,7 @@ const Book_View = () => {
   const [previewTitle, setPreviewTitle] = useState(bookRaw.Img_title);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [files_url, setFiles_url] = useState<string>(bookRaw.Img_url);
+  const [isLinkAvailable, setIsLinkAvailable] = useState<boolean>(false);
 
   const handleImage = async (file: UploadFile) => {
     console.log(file);
@@ -132,9 +137,18 @@ const Book_View = () => {
       console.error(error);
     }
   };
+  
+  useEffect(() => {
+    if(bookRaw.Link.trim()) {
+      setIsLinkAvailable(true);
+    } else {
+      setIsLinkAvailable(false);
+    }
+  }, [bookRaw.Link]);
 
+  Navcolor()
   return (
-    <div className="w-full min-h-[calc(100vh-130px)] grid grid-cols-1 lg:gap-0 gap-10 lg:grid-cols-2 justify-center items-center ite mt-[5.8rem] py-10 loginBg">
+    <div className="w-full  min-h-[calc(100vh-130px)] grid grid-cols-1 lg:gap-0 gap-10 lg:grid-cols-2 justify-center items-center ite mt-[5.8rem] py-10 loginBg">
       <Form
         className=" w-full flex flex-col justify-center items-center"
         {...layout}
@@ -153,6 +167,18 @@ const Book_View = () => {
         >
           <TextArea readOnly autoSize />
         </Form.Item>
+
+        <Form.Item
+  className="advanceEdit -mt-4 md:-mt-0"
+  name="Category"
+  label="Category"
+  rules={[{ required: true }]}
+>
+  <TextArea readOnly autoSize />
+</Form.Item>
+
+
+
         <Form.Item
           className="bookView -mt-4 md:-mt-0"
           name="Publisher"
@@ -175,14 +201,28 @@ const Book_View = () => {
             value={bookRaw.Summary}
           />
         </Form.Item>
+
+        {isLinkAvailable && (
+      <Button
+        className="bg-blue-400 text-white hover:bg-blue-600 hover:text-main-primary"
+        onClick={() => {
+          console.log(bookRaw.Link, " THIS IS THE LINK")
+          window.open(bookRaw.Link, "_blank")
+        }}
+      >
+        Download free book
+      </Button>
+    )}
+
+
       </Form>
+
       <Card
         className=" w-full bg-transparent h-full flex justify-center items-center"
         cover={
           <img
             className="w-full max-w-[400px] h-[450px]"
             src={previewImage}
-          
             alt={previewImage}
           />
         }

@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteBook, getbooks } from "../controllers/book_handler";
 import { useNavigate } from "react-router-dom";
 import { addBook, clearBooks } from "../redux/bookSlice";
-import { addBulkBooks, clearBulkBooks, removeBook } from "../redux/librarySlice";
+import {
+  addBulkBooks,
+  clearBulkBooks,
+  removeBook,
+} from "../redux/librarySlice";
+import { Navcolor } from "./Template";
 
 export const Private_Table: React.FC<{}> = () => {
   const user = useSelector((state: any) => state.user.currentUser);
@@ -16,7 +21,7 @@ export const Private_Table: React.FC<{}> = () => {
 
   const [data, setData] = useState<Book[]>(originData);
   const library = useSelector((state: any) => state.library);
-
+  Navcolor()
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -90,8 +95,7 @@ export const Private_Table: React.FC<{}> = () => {
             {book.Author} - {book.Publisher}
           </div>
           <div className="text-gray-600 text-sm">{book.Year}</div>
-          <div className="flex justify-end mt-4">
-          </div>
+          <div className="flex justify-end mt-4"></div>
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 mr-2 rounded-lg border border-blue-500 hover:border-blue-600 transition duration-300"
@@ -109,44 +113,7 @@ export const Private_Table: React.FC<{}> = () => {
         </div>
       </div>
     </div>
-));
-
-
-
-//   const cardList = data.map((book: any) => (
-//     <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4" key={book.ID}>
-//       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-//         <div className="h-64 lg:h-48 flex items-center justify-center bg-gray-200 shadow-md hover:shadow-xl transition duration-300">
-//         <img
-//   alt={book.Img_url}
-//   className="h-full w-full object-contain hover:scale-105 transition duration-300"
-//   src={book.Img_url}
-// />
-
-//         </div>
-//         <div className="p-4 bg-gray-100">
-//           <div className="text-xl font-semibold mb-2">
-//             {book.Author} - {book.Publisher}
-//           </div>
-//           <div className="text-gray-600 text-sm">{book.Year}</div>
-//           <div className="flex justify-end mt-4">
-//             <button
-//               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 mr-2 rounded-lg border border-blue-500 hover:border-blue-600 transition duration-300"
-//               onClick={() => onAdvanceEdit(book)}
-//             >
-//               Edit
-//             </button>
-//             <button
-//               className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg border border-red-500 hover:border-red-600 transition duration-300"
-//               onClick={() => onDelete(book)}
-//             >
-//               Delete
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   ));
+  ));
 
   const onAdvanceEdit = (record: Partial<Book> & { ID: React.Key }) => {
     console.log(record);
@@ -155,11 +122,11 @@ export const Private_Table: React.FC<{}> = () => {
   };
 
   return (
-    <div className="Book_Table mt-20 pt-20">
+    <div className="Book_Table   mt-20 pt-20">
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className="container mx-auto px-4">
+        <div className="container   mx-auto px-4">
           <div className="flex flex-wrap -mx-4">{cardList}</div>
         </div>
       )}

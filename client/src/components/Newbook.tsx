@@ -1,4 +1,5 @@
-import { Form, Input, Menu, Breadcrumb, Button } from "antd";
+import { Form, Input, Menu, Breadcrumb, Button, Select } from "antd";
+
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { Book } from "../models/books";
@@ -16,6 +17,7 @@ import TextArea from "antd/lib/input/TextArea";
 import { json } from "body-parser";
 import { clearBooks } from "../redux/bookSlice";
 import { clearBulkBooks } from "../redux/librarySlice";
+import { Navcolor } from "./Template";
 
 export const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -29,6 +31,21 @@ const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
+
+
+export    const bookCategories = [
+  "Action and Adventure",
+  "Classics",
+  "Detective and Mystery",
+  "Fantasy",
+  "Historical Fiction",
+  "Horror",
+  "Romance",
+  "Science Fiction",
+  "Thriller",
+  "Young Adult",
+];
+
 
 export const NewItem = () => {
   return (
@@ -190,74 +207,91 @@ const NewBook = () => {
   //   }
   // };
 
-  const handleupload = (file: any, fileList: any) => {};
 
+  const handleupload = (file: any, fileList: any) => {};
+Navcolor()
   return (
     <div className="w-full min-h-[calc(100vh-130px)] flex justify-center ite mt-[5.8rem] py-10 loginBg">
-      <Form
-        className="w-full flex flex-col justify-center items-center"
-        {...layout}
-        form={form}
-        name="NewBook_Form_Input"
-        onFinish={onFinish}
-        validateMessages={validateMessages}
-      >
-        <Form.Item name="Title" label="Title" rules={[{ required: true }]}>
-          <Input className="w-[300px] sm:w-[500px] h-[45px]" />
-        </Form.Item>
-        <Form.Item name="Author" label="Author" rules={[{ required: true }]}>
-          <Input className="w-[300px] sm:w-[500px] h-[45px]" />
-        </Form.Item>
-        <Form.Item
-          name="Publisher"
-          label="Publisher"
-          rules={[{ required: true }]}
-        >
-          <Input className="w-[300px] sm:w-[500px] h-[45px]" />
-        </Form.Item>
-        <Form.Item name="Year" label="Year" rules={[{ required: true }]}>
-          <Input className="w-[300px] sm:w-[500px] h-[45px]" />
-        </Form.Item>
-        <Form.Item
-          className="newBook"
-          name="Summary"
-          label="Summary"
-          rules={[{ required: true }]}
-        >
-          <TextArea className="" />
-        </Form.Item>
+<Form
+  className="w-full flex flex-col justify-center items-center"
+  {...layout}
+  form={form}
+  name="NewBook_Form_Input"
+  onFinish={onFinish}
+  validateMessages={validateMessages}
+>
+  <Form.Item name="Title" label="Title" rules={[{ required: true }]}>
+    <Input className="w-[300px] sm:w-[500px] h-[45px] text-sm sm:text-lg" />
+  </Form.Item>
+  <Form.Item name="Author" label="Author" rules={[{ required: true }]}>
+    <Input className="w-[300px] sm:w-[500px] h-[45px] text-sm sm:text-lg" />
+  </Form.Item>
+  <Form.Item
+    name="Publisher"
+    label="Publisher"
+    rules={[{ required: true }]}
+  >
+    <Input className="w-[300px] sm:w-[500px] h-[45px] text-sm sm:text-lg" />
+  </Form.Item>
+  <Form.Item name="Year" label="Year" rules={[{ required: true }]}>
+    <Input className="w-[300px] sm:w-[500px] h-[45px] text-sm sm:text-lg" />
+  </Form.Item>
+  {/* Category Dropdown Form Item */}
+  <Form.Item name="Category" label="Category" rules={[{ required: true }]}>
+    <Select className="form-category h-[45px] text-sm sm:text-lg" placeholder="Select a book category">
+      {bookCategories.map((category) =>(
+        <Select.Option value={category} key={category}>
+          {category}
+        </Select.Option>
+      ))}
+    </Select>
+  </Form.Item>
+  <Form.Item
+    className="newBook"
+    name="Summary"
+    label="Summary"
+    rules={[{ required: true }]}
+  >
+    <TextArea className="w-[300px] sm:w-[500px] h-[90px] text-sm sm:text-lg" />
+  </Form.Item>
 
-        <Form.Item>
-          <Upload
-            className="upload-button"
-            listType="picture-card"
-            accept=".jpg,.jpeg,.png"
-            onPreview={handlePreview}
-            onChange={handleChange}
-            beforeUpload={handleupload}
-          >
-            {fileList.length >= 8 ? null : uploadButton}
-          </Upload>
+  {/* Link Form Item */}
+  <Form.Item name="Link" label="Link" rules={[{ required: true, type: 'url', message: 'Please enter a valid URL!' }]}>
+    <Input className="w-[300px] sm:w-[500px] h-[45px] text-sm sm:text-lg" />
+  </Form.Item>
 
-          <Modal
-            open={previewOpen}
-            title={previewTitle}
-            footer={null}
-            onCancel={handleCancel}
-          >
-            <img alt="example" style={{ width: "100%" }} src={previewImage} />
-          </Modal>
-        </Form.Item>
+  <Form.Item>
+    <Upload
+      className="upload-button"
+      listType="picture-card"
+      accept=".jpg,.jpeg,.png"
+      onPreview={handlePreview}
+      onChange={handleChange}
+      beforeUpload={handleupload}
+    >
+      {fileList.length >= 8 ? null : uploadButton}
+    </Upload>
 
-        <Form.Item>
-          <button
-            className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[44px]"
-            type="submit"
-          >
-            Submit
-          </button>
-        </Form.Item>
-      </Form>
+    <Modal
+      open={previewOpen}
+      title={previewTitle}
+      footer={null}
+      onCancel={handleCancel}
+    >
+      <img alt="example" style={{ width: "100%" }} src={previewImage} />
+    </Modal>
+  </Form.Item>
+
+  <Form.Item>
+    <button
+      className="bg-blue-main rounded-[6px] text-white-main hover:bg-blue-main text-[16px] font-semibold flex justify-center items-center hover:opacity-90 w-[110px] h-[44px]"
+     type="submit"
+    >
+      Submit
+    </button>
+  </Form.Item>
+</Form>
+
     </div>
   );
 };

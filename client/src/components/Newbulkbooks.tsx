@@ -16,6 +16,7 @@ import TextArea from "antd/lib/input/TextArea";
 import { json } from "body-parser";
 import { clearBooks } from "../redux/bookSlice";
 import { addBulkBooks, clearBulkBooks } from "../redux/librarySlice";
+import { Navcolor } from "./Template";
 
 export const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -143,9 +144,10 @@ const NewBulkBook = () => {
   };
 
   const handleupload = (file: any, fileList: any) => {};
+Navcolor()
 
   return (
-    <div className="mt-[5.8rem] min-h-[calc(100vh-130px)] p-4 loginBg">
+    <div className="mt-[5.8rem] main-target min-h-[calc(100vh-130px)] p-4 loginBg">
       <Form form={form} onFinish={onFinish}>
         <Form.Item label="JSON Data" name="jsonData">
           <TextArea

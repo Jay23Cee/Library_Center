@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addBulkBooks } from "../redux/librarySlice";
 import { addBook, clearBooks } from "../redux/bookSlice";
+import { Navcolor } from "./Template";
 
 
 const BookTable: React.FC<{}> = () => {
@@ -17,7 +18,7 @@ const BookTable: React.FC<{}> = () => {
 
   const [data, setData] = useState(originData);
   const library = useSelector((state: any) => state.library);
-
+  Navcolor()
   useEffect(() => {
     async function fetchBooks() {
       try {
@@ -36,6 +37,9 @@ const BookTable: React.FC<{}> = () => {
       setData(library.library);
     }
   }, []);
+
+
+
 
   const handleTitleClick = (record: Book) => {
     dispatch(addBook(record));
@@ -85,7 +89,7 @@ const BookTable: React.FC<{}> = () => {
 
 
   return (
-    <div className="w-full min-h-[calc(100vh-130px)] flex flex-col items-center mt-[5.8rem] py-10">
+    <div className="w-full min-h-[calc(100vh-130px)] flex flex-col items-center  py-10">
    <div className="Book_Table mt-20 pt-20">
     
         <div className="container mx-auto px-4">

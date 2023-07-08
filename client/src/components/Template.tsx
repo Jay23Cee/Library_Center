@@ -31,6 +31,23 @@ import "react-modern-drawer/dist/index.css";
 import Book_View from "./Book_View";
 import { Private_Table } from "./Private_Table";
 
+
+
+export const Navcolor=()=>{
+  useEffect(() => {
+
+    const navTop = document.querySelector('.nav-top') as HTMLElement;
+
+   
+        // Set the background color with the calculated opacity
+        navTop.style.backgroundColor = `rgba(12,36,64, 1)`; // Change the RGB values according to your desired color
+    
+}, []);
+}
+
+
+
+
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // ROUTER needs to be improve
 const { Header, Content, Footer } = Layout;
@@ -125,7 +142,7 @@ const Template = () => {
 
 useEffect(() => {
     const handleScroll = () => {
-        const mainIntro = document.querySelector('.main-intro') as HTMLElement;
+        const mainIntro = document.querySelector('.main-target') as HTMLElement;
         const navTop = document.querySelector('.nav-top') as HTMLElement;
 
         if (mainIntro && navTop) {
@@ -157,7 +174,7 @@ useEffect(() => {
     <div className="w-full">
       <div className="w-full nav-top  fixed top-0 h-[70px] flex justify-center items-center z-20">
         <div className=" w-full max-w-[1340px] flex flex-row m-auto justify-between items-center z-20  sm:px-4">
-          <div className="hidden md:flex gap-10 justify-center items-center ">
+        <div className="hidden md:flex gap-10 justify-center items-center menu-links ">
             <Link
               key={0}
               to="/"
@@ -193,7 +210,7 @@ useEffect(() => {
               </Link>
             )}
 
-            {CheckAuth(user, ["ADMIN"]) && (
+            {/* {CheckAuth(user, ["ADMIN"]) && (
               <Link
                 key={4}
                 className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
@@ -201,7 +218,7 @@ useEffect(() => {
               >
                 New Bulk
               </Link>
-            )}
+            )} */}
 
             {CheckAuth(user, ["ADMIN"]) && (
               <Link
@@ -271,7 +288,7 @@ useEffect(() => {
                     </Link>
                   </div>
                 )}
-                {CheckAuth(user, ["ADMIN"]) && (
+                {/* {CheckAuth(user, ["ADMIN"]) && (
                   <div className="text-center">
                     <Link
                       key={4}
@@ -281,7 +298,7 @@ useEffect(() => {
                       New Bulk
                     </Link>
                   </div>
-                )}
+                )} */}
                 {CheckAuth(user, ["ADMIN"]) && (
                   <div className="text-center">
                     <Link
@@ -315,7 +332,7 @@ useEffect(() => {
 
         
         </div>
-          <h3 className="absolute left-1/2 transform -translate-x-1/2 text-[2em] font-bold md:text-[1.9rem] text-orange-400">
+        <h3 className="absolute left-1/2 transform -translate-x-1/2 text-[2em] font-bold md:text-[1.9rem] text-orange-400 library-title">
             Library Xpress
           </h3>
       </div>

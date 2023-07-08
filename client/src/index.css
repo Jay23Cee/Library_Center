@@ -47,6 +47,17 @@ h1 {
     width: 300px !important;
   }
 }
+
+.advanceEdit .ant-select-selector{
+  width: 430px !important;
+}
+
+@media screen and (max-width: 500px) {
+  .advanceEdit .ant-select-selector {
+    width: 300px !important;
+  }
+}
+
 .ant-card-body {
   padding: 0px !important;
 }
@@ -161,6 +172,10 @@ code {
   background-position: center;
   background-repeat: no-repeat;
   /* You can set a default height here if you want */
+
+}
+
+.main-target{
   height: 50vh; /* example: 50% of the viewport height */
 }
 
@@ -225,4 +240,30 @@ code {
   text-shadow: 0 -1px 4px #ffffff, 0 -2px 10px #ffbc42, 0 -10px 20px #ffbc42, 0 -18px 40px #ffbc42;
 
   
+}
+
+.form-category{
+  width:500px !important;
+}
+
+@media screen and (max-width: 500px) {
+  .form-category{
+    width:300px !important;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .nav-top {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .menu-links {
+    margin-left: auto;
+  }
+
+  .library-title {
+    position: initial;
+    transform: initial;
+  }
 }

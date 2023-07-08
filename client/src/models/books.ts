@@ -9,5 +9,7 @@ export interface Book {
   Img_url:string;
   Img_title:string;
   Summary:string;
+  Category:string;
+  Link:string;
 }
 

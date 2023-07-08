@@ -16,7 +16,7 @@ function Homepage() {
   return (
     <div className="w-full flex flex-col items-center">
       {/* First section */}
-      <section className="main-intro w-screen h-screen bg-main-primary flex items-center justify-center p-0 md:p-0">
+      <section className="main-intro main-target w-screen h-screen bg-main-primary flex items-center justify-center p-0 md:p-0">
         <div className="intro-text flex flex-col items-center justify-center text-center text-main-secondary">
           <h3 className="font-bold text-4xl md:text-8xl shadow-lg text-shadow-glow">
             Library Xpress

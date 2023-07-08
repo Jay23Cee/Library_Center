@@ -1,4 +1,4 @@
-import { Form, Input, Menu, Breadcrumb, Button, Card } from "antd";
+import { Form, Input, Menu, Breadcrumb, Button, Card, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { Book } from "../models/books";
@@ -16,6 +16,8 @@ import TextArea from "antd/lib/input/TextArea";
 import { json } from "body-parser";
 import { clearBooks } from "../redux/bookSlice";
 import { clearBulkBooks } from "../redux/librarySlice";
+import { bookCategories } from "./Newbook";
+import { Navcolor } from "./Template";
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -178,6 +180,8 @@ const AdvanceEdit = () => {
     formData.append("Year", values.Year);
     formData.append("Summary", values.Summary);
     formData.append("ID", bookRaw.ID);
+    formData.append("Link", values.Link); // added
+    formData.append("Category", values.Category); // added
     if (fileList.length > 0) {
       formData.append(
         "Img",
@@ -199,6 +203,8 @@ const AdvanceEdit = () => {
     }
   };
 
+  Navcolor()
+  
   return (
     <div className="w-full min-h-[calc(100vh-130px)] flex flex-col gap-4 justify-center items-center ite mt-[5.8rem] py-10 loginBg">
       <h1 className="text-[26px] font-semibold text-blue-main">Book Editing</h1>
@@ -220,6 +226,23 @@ const AdvanceEdit = () => {
             >
               <TextArea autoSize />
             </Form.Item>
+
+
+            <Form.Item
+    className="advanceEdit -mt-4 md:-mt-0"
+    name="Category"
+    label="Category"
+    rules={[{ required: true }]}
+>
+    <Select placeholder="Select a category" className="advanceEdit">
+        {bookCategories.map((category, index) => (
+            <Select.Option key={index} value={category}>
+                {category}
+            </Select.Option>
+        ))}
+    </Select>
+</Form.Item>
+
             <Form.Item
               className="advanceEdit -mt-4 md:-mt-0"
               name="Author"
@@ -254,6 +277,15 @@ const AdvanceEdit = () => {
               <TextArea autoSize />
             </Form.Item>
 
+            <Form.Item
+                  className="advanceEdit"
+                  name="Link"
+                  label="Link"
+                  rules={[{ required: true }]}
+              >
+                <TextArea autoSize />
+              </Form.Item>
+
             <div className="w-full flex md:flex-row flex-col gap-3 justify-center items-center">
               <div>
                 <Upload
@@ -266,15 +298,7 @@ const AdvanceEdit = () => {
                 >
                   {fileList.length >= 2 ? null : uploadButton}
                 </Upload>
-                {/* <Modal
-            open={previewOpen}
-            title={previewTitle}
-            footer={null}
-            onCancel={handleCancel}
-          >
-            <img alt="example" style={{ width: "100%" }} src={previewImage} />
-          </Modal>
-           */}
+
                 {modal}
               </div>
 
