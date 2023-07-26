@@ -41,4 +41,25 @@ export async function Private_Login(values: UserLogin) {
       return Promise.reject(error);
     }
   }
+
+  export async function Private_Logout() {
+    try {
+      const headers = {
+        "Content-Type": "text/plain",
+      };
+      const JSON_string = JSON.stringify({});
+      let link = process.env.REACT_APP_URL as string;
+      let url = link + `/private/logout`;
+      const res = axios
+        .post(url, JSON_string, { withCredentials: true, headers })
+        .catch((error) => {
+          throw new TypeError("Username or Password Incorrect");
+        });
+  
+      return res;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   

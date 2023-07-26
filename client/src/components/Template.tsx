@@ -1,4 +1,4 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 
 import React, { useEffect, useState } from "react";
 
@@ -30,6 +30,8 @@ import { Spin as Hamburger } from "hamburger-react";
 import "react-modern-drawer/dist/index.css";
 import Book_View from "./Book_View";
 import { Private_Table } from "./Private_Table";
+import Logout from "./LoginOut";
+import logoutAll from "./LoginOut";
 
 
 
@@ -73,6 +75,7 @@ const Template = () => {
         if (token2.Email) {
           dispatch(loginSuccess(token2));
         } else {
+       
           dispatch(logOut());
           navigate("/");
           return;
@@ -91,16 +94,13 @@ const Template = () => {
     fetchUser();
   }, []);
 
-  const logout = async () => {
+  const logout = () => {
     // if used in more components, this should be in context
     // axios to /logout endpoint
-    var ok = await User_Logout();
+  logoutAll();
     // console.log(ok)
-    if (ok != null) {
-      return ok;
-    }
-
-    dispatch(logOut());
+  
+   dispatch(logOut());
     navigate("/");
   };
 
@@ -241,13 +241,16 @@ useEffect(() => {
             )}
 
             {user && (
-              <span
-                key={7}
-                className="text-orange-400 text-[16px] hover:text-white-main hover:duration-500"
-                onClick={logout}
-              >
-                Logout
-              </span>
+    <button
+    onClick={() => {
+     logout()
+    }}
+    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-lg"
+>
+    Logout
+</button>
+         
+        
             )}
           </div>
           {/* =====> drawer for small screen */}
@@ -323,7 +326,17 @@ useEffect(() => {
                 )}
                 {user && (
                   <div key={7} onClick={logout}>
-                    <span>Logout</span>
+    <button
+        onClick={() => {
+
+          logoutAll()
+         dispatch(logOut())
+        }}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-lg"
+    >
+        Logout
+    </button>
+
                   </div>
                 )}
               </div>

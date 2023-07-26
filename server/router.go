@@ -40,6 +40,7 @@ func Connect_router() *chi.Mux {
 	r.Post("/private/login", api.Private_Login)
 	r.Post("/private/login/demo", api.Private_Login_Demo)
 	r.Post("/private/signup", api.Private_Signup)
+	r.Post("/private/logout", api.PrivateLogout)
 
 	r.Route("/api", func(r chi.Router) {
 		r.Post("/add", api.Addbooks)

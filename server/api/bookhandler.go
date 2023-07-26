@@ -198,6 +198,8 @@ func Addbooks(w http.ResponseWriter, r *http.Request) {
 		Publisher: r.PostFormValue("Publisher"),
 		Year:      r.PostFormValue("Year"),
 		Summary:   r.PostFormValue("Summary"),
+		Link:      r.PostFormValue("Link"),
+		Category:  r.PostFormValue("Category"),
 	}
 
 	// Get the file from the form
@@ -307,7 +309,7 @@ func AddBooksBulk(w http.ResponseWriter, r *http.Request) {
 
 	collection := client.Database("BookAPI").Collection("book")
 	for _, book := range books {
-		doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}, {"Summary", book.Summary}}
+		doc := bson.D{{"Title", book.Title}, {"Author", book.Author}, {"Publisher", book.Publisher}, {"Year", book.Year}, {"Img", book.Img}, {"Img_url", book.Img_url}, {"_id", primitive.NewObjectID()}, {"Summary", book.Summary}, {"Link", book.Link}, {"Category", book.Category}}
 		_, err := collection.InsertOne(ctx, doc)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -439,6 +441,8 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 		Year:      r.PostFormValue("Year"),
 		Summary:   r.PostFormValue("Summary"),
 		ID:        r.PostFormValue("ID"),
+		Category:  r.PostFormValue("Category"),
+		Link:      r.PostFormValue("Link"),
 	}
 
 	// Get the file from the form
@@ -455,6 +459,8 @@ func Editbook(w http.ResponseWriter, r *http.Request) {
 					{"Publisher", book.Publisher},
 					{"Year", book.Year},
 					{"Summary", book.Summary},
+					{"Category", book.Category},
+					{"Link", book.Link},
 				}},
 			},
 		)

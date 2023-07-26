@@ -9,7 +9,8 @@ type Book struct {
 	Img_url   string `bson:"Img_url, omitempty"`
 	ID        string `json:"ID,omitempty" bson:"_id,omitempty"`
 	Summary   string `bson:"Summary, omitempty"`
-
+	Link      string `bson:"Link, omitempty"`
+	Category  string `bson:"Category, omitempty"`
 	// CreatedAt time.Time
 	// UpdatedAt time.Time
 	// DeletedAt gorm.DeletedAt `gorm:"index"`

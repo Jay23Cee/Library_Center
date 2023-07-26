@@ -11,6 +11,7 @@ import { clearBooks } from "../redux/bookSlice";
 import { bookCategories } from "./Newbook";
 import "react-modern-drawer/dist/index.css";
 import { Navcolor } from "./Template";
+import { Bookmenu } from "./SearchBar";
 
 
 const getBase64 = (file: RcFile): Promise<string> =>
@@ -148,7 +149,10 @@ const Book_View = () => {
 
   Navcolor()
   return (
+    <div>
+
     <div className="w-full  min-h-[calc(100vh-130px)] grid grid-cols-1 lg:gap-0 gap-10 lg:grid-cols-2 justify-center items-center ite mt-[5.8rem] py-10 loginBg">
+    
       <Form
         className=" w-full flex flex-col justify-center items-center"
         {...layout}
@@ -156,7 +160,7 @@ const Book_View = () => {
         form={form}
         onFinish={onFinish}
         validateMessages={validateMessages}
-      >
+        >
         <Form.Item className="bookView" name="Title" label="Title">
           <TextArea name="Title-input" readOnly autoSize />
         </Form.Item>
@@ -164,7 +168,7 @@ const Book_View = () => {
           className="bookView -mt-4 md:-mt-0"
           name="Author"
           label="Author"
-        >
+          >
           <TextArea readOnly autoSize />
         </Form.Item>
 
@@ -183,7 +187,7 @@ const Book_View = () => {
           className="bookView -mt-4 md:-mt-0"
           name="Publisher"
           label="Publisher"
-        >
+          >
           <TextArea readOnly autoSize />
         </Form.Item>
         <Form.Item className="bookView -mt-4 md:-mt-0" name="Year" label="Year">
@@ -193,23 +197,23 @@ const Book_View = () => {
           className="bookView -mt-4 md:-mt-0"
           name="Summary"
           label="Summary"
-        >
+          >
           <TextArea
             readOnly
             autoSize
             className="summary-textarea"
             value={bookRaw.Summary}
-          />
+            />
         </Form.Item>
 
         {isLinkAvailable && (
-      <Button
+          <Button
         className="bg-blue-400 text-white hover:bg-blue-600 hover:text-main-primary"
         onClick={() => {
           console.log(bookRaw.Link, " THIS IS THE LINK")
           window.open(bookRaw.Link, "_blank")
         }}
-      >
+        >
         Download free book
       </Button>
     )}
@@ -221,13 +225,14 @@ const Book_View = () => {
         className=" w-full bg-transparent h-full flex justify-center items-center"
         cover={
           <img
-            className="w-full max-w-[400px] h-[450px]"
-            src={previewImage}
-            alt={previewImage}
+          className="w-full max-w-[400px] h-[450px]"
+          src={previewImage}
+          alt={previewImage}
           />
         }
-      ></Card>
+        ></Card>
     </div>
+        </div>
   );
 };
 

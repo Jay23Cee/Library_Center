@@ -22,13 +22,13 @@ function Homepage() {
             Library Xpress
           </h3>
           <p className="font-mono text-xl md:text-5xl mt-4 shadow-md text-shadow-glow">
-          A Universe of Stories
+            Your Gateway to Classic Literature
           </p>
         </div>
       </section>
 
       <section className="w-full bg-gray-50 py-16 px-4 md:px-16 shadow-lg">
-        <h2 className="text-4xl md:text-5xl  text-shadow-orange-glow font-bold text-center text-main-navyblue mb-10 text-shadow">
+        <h2 className="text-4xl md:text-5xl text-shadow-orange-glow font-bold text-center text-main-navyblue mb-10 text-shadow">
           Welcome to Library Xpress
         </h2>
         <div className="flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0 items-center justify-center text-center md:text-left text-gray-700">
@@ -38,15 +38,15 @@ function Homepage() {
               <p className="text-lg md:text-xl font-medium">
                 Library Xpress is your ultimate destination for classic
                 literature. Here, you can discover a rich collection of books
-                that are now in the public domain, absolutely free!
+                that are now in the public domain, available absolutely free!
               </p>
             </div>
             <div className="flex items-center">
               <i className="fas fa-ship text-4xl text-main-secondary mr-4"></i>
               <p className="text-lg md:text-xl font-medium">
                 Explore the writings of Mark Twain, or set sail on the
-                adventurous seas with characters from classic novels. The
-                treasure of knowledge is just a click away!
+                adventurous seas with characters from timeless novels. The
+                treasure trove of knowledge is just a click away!
               </p>
             </div>
           </div>
@@ -58,7 +58,7 @@ function Homepage() {
               </li>
               <li>
                 <i className="fas fa-th-large mr-2 color-main-secondary"></i>
-                Various categories like Adventure, Mystery, Romance and more
+                Various categories like Adventure, Mystery, Romance, and more
               </li>
               <li>
                 <i className="fas fa-book-open mr-2"></i>
@@ -72,83 +72,77 @@ function Homepage() {
           </div>
         </div>
         <div className="mt-10 flex justify-center">
-  
-            <Link  
+          <Link
             className="px-8 py-3 text-lg font-semibold text-white bg-main-accent rounded-lg hover:bg-main-secondary"
             to="/login"
-              >
-          
+          >
             <i className="fas fa-search mr-2"></i>
             Browse Books
-
-            </Link>
-     
+          </Link>
         </div>
       </section>
 
- 
-{/* Second section */}
-<section className="w-full bg-main-accent py-16 px-4 md:px-16 shadow-2xl">
-  <h1 className="text-3xl md:text-5xl font-extrabold text-main-primary text-center mb-8 text-shadow">
-    The Benefits of Reading...
-  </h1>
-  <p className="text-lg md:text-xl text-center text-main-navyblue mb-8">
-    Reading has been scientifically proven to have numerous benefits such as enhancing brain function, reducing stress, and much more. Explore the benefits below:
-  </p>
-  <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 items-stretch">
-    {benefitsOfReadingData.map((item, index) => (
-      <div
-        key={index}
-        className="flex flex-col bg-main-primary p-8 rounded-xl shadow-lg border border-gray-300 hover:shadow-xl hover:border-transparent transition-shadow duration-300"
-      >
-        <div className="w-full aspect-w-16 aspect-h-9 rounded-t-xl overflow-hidden mb-6">
-          <img
-            className="w-full h-full object-cover"
-            src={item.img}
-            alt={item.imgAlt || "benefit image"}
-          />
-        </div>
-        <div className="flex flex-col flex-grow">
-          <h1 className="text-2xl md:text-3xl font-semibold mb-4 text-main-secondary text-shadow">
-            {item.title}
-          </h1>
-          <p className="flex-grow">{item.description}</p>
-          {/* Conditionally render Read More link if link property exists */}
-          {item.link && (
-            <a
-              href={item.link}
-              className="mt-4 text-main-highlight font-semibold hover:underline"
+      {/* Second section */}
+      <section className="w-full bg-main-accent py-16 px-4 md:px-16 shadow-2xl">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-main-primary text-center mb-8 text-shadow">
+          The Benefits of Reading...
+        </h1>
+        <p className="text-lg md:text-xl text-center text-main-navyblue mb-8">
+          Reading has been scientifically proven to have numerous benefits such
+          as enhancing brain function, reducing stress, and much more. Explore
+          the benefits below:
+        </p>
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 items-stretch">
+          {benefitsOfReadingData.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col bg-main-primary p-8 rounded-xl shadow-lg border border-gray-300 hover:shadow-xl hover:border-transparent transition-shadow duration-300"
             >
-              Read More
-            </a>
-          )}
+              <div className="w-full aspect-w-16 aspect-h-9 rounded-t-xl overflow-hidden mb-6">
+                <img
+                  className="w-full h-full object-cover"
+                  src={item.img}
+                  alt={item.imgAlt || "benefit image"}
+                />
+              </div>
+              <div className="flex flex-col flex-grow">
+                <h1 className="text-2xl md:text-3xl font-semibold mb-4 text-main-secondary text-shadow">
+                  {item.title}
+                </h1>
+                <p className="flex-grow">{item.description}</p>
+                {/* Conditionally render Read More link if link property exists */}
+                {item.link && (
+                  <a
+                    href={item.link}
+                    className="mt-4 text-main-highlight font-semibold hover:underline"
+                  >
+                    Read More
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
-</section>
-
+      </section>
 
       {/* Third section */}
       <section className="sign-up w-screen py-24 bg-main-primary flex justify-center items-center">
-  <div className="w-full font-courier flex flex-col justify-center items-center text-secondary">
-    <h1 className="text-2xl text-shadow-glow text-main-accent text-shadow md:text-5xl lg:text-6xl text-center md:text-left mb-4 md:mb-6 custom-shadow">
-      Join our community today!{" "}
-      <Link
-  to="/signup"
-  className="inline-flex bg-blue-300 hover:bg-blue-800 items-center px-4 py-2 text-xl md:text-5xl lg:text-8xl text-primary bg-transparent rounded-lg transition-all"
->
-  <span className="mr-2">🚀</span>
-  Sign Up
-</Link>
-
-    </h1>
-    <p className="text-center text-white-main  text-sm md:text-xl lg:text-xxl text-shadow-glow">
-      Get exclusive access to our resources and more.
-    </p>
-  </div>
-</section>
-
+        <div className="w-full font-courier flex flex-col justify-center items-center text-secondary">
+          <h1 className="text-2xl text-shadow-glow text-main-accent text-shadow md:text-5xl lg:text-6xl text-center md:text-left mb-4 md:mb-6 custom-shadow">
+            Join our community today!{" "}
+            <Link
+              to="/signup"
+              className="inline-flex bg-blue-300 hover:bg-blue-800 items-center px-4 py-2 text-xl md:text-5xl lg:text-8xl text-primary bg-transparent rounded-lg transition-all"
+            >
+              <span className="mr-2">🚀</span>
+              Sign Up
+            </Link>
+          </h1>
+          <p className="text-center text-white-main text-sm md:text-xl lg:text-xxl text-shadow-glow">
+            Get exclusive access to our resources and more.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

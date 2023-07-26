@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { Book } from "../models/books";
 import { getbooks } from "../controllers/book_handler";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,39 +6,60 @@ import { useNavigate } from "react-router-dom";
 import { addBulkBooks } from "../redux/librarySlice";
 import { addBook, clearBooks } from "../redux/bookSlice";
 import { Navcolor } from "./Template";
-
+import Book_View from "./Book_View";
+import { Bookmenu } from "./SearchBar";
+import { filter } from "lodash";
 
 const BookTable: React.FC<{}> = () => {
   const user = useSelector((state: any) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [category, setCategory] = useState<string>('');
+  const [year, setYear] = useState<string>('');
 
   const originData: Book[] = [];
 
   const [data, setData] = useState(originData);
   const library = useSelector((state: any) => state.library);
-  Navcolor()
+  Navcolor();
+
+  const getStoredBooks = (): Book[] => {
+    const storedBooks = localStorage.getItem("originalData");
+    return storedBooks ? JSON.parse(storedBooks) : [];
+  };
+
+  const [originalData, setOriginalData] = useState<Book[]>(getStoredBooks());
+
   useEffect(() => {
-    async function fetchBooks() {
+    const fetchBooks = async () => {
       try {
         const books = await getbooks();
-        setData(books);
-        dispatch(addBulkBooks(books));
-        console.log(books, "THIS IS DATA THAT COMES FROM GETBOOKS");
+        console.log(books);
+        setOriginalData(books);
+        localStorage.setItem("originalData", JSON.stringify(books)); // Save books to localStorage
+        const filteredBooks = books.filter((book) =>
+          (searchTerm === '' || book.Title?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+          (category === '' || book.Category?.toLowerCase().includes(category.toLowerCase())) &&
+          (year === '' || book.Year?.includes(year))
+        );
+        setData(filteredBooks);
+        dispatch(addBulkBooks(filteredBooks));
       } catch (error) {
         console.error("Error fetching books:", error);
       }
-    }
-
+    };
     if (!library.library.length) {
       fetchBooks();
     } else {
-      setData(library.library);
+      const filteredBooks = originalData.filter((book: Book) =>
+        (searchTerm === '' || book.Title?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (category === '' || book.Category?.toLowerCase().includes(category.toLowerCase())) &&
+        (year === '' || book.Year?.includes(year))
+      );
+      setData(filteredBooks);
     }
-  }, []);
-
-
-
+  }, [searchTerm, category, year, library.library.length, originalData]);
 
   const handleTitleClick = (record: Book) => {
     dispatch(addBook(record));
@@ -85,25 +105,27 @@ const BookTable: React.FC<{}> = () => {
       </div>
     </div>
   ));
-  
-
 
   return (
     <div className="w-full min-h-[calc(100vh-130px)] flex flex-col items-center  py-10">
-   <div className="Book_Table mt-20 pt-20">
-    
+      <Bookmenu
+        onSearchTermChange={setSearchTerm}
+        onCategoryChange={setCategory}
+        onYearChange={setYear}
+      />
+
+      <div className="Book_Table mt-500 pt-20">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap -mx-4">{cardList}</div>
         </div>
-     
-    </div>
+      </div>
     </div>
   );
 };
 
 export const Bookintro = () => {
   return (
-<> </>
+    <> </>
   );
 };
 
