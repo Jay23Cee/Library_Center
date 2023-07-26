@@ -1,10 +1,8 @@
 package database
 
-// import (
-// 	"fmt"
+// "fmt"
 
-// 	"github.com/joho/godotenv"
-// )
+// "github.com/joho/godotenv"
 
 func Devops() {
 
