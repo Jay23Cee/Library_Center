@@ -16,12 +16,12 @@ module.exports = {
       },
       colors: {
         main: {
-          primary: "#006ba6", // Pale Orange
-          secondary: "#ff9b05",
-         lightblue: "#0496ff", // Azure
-         navyblue:"#0c2440", // navyblue
-          accent: "#ffbc42", // Light Coral
-          highlight: "#d39177", // Dusty Salmon
+          primary :"#006ba6",// Dark Cyan
+          secondary :"#ff9b05",// Orange
+          lightblue: "#0496ff",// Deep Sky Blue
+          navyblue: "#0c2440",// Navy Blue
+          accent :"#ffbc42",// Selective Yellow
+          highlight :"#d39177",// Dusty Salmon
         },
         green: {
           off: "#7dcfb6",
